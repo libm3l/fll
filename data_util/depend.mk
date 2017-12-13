@@ -1,7 +1,7 @@
 # This file is generated automatically by fort_depend.py. DO NOT EDIT!
 #
 #  Created by: jiraseka
-#  Date: 2017-11-22 14:54:08
+#  Date: 2017-12-13 09:29:06
 #
 
 fll_deattach.o :  \
@@ -101,15 +101,15 @@ fll_rm.o :  \
 	fll_out.o \
 	fll_type.o
 
-fll_locate.o :  \
-	fll_funct_prt.o \
-	fll_out.o \
-	fll_type.o
-
 fll_read_ffa.o :  \
 	fll_mv.o \
 	fll_funct_prt.o \
 	fll_mk.o \
+	fll_out.o \
+	fll_type.o
+
+fll_locate.o :  \
+	fll_funct_prt.o \
 	fll_out.o \
 	fll_type.o
 

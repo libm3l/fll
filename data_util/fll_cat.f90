@@ -236,8 +236,8 @@ CONTAINS
 !
 !   print headers
 !
-     WRITE(NDSTR,'(I8)')PNODE%NDIM
-     WRITE(NSSTR,'(I8)')PNODE%NSIZE
+     WRITE(NDSTR,'(I12)')PNODE%NDIM
+     WRITE(NSSTR,'(I12)')PNODE%NSIZE
 
      IF(COL_LOC == 'Y' .OR. COL_LOC == 'y')THEN
        IF(TRIM(PNODE%LTYPE) == 'DIR')THEN
