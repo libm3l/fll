@@ -69,7 +69,8 @@ init:
 	echo MPI_FC=YES >> config.mk
 	echo VERBOSE=-vvv >> config.mk
 
-data_util.all: 
+data_util.all:
+mpi_util.all: data_util.all
 test.all: data_util.all
 
 clean: $(SUBCLEAN:%=%.clean)
