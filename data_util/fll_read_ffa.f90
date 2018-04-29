@@ -275,7 +275,10 @@ CONTAINS
 !   ATTACH TO PNODE
 !
         OK = FLL_MV(PNEW,PNODE,FPAR,ERRMSG=LOC_ERRMSG)
-        IF(.NOT.OK) STOP' ERROR MV'
+        IF(.NOT.OK) THEN
+         WRITE(*,*)' ERROR MV'
+         STOP
+         END IF
 
       END DO
     ELSE
@@ -294,7 +297,11 @@ CONTAINS
            END IF
         ELSE
           IF(PNODE%NSIZE * PNODE%NDIM == 1)THEN
-            IF(FMTS /= 0)STOP' Cannot use scan == y with old format'
+            IF(FMTS /= 0)THEN
+             WRITE(*,*)' Cannot use scan == y with old format'
+             STOP
+             END IF
+             
             CALL READ_DATA_FFA_BIN(IOUNIT,PNODE,PNODE%FTYPE,PNODE%NDIM,PNODE%NSIZE,POS,FPAR_H,LOC_ERRMSG)         
           ELSE
             POS = POS + GET_NEW_FFA_POS(PNODE,PNODE%LTYPE,PNODE%NDIM,PNODE%NSIZE,FPAR_H,LOC_ERRMSG)

@@ -128,7 +128,10 @@ CONTAINS
           PTMP => FLL_CP(PNODE, PMAIN, FPAR)
 
           ALLOCATE(POS(NPROC+1), DISPL(NPROC+1), STAT = ISTAT)
-          IF(ISTAT /= 0)STOP'ERROR ALLOCATING MEMORY ==> fll_mpi_write_snm ERR:131 '
+          IF(ISTAT /= 0)THEN
+            WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write_snm ERR:132 '
+            STOP
+          END IF
 !
 !  get length of each data subset of actual data
 !
@@ -165,7 +168,10 @@ CONTAINS
           PDISPL%L1 = DISPL
 
 !          WRITE(*,*)' Partition ',WORLD_RANK,' saving to :',trim(NAME_OF_FILE)
-          IF(.NOT.FLL_WRITE(PMAIN,TRIM(NAME_OF_FILE), IOUNIT, 'B', FPAR))STOP'Error writing file'
+          IF(.NOT.FLL_WRITE(PMAIN,TRIM(NAME_OF_FILE), IOUNIT, 'B', FPAR))THEN
+             WRITE(*,*)'Error writing file'
+             STOP
+        END IF
 !          WRITE(*,*)' Partition ',WORLD_RANK,' done saving to :',trim(NAME_OF_FILE)
 !
 !  Clean memory

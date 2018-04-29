@@ -155,7 +155,10 @@ CONTAINS
 !  subsets #2:  are actual data from each process
 !
    ALLOCATE(POS(NPROC+1), DISPL(NPROC+1), STAT = ISTAT)
-    IF(ISTAT /= 0)STOP'ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:158 '
+    IF(ISTAT /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:159 '
+        STOP
+      END IF
 !
 !  get length of each data subset of actual data
 !
@@ -228,7 +231,10 @@ CONTAINS
 ! free memory
 !
    DEALLOCATE(POS, DISPL, STAT = ISTAT)
-    IF(ISTAT /= 0)STOP'ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:231 '
+    IF(ISTAT /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:235 '
+        STOP
+      END IF
     
    OK = .TRUE.
    RETURN

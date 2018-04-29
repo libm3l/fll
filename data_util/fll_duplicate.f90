@@ -198,7 +198,10 @@ CONTAINS
 !  NODE HAS CHILDREN
 !
          CALL FLL_DUPLICATE_RECURSIVE_NODE(PCHILD,PNEW, FPAR,LOC_ERRMSG)
-         IF(.NOT.FPAR%SUCCESS) STOP'DUPLICATE - Error duplicating nodes'
+         IF(.NOT.FPAR%SUCCESS) THEN
+           WRITE(*,*)'DUPLICATE - Error duplicating nodes'
+           STOP
+        END IF
      END IF
 !
 !  ADD TO PDUPL LIST

@@ -269,12 +269,18 @@ CONTAINS
     IF(TRIM(LTYPE) == 'DIR' .OR. TRIM(LTYPE) == 'N')THEN
       DO NNODES = 1,NDIM
         PNEW => READ_NODE(IOUNIT,FMT,POS,SCAN,FPAR)
-        IF(.NOT.ASSOCIATED(PNEW))STOP ' ERROR READING NODE'
+        IF(.NOT.ASSOCIATED(PNEW))THEN
+          WRITE(*,*)' ERROR READING NODE'
+          STOP
+        END IF
 !
 !   ATTACH TO PNODE
 !
         OK = FLL_MV(PNEW,PNODE,FPAR,LOC_ERRMSG)
-        IF(.NOT.OK) STOP' ERROR MV'
+        IF(.NOT.OK) THEN
+         WRITE(*,*)' ERROR MV'
+         STOP
+         END IF
 
       END DO
     ELSE

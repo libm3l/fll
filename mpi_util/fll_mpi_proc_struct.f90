@@ -244,7 +244,10 @@ CONTAINS
     END IF
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
-     IF(IERR /= 0)STOP' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:247 '
+     IF(IERR /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:248 '
+        STOP
+      END IF
 !
 !  loop over number of separate files, define which process is going to be
 !  saving in what file (defined by EVEN_RANK array
@@ -259,7 +262,10 @@ CONTAINS
 !  create node for name of the I/O file and add it to the main structure
 !
       PDIR => FLL_MKDIR('IO', FPAR)
-      IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))THEN
+       WRITE(*,*)' ERROR MOVING NODE'
+       STOP
+       END IF
 !
 !  create name of the file from the stem, number of file, and suffix
 !
@@ -270,18 +276,27 @@ CONTAINS
 !
       PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  save number of IO desrciptor
 !
       PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE '
+        STOP
+      END IF
 !
 !  create node with number processors the job will run at
 !
       PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE '
+        STOP
+      END IF
 !
 !  group processes 
 !  there will be NFILES group
@@ -314,7 +329,10 @@ CONTAINS
 !
       PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE '
+        STOP
+      END IF
 !
 !  if in the group, get local rank of the process and save it
 !  if not in the group, set process local rank to -1
@@ -327,7 +345,10 @@ CONTAINS
 
       PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE '
+        STOP
+      END IF
 !
 !  free group, will not be needed
 !
@@ -340,7 +361,10 @@ CONTAINS
 !  free memory
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
-     IF(IERR /= 0)STOP' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:343 '
+     IF(IERR /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:365 '
+        STOP
+      END IF
 
     RETURN
 
@@ -466,7 +490,10 @@ CONTAINS
     END IF
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
-     IF(IERR /= 0)STOP' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:469 '
+     IF(IERR /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:494 '
+        STOP
+      END IF
 !
 !  loop over number of separate files, define which process is going to be
 !  saving in what file (defined by EVEN_RANK array
@@ -481,7 +508,10 @@ CONTAINS
 !  create node for name of the I/O file and add it to the main structure
 !
       PDIR => FLL_MKDIR('IO', FPAR)
-      IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  create name of the file from the stem, number of file, and suffix
 !
@@ -492,18 +522,26 @@ CONTAINS
 !
       PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  save number of IO desrciptor
 !
       PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
-!
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !  create node with number processors the job will run at
 !
       PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  group processes 
 !  there will be NFILES group
@@ -536,7 +574,10 @@ CONTAINS
 !
       PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  if in the group, get local rank of the process and save it
 !  if not in the group, set process local rank to -1
@@ -549,7 +590,10 @@ CONTAINS
 
       PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
-      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))STOP' ERROR MOVING NODE'
+      IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
+        WRITE(*,*)' ERROR MOVING NODE'
+        STOP
+      END IF
 !
 !  free group, will not be needed
 !
@@ -562,7 +606,10 @@ CONTAINS
 !  free memory
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
-     IF(IERR /= 0)STOP' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:565 '
+     IF(IERR /= 0)THEN
+        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:610 '
+        STOP
+      END IF
 
     RETURN
 

@@ -117,7 +117,8 @@
    HUMID => FLL_GETNDATA_D1(PNEW1,'Humidity',1_LINT,FPAR)
 
    IF(.NOT.ASSOCIATED(HUMID))THEN
-      STOP' DID NOT FIND HUMID'
+      WRITE(*,*)' DID NOT FIND HUMID'
+      STOP
    ELSE
 !
 !   with this array you can work as with a normal array
