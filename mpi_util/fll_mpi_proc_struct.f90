@@ -245,7 +245,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:248 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:248 '
         STOP
       END IF
 !
@@ -263,7 +263,7 @@ CONTAINS
 !
       PDIR => FLL_MKDIR('IO', FPAR)
       IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))THEN
-       WRITE(*,*)' ERROR MOVING NODE'
+       WRITE(*,*)'ERROR MOVING NODE'
        STOP
        END IF
 !
@@ -277,7 +277,7 @@ CONTAINS
       PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -286,7 +286,7 @@ CONTAINS
       PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE '
+        WRITE(*,*)'ERROR MOVING NODE '
         STOP
       END IF
 !
@@ -294,7 +294,7 @@ CONTAINS
 !
       PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE '
+        WRITE(*,*)'ERROR MOVING NODE '
         STOP
       END IF
 !
@@ -330,7 +330,7 @@ CONTAINS
       PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE '
+        WRITE(*,*)'ERROR MOVING NODE '
         STOP
       END IF
 !
@@ -346,7 +346,7 @@ CONTAINS
       PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE '
+        WRITE(*,*)'ERROR MOVING NODE '
         STOP
       END IF
 !
@@ -362,7 +362,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:365 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:365 '
         STOP
       END IF
 
@@ -491,7 +491,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:494 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:494 '
         STOP
       END IF
 !
@@ -509,7 +509,7 @@ CONTAINS
 !
       PDIR => FLL_MKDIR('IO', FPAR)
       IF(.NOT.FLL_MV(PDIR, PIOSTR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -523,7 +523,7 @@ CONTAINS
       PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -532,14 +532,14 @@ CONTAINS
       PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !  create node with number processors the job will run at
 !
       PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -575,7 +575,7 @@ CONTAINS
       PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -591,7 +591,7 @@ CONTAINS
       PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -607,7 +607,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:610 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:610 '
         STOP
       END IF
 

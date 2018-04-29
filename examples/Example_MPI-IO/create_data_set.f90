@@ -74,7 +74,7 @@ CONTAINS
   PTMP  => FLL_MK('process_number','L', 1_LINT, 1_LINT, FPAR)
   PTMP%L0 = RANK+1
   IF(.NOT.FLL_MV(PTMP, PNODE, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -82,7 +82,7 @@ CONTAINS
 !
   PTMP  => FLL_MK('pressure','D', NNODES, 1_LINT, FPAR)
   IF(.NOT.FLL_MV(PTMP, PNODE, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -95,7 +95,7 @@ CONTAINS
 !
   PTMP  => FLL_MK('density','D',NNODES, 1_LINT, FPAR)
   IF(.NOT.FLL_MV(PTMP, PNODE, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !
@@ -108,7 +108,7 @@ CONTAINS
 !
   PTMP  => FLL_MK('velocity', 'D',NNODES, 3_LINT, FPAR)
   IF(.NOT.FLL_MV(PTMP, PNODE, FPAR))THEN
-        WRITE(*,*)' ERROR MOVING NODE'
+        WRITE(*,*)'ERROR MOVING NODE'
         STOP
       END IF
 !

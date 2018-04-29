@@ -156,7 +156,7 @@ CONTAINS
 !
    ALLOCATE(POS(NPROC+1), DISPL(NPROC+1), STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:159 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:159 '
         STOP
       END IF
 !
@@ -232,7 +232,7 @@ CONTAINS
 !
    DEALLOCATE(POS, DISPL, STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-        WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:235 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_write ERR:235 '
         STOP
       END IF
     

@@ -270,7 +270,7 @@ CONTAINS
       DO NNODES = 1,NDIM
         PNEW => READ_NODE(IOUNIT,FMT,POS,SCAN,FPAR)
         IF(.NOT.ASSOCIATED(PNEW))THEN
-          WRITE(*,*)' ERROR READING NODE'
+          WRITE(*,*)'ERROR READING NODE'
           STOP
         END IF
 !
@@ -278,7 +278,7 @@ CONTAINS
 !
         OK = FLL_MV(PNEW,PNODE,FPAR,LOC_ERRMSG)
         IF(.NOT.OK) THEN
-         WRITE(*,*)' ERROR MV'
+         WRITE(*,*)'ERROR MV'
          STOP
          END IF
 

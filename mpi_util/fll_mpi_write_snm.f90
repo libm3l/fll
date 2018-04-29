@@ -129,7 +129,7 @@ CONTAINS
 
           ALLOCATE(POS(NPROC+1), DISPL(NPROC+1), STAT = ISTAT)
           IF(ISTAT /= 0)THEN
-            WRITE(*,*)' ERROR ALLOCATING MEMORY ==> fll_mpi_write_snm ERR:132 '
+            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_write_snm ERR:132 '
             STOP
           END IF
 !
