@@ -22,14 +22,39 @@
 #SOFTWARE.
 # 
 #
-#  this is a modification of the original script of D Dickinson @https://github.com/ZedThree/fort_depend.py
+#  This is a modification of the original script of D Dickinson @https://github.com/ZedThree/fort_depend.py
 #  done by Adam Jirasek
-#  the modified version can be found @https://github.com/libm3l/fort_depend.py
+#  The modified version can be found @https://github.com/libm3l/fort_depend.py
 #
-#  this is a script which maked fortran project dependecies
-#  it is executed in each directory separately and creates a project.dep file with fortran dependencies
-#  if fortran source uses module from other directory the script will add the module too
-#  the project root directory is specified as an input parameter with an option -r  
+#  This is a script which makes fortran project dependecies
+#  Fortran project can have source files located in diffrent subdirectories
+#  where the common directory (project root directory)is specified as an input parameter with an option -r
+#  The script is executed in each directory separately and creates a project.dep file with fortran dependencies
+#  however, while searching modules it will loop over all subdirectories in project root directory
+#
+#  If user wants to specify the search for modules to selected set of subdirectories, 
+#  he/she can use --dep_dir followed by list of selected directories
+#
+#  If -r not specified, the script will use the current working directory and it will search
+#  for modules in this directory only.
+#
+#  List of all options is:
+#   -f --files Files to process
+#   -o --output Output file
+#   -v -vv -vvv Different level of verbosity contained in standard output
+#   -w --overwrite Overwrite output file without warning
+#   -r --root_dir Project root directory
+#   -d --dep_dir List of selected dependecy directories
+#
+#  For example of how the fortran dependency scritp can be used for larger project see
+#  FLL linked list utility at https://github.com/libm3l/fll
+#
+# History:
+# Version   Date       Author        Patch number  CLA  Comment
+# -------   --------   --------      ------------  ---  -------
+# 1.1       01/09/17   Adam Jirasek                     Rewrite original version
+#
+#
 #
 #
 import os
@@ -40,6 +65,8 @@ import os
 import sys
 from time import gmtime, strftime
 import getpass
+from datetime import datetime
+import time, sys
 
 #Definitions
 
@@ -59,6 +86,8 @@ def run(path,dep=None,ignore=None,files=None,verbose=None,overwrite=None,output=
       print("  ")
       print("\033[031m Making dependencies in \033[032m"+cwd+"\033[039m directory")
       print("  ")
+    else:
+      print("  ")
 #
 #  get files where to look for modules
 #  if list of preferred directories is specified in dep
@@ -68,7 +97,7 @@ def run(path,dep=None,ignore=None,files=None,verbose=None,overwrite=None,output=
 #  files paths is relative to projet root directory path so that if the compillation is done in different directory then
 #  where the source files are located, there are no any prolems with it
 #
-    ff=get_all_files(path=path, dep=dep) 
+    ff=get_all_files(path=path, dep=dep)
     
     if int(verbose) > 2:
       print(" ")
@@ -125,7 +154,8 @@ def write_depend(verbose,path,cwd,outfile="makefile.dep",dep=[],overwrite=False,
     username = getpass.getuser()
     f.write("#\n")
     f.write("#  Created by: "+username+"\n")
-    f.write("#  Date: "+strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
+#    f.write("#  Date: "+strftime("%Y-%m-%d %H:%M:%S", gmtime()) + "\n")
+    f.write("#  Date: "+ datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "\n")
     f.write("#\n")
 
     for i in dep.keys():
@@ -213,8 +243,12 @@ def get_all_files(path,dep):
 #
 #  list only files located in those
 #
+    files = 0
+
+
     if not(dep == None):
        dep.append(currdirr)
+
        for i in dep:
 #
 #   use basolute path to preferred directories ie.: os.path.abspath(i) 
@@ -225,6 +259,9 @@ def get_all_files(path,dep):
 #
                 for filename in filenames:
                     if filename.endswith(('.f', '.f90', '.F', '.F90')):
+#                       files = files + 1
+#                       status(files)
+
 ##                   matches.append(os.path.join(root, filename))
 ##
 ##    add specified dependency directory location (i) rather then aboslute path
@@ -259,6 +296,10 @@ def get_all_files(path,dep):
        
          for filename in filenames:
              if filename.endswith(('.f', '.f90', '.F', '.F90')):
+
+#                 files = files + 1
+#                 status(files)
+
  #                matches.append(os.path.join(root, filename))
  
                  if(root == currdirr):
@@ -284,12 +325,26 @@ def check_if_there(use,file):
 #   "return if you see module name"
 #    make routine to consider version of python installation
 #
+    list = ['use', 'program', 'end']
+
     if sys.version_info < (3,0):
       with open(file) as f:
         for line in f:
             if "module" in line.lower():
                 extrline = line.lower()
+#
+#  if line with module contains any of the list word
+#  do not cinsider this line
+#
+                if any(word in extrline for word in list):
+                    continue
+
                 extrline = extrline.replace("module", "",1)
+#
+#  check that module name on line line (extrline) 
+#  is the same as module name which we are looking fore (defined in USE)
+#  if yes, we found module, return
+#
                 if use.lower().strip() == extrline.strip():
                     f.close()
                     return 1
@@ -299,7 +354,19 @@ def check_if_there(use,file):
             for line in f:
               if "module" in line.lower():
                 extrline = line.lower()
+#
+#  if line with module contains any of the list word
+#  do not cinsider this line
+#
+                if any(word in extrline for word in list):
+                    continue
+
                 extrline = extrline.replace("module", "",1)
+#
+#  check that module name on line line (extrline) 
+#  is the same as module name which we are looking fore (defined in USE)
+#  if yes, we found module, return
+#
                 if use.lower().strip() == extrline.strip():
                     f.close()
                     return 1
@@ -321,7 +388,7 @@ def create_file_objs(verbose, files=None,  macros={}):
       print("\033[031m Searching modules for files:\033[039m")
       print(" ")
 
-
+    
     for i in files:
         source_file = file_obj()
 
@@ -429,10 +496,15 @@ def file_objs_to_mod_dict(file_objs=[]):
 def get_depends(ignore,verbose,cwd,fob=[],m2f=[], ffiles=[]):
     deps={}
     istat = 0
+    files = 0
 
     for i in fob:
         if int(verbose) > 1 :
           print("\033[031m Checking dependency for file: \033[032m"+i.file_name+"\033[039m")
+
+        else:
+          files = files + 1
+          status(files)
           
         tmp=[]
         for j in i.uses:
@@ -445,7 +517,7 @@ def get_depends(ignore,verbose,cwd,fob=[],m2f=[], ffiles=[]):
                 istat = 1
             except KeyError:
 #
-#  module is not, loop through all other files specified in ffiles
+#  module is not located in the same directory, loop through all other files specified in ffiles
 #  these are files found in function get_all_files
 #
                 for k in ffiles:
@@ -512,6 +584,14 @@ def get_relative_path_name(file,path,cwd):
         fil = "../"+fil
 
     return fil
+
+def status(i):
+     width = i
+     sys.stdout.write(u"\u001b[1000D") # Move left
+     if(status > 1):
+       sys.stdout.write(u"\u001b[" + str(0) + "A") # Move up
+
+     print "[" + "#" * width + " " * (25 - width) + "]"
 
 
 class file_obj:

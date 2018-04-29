@@ -52,7 +52,7 @@ SUBCLEAN=$(SUBDIRS)
 
 all: $(SUBDIRS:%=%.all)
 
-	ar rcs fll.a data_util/*.o
+	ar rcs fll.a data_util/*.o mpi_util/*.o
 
 	@echo '************************************************'
 	@echo '*'
@@ -69,7 +69,8 @@ init:
 	echo MPI_FC=YES >> config.mk
 	echo VERBOSE=-vvv >> config.mk
 
-data_util.all: 
+data_util.all:
+mpi_util.all: data_util.all
 test.all: data_util.all
 
 clean: $(SUBCLEAN:%=%.clean)
@@ -77,6 +78,6 @@ clean: $(SUBCLEAN:%=%.clean)
 depend: $(SUBDIRS:%=%.depend)
 
 install: $(SUBDIRS:%=%.all) $(SUBDIRS:%=%.install)
-	ar rcs fll.a data_util/*.o
+	ar rcs fll.a data_util/*.o mpi_util/*.o
 	mv fll.a $(lib_dir)/fll.a
 

@@ -236,25 +236,25 @@ CONTAINS
 !
 !   print headers
 !
-     WRITE(NDSTR,'(I8)')PNODE%NDIM
-     WRITE(NSSTR,'(I8)')PNODE%NSIZE
+     WRITE(NDSTR,'(I12)')PNODE%NDIM
+     WRITE(NSSTR,'(I12)')PNODE%NSIZE
 
      IF(COL_LOC == 'Y' .OR. COL_LOC == 'y')THEN
        IF(TRIM(PNODE%LTYPE) == 'DIR')THEN
          WRITE(TEXT1,'(A,A,A3,A,A,A,A,A,A,A,A,A16,A,A)')&
-          achar(27),"[31m-",TRIM(PNODE%LTYPE),"-     ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
-          achar(27),"[32m",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
+          achar(27),"[31m-",TRIM(PNODE%LTYPE),"-    ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
+          achar(27),"[32m   ",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
        ELSE IF(TRIM(PNODE%LTYPE) == 'N')THEN
          WRITE(TEXT1,'(A,A,A3,A,A,A,A,A,A,A,A,A16,A,A)')&
-          achar(27),"[31m-",TRIM(PNODE%LTYPE),"-     ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
-          achar(27),"[32m",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
+          achar(27),"[31m-",TRIM(PNODE%LTYPE),"-    ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
+          achar(27),"[32m   ",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
        ELSE IF(DIR == 0) THEN
          WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
-            "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,NAME
+            "-",TRIM(PNODE%LTYPE),"-   ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
          IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
           WRITE(IOUNIT, *)TRIM(TEXT1)
           RETURN
@@ -265,19 +265,19 @@ CONTAINS
 
        IF(TRIM(PNODE%LTYPE) == 'DIR')THEN
          WRITE(TEXT1,'(A,A3,A,A,A,A,A16)')&
-          "-",TRIM(PNODE%LTYPE),"-     ",(TRIM(NDSTR)),'/        ',&
+          "-",TRIM(PNODE%LTYPE),"-      ",(TRIM(NDSTR)),'/           ',&
           SPACE,ADJUSTL(PNODE%LNAME)
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
        ELSE IF(TRIM(PNODE%LTYPE) == 'N')THEN
          WRITE(TEXT1,'(A,A3,A,A,A,A,A16)')&
-          "-",TRIM(PNODE%LTYPE),"-     ",(TRIM(NDSTR)),'/        ',&
+          "-",TRIM(PNODE%LTYPE),"-      ",(TRIM(NDSTR)),'/           ',&
           SPACE,ADJUSTL(PNODE%LNAME)
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
        ELSE IF(DIR == 0) THEN
          WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
-            "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,NAME
+            "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
          IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
           WRITE(IOUNIT, *)TRIM(TEXT1)
           RETURN
