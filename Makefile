@@ -53,6 +53,7 @@ SUBCLEAN=$(SUBDIRS)
 all: $(SUBDIRS:%=%.all)
 
 	ar rcs fll.a data_util/*.o mpi_util/*.o
+	ar rcs libfll.a data_util/*.o mpi_util/*.o
 
 	@echo '************************************************'
 	@echo '*'
@@ -79,5 +80,7 @@ depend: $(SUBDIRS:%=%.depend)
 
 install: $(SUBDIRS:%=%.all) $(SUBDIRS:%=%.install)
 	ar rcs fll.a data_util/*.o mpi_util/*.o
+	ar rcs libfll.a data_util/*.o mpi_util/*.o
 	mv fll.a $(lib_dir)/fll.a
+	mv libfll.a $(lib_dir)/libfll.a
 
