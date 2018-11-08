@@ -591,7 +591,7 @@ def status(i):
      if(status > 1):
        sys.stdout.write(u"\u001b[" + str(0) + "A") # Move up
 
-     print "[" + "#" * width + " " * (25 - width) + "]"
+#     print "[" + "#" * width + " " * (25 - width) + "]"
 
 
 class file_obj:
