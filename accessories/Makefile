@@ -38,7 +38,9 @@ DEP_FILE=depend.mk
 #SUBDIRS= $(dir $(wildcard $(srcdir)/*))
 SUBDIRS= \
 	fll_cat\
-	fll_convert
+	fll_convert\
+	fll_ugrid2fll
+
 
 
 

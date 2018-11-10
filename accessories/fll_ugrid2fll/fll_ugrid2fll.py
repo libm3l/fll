@@ -91,7 +91,7 @@ if __name__ == "__main__":
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
     parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-e','--endian',nargs=1,help='endian fo input file')
-    parser.add_argument('-fe','--format_o',nargs=1,help='Format of the output file - ASCII, binary')
+    parser.add_argument('-fo','--format_o',nargs=1,help='Format of the output file - ASCII, binary')
 
 
     # Parse the command line arguments
@@ -107,7 +107,7 @@ if __name__ == "__main__":
 
     if not len(sys.argv) > 1:
         print("\nfll_convert - converts files\n")
-        print("usage: fll_convert.py [-h] [-i GRID_FILE] [-b BC_FILE]  [-o OUTPUT_FILE] [-fi FORMAT_I] \n [-fe FORMAT_O]\n")
+        print("usage: fll_convert.py [-h] [-i GRID_FILE] [-b BC_FILE]  [-o OUTPUT_FILE] [-fi FORMAT_I] \n [-fo FORMAT_O]\n")
         sys.exit()
 
     if not file:
