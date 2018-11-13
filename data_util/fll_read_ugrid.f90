@@ -242,9 +242,11 @@ CONTAINS
       IF(SURFID(I) == IBC) NTRIA = NTRIA + 1
     END DO
     NQUAD = 0
-    DO I=Number_of_Surf_Trias+1, Number_of_Surf_Quads
+    DO I=Number_of_Surf_Trias+1, Number_of_Surf_Trias+Number_of_Surf_Quads
       IF(SURFID(I) == IBC) NQUAD = NQUAD + 1
     END DO
+    
+    write(*,*)'BC statistics ', NTRIA,NQUAD
     
     IF(NTRIA > 0)THEN
       PELEM => FLL_MKDIR('bound_elem_group',FPAR)
