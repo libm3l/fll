@@ -1,3 +1,4 @@
+
 !
 !     Copyright (C) 2018  Adam Jirasek
 ! 
@@ -359,7 +360,7 @@ CONTAINS
     OK = FLL_MV(PTMP, PELEM,FPAR)
     VOLHEX => PTMP%L2
     PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
-    PTMP%S0 ='hexa'
+    PTMP%S0 ='hexa8'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Pents_6
