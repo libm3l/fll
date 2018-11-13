@@ -67,9 +67,9 @@ CONTAINS
 !
     type(dnode), pointer :: pgrid,pelem,pbound
     integer(lint) :: igrid,ngrid, nelem,ielem,nbound,ibound,ndim1,ndim2,&
-       i,nnodes,nunique,j
-    integer(lint), pointer :: nindex(:,:),iuniquenodes(:)
-    integer(lint), allocatable :: nindex_scaled(:,:)
+       i,nnodes,nunique
+    integer(lint), pointer :: nindex(:,:)
+    integer(lint), allocatable :: nindex_scaled(:,:),iuniquenodes(:)
     integer :: npart,iunit, istat
     real(rdouble), pointer :: coo(:,:)
     real(rsingle), allocatable :: coord(:)
@@ -140,7 +140,7 @@ CONTAINS
         buffer = 'part'
         write(iunit) buffer
         write(iunit)  npart
-        buffer= 'unspecified'
+        buffer= 'Volume'
         write(iunit) buffer
         buffer = 'coordinates'
         write(iunit) buffer
@@ -153,7 +153,8 @@ CONTAINS
              stop
           end if
                 
-        write(iunit) nnodes
+        tmpi = nnodes
+        write(iunit) tmpi
         coord = coo(:,1)
         write(iunit) (coord(i),i=1,nnodes)
         coord = coo(:,2)
@@ -225,11 +226,10 @@ CONTAINS
 !   write coordinates
 !
             npart = npart + 1
-            write(*,*)' NPART ', npart
             buffer = 'part'
             write(iunit) buffer
             write(iunit)  npart
-            buffer= 'unspecified'
+            buffer=bcname
             write(iunit) buffer
             buffer = 'coordinates'
             write(iunit) buffer
@@ -242,7 +242,7 @@ CONTAINS
          
             tmpi = nunique
             write(iunit) tmpi
-            
+
             do i=1,nunique
               coord(i) = coo(iuniquenodes(i),1)
             end do
@@ -273,9 +273,8 @@ CONTAINS
             end if
 !
 !  sync and renumber
-!
-            nindex_scaled = nindex
-            call renumber(iuniquenodes,nindex_scaled)
+!            
+            call renumber(iuniquenodes(1:nunique),nindex,nindex_scaled)
 !
 !  write mesh element
 !
@@ -312,8 +311,9 @@ end subroutine grid2ensight
 !
 !  lcoal parameters
 !
-   integer(lint) :: i,nunique,j
+   integer(lint) :: i,nunique,j,dim2
    
+    dim2 = size(iinodes, dim = 2, kind = lint)
     k = 1
     iuniquenodes(1) = iinodes(1,1)
 
@@ -322,7 +322,7 @@ end subroutine grid2ensight
 !
 !     if the number already exist check next
 !
-      do j=1,size(iinodes, dim = 2, kind = lint)
+      do j=1,dim2
         if (any( iuniquenodes(1:k) == iinodes(i,j) )) cycle
 !
 !     No match found so add it to the iuniquenodes
@@ -336,23 +336,27 @@ end subroutine grid2ensight
  
  
  
- subroutine renumber(iuniquenodes,nindex)
+ subroutine renumber(iuniquenodes,nindex,nindex_renum)
  
      use fll_mods_m
      implicit none
  
-     integer(lint), pointer ::  iuniquenodes(:)
-     integer(lint)  :: nindex(:,:)
-     integer(lint) :: j,k,l,k3,k4
+     integer(lint)  ::  iuniquenodes(:)
+     integer(lint)  :: nindex(:,:),nindex_renum(:,:)
+     integer(lint)  :: j,k,l,k3,k4
      
      k3 = size(nindex, dim = 1, kind = lint)
      k4 = size(nindex, dim = 2, kind = lint)
-
+     
+     nindex_renum = 1
      do l=1,k3
         do j = 1,k4
             do k=1,size(iuniquenodes, dim=1, kind = lint)
+ !               write(*,*)nindex(l,j), iuniquenodes(k)
                 if(nindex(l,j) == iuniquenodes(k))then
-                   nindex(l,j)=k
+ !                  write(*,*)nindex(l,j),k
+ !                  read(*,*)
+                   nindex_renum(l,j)=k
                    cycle
                  end if
              end do
