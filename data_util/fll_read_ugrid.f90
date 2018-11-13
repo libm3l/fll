@@ -229,13 +229,14 @@ CONTAINS
 !
   NBC =MAXVAL(SURFID)
   WRITE(*,*)' Number of boundary conditions is ', NBC
-  
+ 
   DO IBC=1,NBC
 
     PBC => FLL_MKDIR('boundary',FPAR)
     OK = FLL_MV(PBC,PREG,FPAR)
     PTMP => FLL_MK('boundary_name','S',1_LINT,1_LINT,FPAR)
     PTMP%S0 = CONDNAME(IBC)
+    write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
     OK = FLL_MV(PTMP,PBC,FPAR)
     NTRIA = 0
     DO I=1,Number_of_Surf_Trias
@@ -246,7 +247,8 @@ CONTAINS
       IF(SURFID(I) == IBC) NQUAD = NQUAD + 1
     END DO
     
-    write(*,*)'BC statistics ', NTRIA,NQUAD
+    write(*,*)'                                trias               quads'
+    write(*,*)'BC statistics :', NTRIA,NQUAD
     
     IF(NTRIA > 0)THEN
       PELEM => FLL_MKDIR('bound_elem_group',FPAR)
@@ -291,7 +293,7 @@ CONTAINS
 !  READ TET ELEMENTS
 !
   IF( Number_of_Vol_Tets > 0)THEN
-    WRITE(*,*)' Volume tetras'
+    WRITE(*,*)' Volume tetras: ',Number_of_Vol_Tets
     PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Tets, KIND=LINT),4_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
@@ -307,7 +309,7 @@ CONTAINS
 !  READ PENT ELEMENTS
 !
   IF( Number_of_Vol_Pents_5 > 0)THEN
-    WRITE(*,*)' Volume pentas'
+    WRITE(*,*)' Volume pentas: ',Number_of_Vol_Pents_5
     PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Pents_5, KIND=LINT),5_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
@@ -331,7 +333,7 @@ CONTAINS
 !  READ PENT6 ELEMENTS
 !
   IF( Number_of_Vol_Pents_6 > 0)THEN
-    WRITE(*,*)' Volume penta6'
+    WRITE(*,*)' Volume penta6: ',Number_of_Vol_Pents_6
     PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Pents_6, KIND=LINT),6_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
@@ -354,9 +356,9 @@ CONTAINS
 !
 !  READ HEX ELEMENTS
 !
-  IF( Number_of_Vol_Pents_6 > 0)THEN
-    WRITE(*,*)' Volume hexas'
-    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Pents_6, KIND=LINT),8_LINT,FPAR)
+  IF( Number_of_Vol_Hexs > 0)THEN
+    WRITE(*,*)' Volume hexas: ',Number_of_Vol_Hexs
+    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Hexs, KIND=LINT),8_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
     OK = FLL_MV(PTMP, PELEM,FPAR)
@@ -365,12 +367,12 @@ CONTAINS
     PTMP%S0 ='hexa8'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
-      DO I=1,Number_of_Vol_Pents_6
+      DO I=1,Number_of_Vol_Hexs
         READ(15)INDTMP8
  	VOLHEX(I,:) = INDTMP8
       END DO
     ELSE
-      DO I=1,Number_of_Vol_Pents_6
+      DO I=1,Number_of_Vol_Hexs
         READ(15,*)VOLHEX(I,:)
       END DO
     ENDIF
