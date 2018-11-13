@@ -40,7 +40,8 @@ SUBDIRS= \
 	fll_cat\
 	fll_convert\
 	fll_ugrid2fll\
-	fll2ensight
+	fll2ensight \
+	fll_ffa2fll
 
 
 ###########################################################################

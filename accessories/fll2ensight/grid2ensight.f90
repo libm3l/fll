@@ -155,7 +155,7 @@ CONTAINS
         nelem = fll_nnodes(pgrid,'element_group','*',-1_lint,.false.,fpar)
         if(nelem < 1)then
            write(*,*)'NOTE: Did not find any volume element information'
-           write(*,*)'check your mesh of specify -B (--bconly) option'
+           write(*,*)'check your mesh or specify -B (--bconly) option'
            write(*,*)' skipping writing volume elements ...'
         else
 
