@@ -65,11 +65,11 @@ CONTAINS
 !
 ! local paramaters
 !
-    type(dnode), pointer :: pgrid,pelem,pbound
+    type(dnode), pointer :: pgrid,pelem,pbound,ptmp
     integer(lint) :: igrid,ngrid, nelem,ielem,nbound,ibound,ndim1,ndim2,&
-       i,nnodes,nunique
-    integer(lint), pointer :: nindex(:,:)
-    integer(lint), allocatable :: nindex_scaled(:,:),iuniquenodes(:)
+       i,nnodes,nunique,j,totsize
+    integer(lint), pointer :: nindex(:,:),unique_ind(:)
+    integer(lint), allocatable :: nindex_scaled(:,:),tmparray(:), tmparray1(:)
     integer :: npart,iunit, istat
     real(rdouble), pointer :: coo(:,:)
     real(rsingle), allocatable :: coord(:)
@@ -77,6 +77,7 @@ CONTAINS
     character(80) :: buffer
     character(len=lstring_length) :: etype, bcname
     integer tmpi
+    logical :: ok
 !
 !  find number of grids
 !
@@ -203,7 +204,109 @@ CONTAINS
             stop
          end if 
 !
-!  loop over elements
+!  loop over element, serialize indexes in onedim array
+!
+         totsize = 0
+         do ielem = 1, nelem
+             pelem => fll_locate(pbound,'bound_elem_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
+             etype = fll_getndata_s0(pelem,'bound_elem_type', 1_lint, fpar)
+             nindex => fll_getndata_l2(pelem, 'bound_elem_nodes', 1_lint, fpar)
+             ndim1 = size(nindex, dim = 1, kind = lint)
+             ndim2 = size(nindex, dim = 2, kind = lint)
+             totsize = totsize + ndim1 * ndim2
+        end do
+        
+        allocate(tmparray(totsize), tmparray1(totsize), stat = istat)
+           if(istat /= 0)then
+               write(*,*)'ERROR ALLOCATING MEMORY'
+               stop
+           end if
+!
+!  fill the array
+!
+        totsize = 0
+
+        do ielem = 1, nelem
+             pelem => fll_locate(pbound,'bound_elem_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
+             etype = fll_getndata_s0(pelem,'bound_elem_type', 1_lint, fpar)
+             nindex => fll_getndata_l2(pelem, 'bound_elem_nodes', 1_lint, fpar)
+             ndim1 = size(nindex, dim = 1, kind = lint)
+             ndim2 = size(nindex, dim = 2, kind = lint)
+             do i = 1,ndim1
+                do j= 1,ndim2
+                   totsize = totsize + 1
+                   tmparray(totsize) = nindex(i,j)
+                 end do
+             end do
+        end do
+!
+!   find unique elements
+!
+       do i=1,size(tmparray)
+         write(8,*)tmparray(i)
+    end do
+
+        call unique(tmparray,tmparray1,nunique)
+        deallocate(tmparray, stat = istat)
+           if(istat /= 0)then
+               write(*,*)'ERROR DEALLOCATING MEMORY'
+               stop
+           end if
+!
+!   add temprarily this array to boundary
+!
+       ptmp => fll_mk('unique_ind_arr', 'L', nunique, 1_lint, fpar)
+       ok = fll_mv(ptmp, pbound, fpar)
+       unique_ind => ptmp%l1
+       unique_ind = tmparray1(1:nunique)
+       
+       deallocate(tmparray1, stat = istat)
+           if(istat /= 0)then
+               write(*,*)'ERROR DEALLOCATING MEMORY'
+               stop
+           end if
+!
+!  write coordinates
+!
+!
+!   write coordinates
+!
+       npart = npart + 1
+       buffer = 'part'
+       write(iunit) buffer
+       write(iunit)  npart
+       buffer=bcname
+       write(iunit) buffer
+       buffer = 'coordinates'
+       write(iunit) buffer
+        
+       allocate(coord(nunique), stat = istat)
+       if(istat /= 0)then
+           write(*,*)'ERROR ALLOCATING MEMORY'
+           stop
+       end if
+         
+       tmpi = nunique
+       write(iunit) tmpi
+       do i=1,nunique
+          coord(i) = coo(unique_ind(i),1)
+       end do
+       write(iunit) (coord(i),i=1,nunique)
+       do i=1,nunique
+          coord(i) = coo(unique_ind(i),2)
+       end do            
+       write(iunit) (coord(i),i=1,nunique)
+       do i=1,nunique
+          coord(i) = coo(unique_ind(i),3)
+       end do            
+       write(iunit) (coord(i),i=1,nunique)
+       deallocate(coord, stat = istat)
+         if(istat /= 0)then
+           write(*,*)'ERROR DEALLOCATING MEMORY'
+         stop
+       end if
+!
+!  loop over elements, sync element info with unique_ind array
 !
          belemloop: do ielem = 1, nelem
              pelem => fll_locate(pbound,'bound_elem_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
@@ -211,58 +314,6 @@ CONTAINS
              nindex => fll_getndata_l2(pelem, 'bound_elem_nodes', 1_lint, fpar)
              ndim1 = size(nindex, dim = 1, kind = lint)
              ndim2 = size(nindex, dim = 2, kind = lint)
-!
-!  find unique coordinates from element information
-!
-            allocate(iuniquenodes(ndim1*ndim2), stat = istat)
-            if(istat /= 0)then
-               write(*,*)'ERROR ALLOCATING MEMORY'
-               stop
-            end if
-            
-            call unique21(nindex,iuniquenodes, nunique)
-            write(*,*)' unique boundary nodes: ', nunique
-!
-!   write coordinates
-!
-            npart = npart + 1
-            buffer = 'part'
-            write(iunit) buffer
-            write(iunit)  npart
-            buffer=bcname
-            write(iunit) buffer
-            buffer = 'coordinates'
-            write(iunit) buffer
-        
-            allocate(coord(nunique), stat = istat)
-            if(istat /= 0)then
-               write(*,*)'ERROR ALLOCATING MEMORY'
-               stop
-            end if
-         
-            tmpi = nunique
-            write(iunit) tmpi
-
-            do i=1,nunique
-              coord(i) = coo(iuniquenodes(i),1)
-            end do
-            write(iunit) (coord(i),i=1,nunique)
-            
-            do i=1,nunique
-              coord(i) = coo(iuniquenodes(i),2)
-            end do            
-            write(iunit) (coord(i),i=1,nunique)
-            
-            do i=1,nunique
-              coord(i) = coo(iuniquenodes(i),3)
-            end do            
-            write(iunit) (coord(i),i=1,nunique)
-
-            deallocate(coord, stat = istat)
-              if(istat /= 0)then
-                write(*,*)'ERROR DEALLOCATING MEMORY'
-                stop
-              end if
 !
 !   write element information
 !
@@ -274,13 +325,13 @@ CONTAINS
 !
 !  sync and renumber
 !            
-            call renumber(iuniquenodes(1:nunique),nindex,nindex_scaled)
+            call renumber(unique_ind,nindex,nindex_scaled)
 !
 !  write mesh element
 !
             call mesh_element_info(iunit,nindex_scaled,etype)
             
-            deallocate(iuniquenodes, nindex_scaled,  stat = istat)
+            deallocate(nindex_scaled,  stat = istat)
                if(istat /= 0)then
                 write(*,*)'ERROR DEALLOCATING MEMORY'
                 stop
@@ -294,45 +345,41 @@ CONTAINS
 !
     close(iunit)
    
-end subroutine grid2ensight
-
-
-
-  subroutine unique21(iinodes,iuniquenodes,k)
+   end subroutine grid2ensight
+ 
+ 
+   subroutine unique(iinodes,iuniquenodes,k)
   
     use fll_mods_m
     implicit none
 !
 ! input/output parameters
 !
-    integer(lint), intent(in) :: iinodes(:,:)
+    integer(lint), intent(in) :: iinodes(:)
     integer(lint), intent(out) :: iuniquenodes(:)
     integer(lint) :: k
 !
 !  lcoal parameters
 !
-   integer(lint) :: i,nunique,j,dim2
+   integer(lint) :: i,nunique
    
-    dim2 = size(iinodes, dim = 2, kind = lint)
     k = 1
-    iuniquenodes(1) = iinodes(1,1)
+    iuniquenodes(1) = iinodes(1)
 
     nunique = size(iinodes, dim=1, kind = lint)
     do i=2,nunique
 !
 !     if the number already exist check next
 !
-      do j=1,dim2
-        if (any( iuniquenodes(1:k) == iinodes(i,j) )) cycle
+        if (any( iuniquenodes(1:k) == iinodes(i) )) cycle
 !
 !     No match found so add it to the iuniquenodes
 !
         k = k + 1
-        iuniquenodes(k) = iinodes(i,j)
-      end do
+        iuniquenodes(k) = iinodes(i)
     end do
     
- end subroutine unique21
+ end subroutine unique
  
  
  
@@ -352,10 +399,7 @@ end subroutine grid2ensight
      do l=1,k3
         do j = 1,k4
             do k=1,size(iuniquenodes, dim=1, kind = lint)
- !               write(*,*)nindex(l,j), iuniquenodes(k)
                 if(nindex(l,j) == iuniquenodes(k))then
- !                  write(*,*)nindex(l,j),k
- !                  read(*,*)
                    nindex_renum(l,j)=k
                    cycle
                  end if
