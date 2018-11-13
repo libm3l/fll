@@ -277,7 +277,7 @@ CONTAINS
       OK = FLL_MV(PTMP,PELEM,FPAR)
 
       ITMP = 0
-      DO I=Number_of_Surf_Trias+1, Number_of_Surf_Quads
+      DO I=Number_of_Surf_Trias+1, Number_of_Surf_Trias+Number_of_Surf_Quads
          IF(SURFID(I) == IBC) THEN
            ITMP = ITMP +1
            PTMP%L2(ITMP,:) = SIND4(I-Number_of_Surf_Trias,:)
