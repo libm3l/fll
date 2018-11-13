@@ -11,7 +11,7 @@ import ast
 
 #Definitions
 
-def run(file,filebc,fmt,ofile,fmto,endian,fm,infile):
+def run(file,filebc,fmt,ofile,endian,fm):
 #
 #  execute 
 #
@@ -23,7 +23,7 @@ def run(file,filebc,fmt,ofile,fmto,endian,fm,infile):
     path = check_path(path=path)
     cwd = check_path(path=cwd)
 
-    executable = path+"fund3d_export_interfaces.x"
+    executable = path+"fll2ensight.x"
 
     if not os.path.isfile(file):
       print("  ")
@@ -47,36 +47,25 @@ def run(file,filebc,fmt,ofile,fmto,endian,fm,infile):
     else:
        print("\033[039m Grid format file is: \033[032mFLL \033[039m")  
 
-    if not filebc:
-      print("\033[039m Specified bc input file is:  \033[032m"+filebc+"\033[039m")
-      filebc = "nofilespecified"
-
-    print("\033[039m Specified interface file is:  \033[032m"+infile+"\033[039m")
-
     print(" ")  
-    print("\033[039m Specified output file is:  \033[032m"+ofile+"\033[039m")
-
-    if fmto == 'b'  or fmto == 'B':
-      print("\033[039m Specified output file format is: \033[032mbinary\033[039m") 
-    else:
-      print("\033[039m Specified output file format is: \033[032mASCII \033[039m")  
+    print("\033[039m Specified output file is:  \033[032m"+ofile+"\033[039m") 
 
     if sys.version_info < (3,0):
       p = Popen([executable], stdin=PIPE) #NOTE: no shell=True here
-      p.communicate(os.linesep.join([file,fm,filebc,infile,fmt,ofile,fmto,endian]))
+      p.communicate(os.linesep.join([file,fm,filebc,fmt,endian,ofile]))
     else:
       p = Popen([executable], stdin=PIPE,universal_newlines=True) #NOTE: no shell=True here
-      p.communicate(os.linesep.join( [file,fm,filebc,infile,fmt,ofile,fmto,endian]))
+      p.communicate(os.linesep.join( [file,fm,filebc,fmt,endian,ofile]))
 
 def print_header():
      print("  ")
      print ("\033[031m************************************************************************************ \033[039m")
      print ("\033[031m                                                                                   \033[039m")
-     print ("\033[031m               \033[039m              fll_ugrid2fll   - v1.1       \033[031m                          \033[039m")
+     print ("\033[031m               \033[039m              fll2ensight   - v1.1       \033[031m                          \033[039m")
      print ("\033[031m                                                                                   \033[039m")
-     print ("\033[031m             \033[039m                 conversion utility  \033[031m                    \033[039m")
+     print ("\033[031m             \033[039m           export to ensight format utility  \033[031m                    \033[039m")
      print ("\033[031m                                                                                  \033[039m")
-     print ("\033[031m************************************************************************************ \033[039m")
+     print ("\033[031m*********************************************************ile=file,filebc=filebc, fmt=format_i, ofile=output, endian=endi, fm = fm*************************** \033[039m")
 
 
 def check_path(path):
@@ -95,12 +84,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='FLL configure script')
     parser.add_argument('-i','--gridfile',nargs=1,help='Input file')
     parser.add_argument('-b','--bcfile',nargs=1,help='Input file')
-    parser.add_argument('-I','--interface',nargs=1,help='Input file')
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
     parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-fm','--mesh_format',nargs=1,help='Format of the input file - ugrid or fll')
     parser.add_argument('-e','--endian',nargs=1,help='endian fo input file')
-    parser.add_argument('-fo','--format_o',nargs=1,help='Format of the output file - ASCII, binary')
 
     # Parse the command line arguments
     args = parser.parse_args()
@@ -109,15 +96,13 @@ if __name__ == "__main__":
     filebc = args.bcfile[0]   if args.bcfile else ""
     format_i = args.format_i[0] if args.format_i else None
     output = args.output_file[0] if args.output_file else None
-    formato = args.format_o[0] if args.format_o else None
     endi    = args.endian[0] if args.endian else None
     fm    = args.mesh_format[0] if args.mesh_format else None
-    intffile = args.interface[0] if args.interface else None
 
 
     if not len(sys.argv) > 1:
         print("\nfll_convert - converts files\n")
-        print("usage: fll_convert.py [-h] [-i GRID_FILE] [-b BC_FILE]  [-o OUTPUT_FILE] [-fi FORMAT_I] \n [-fo FORMAT_O]\n")
+        print("usage: fll_convert.py [-h] [-i GRID_FILE] [-b BC_FILE]  [-o OUTPUT_FILE] [-fi FORMAT_I] \n")
         sys.exit()
 
     if not file:
@@ -126,10 +111,6 @@ if __name__ == "__main__":
 
     if not fm:
         print ("\033[031mError: \033[039m format of input mesh file \033[031m -fm \033[039m")
-        sys.exit()
-
-    if not intffile:
-        print ("\033[031mError: \033[039m missing file with interfaces \033[031m -I \033[039m")
         sys.exit()
 
     if fm == 'ugrid':
@@ -143,9 +124,6 @@ if __name__ == "__main__":
         print ("\033[031m       \033[039m                        \033[032m b - binary format\033[039m")
         sys.exit()
 
-    if not formato:
-        formato='b'
-
     if not endi:
         endi='b'
 
@@ -154,4 +132,4 @@ if __name__ == "__main__":
         sys.exit()
 
 
-    run(file=file,filebc=filebc, fmt=format_i, ofile=output, fmto=formato, endian=endi, fm = fm, infile = intffile)
+    run(file=file,filebc=filebc, fmt=format_i, ofile=output, endian=endi, fm = fm)

@@ -37,9 +37,11 @@ SUBDIRS= \
 data_util\
 accessories\
 
+MPI_FC = $(MPI_COMPILER)
+
 ifneq ($(MPI_FC),)
 ifneq ($(MPIF),)
-  SUBDIRS+= mpi_util
+#  SUBDIRS+= mpi_util
 endif
 endif
 
@@ -52,8 +54,8 @@ SUBCLEAN=$(SUBDIRS)
 
 all: $(SUBDIRS:%=%.all)
 
-	ar rcs fll.a data_util/*.o mpi_util/*.o
-	ar rcs libfll.a data_util/*.o mpi_util/*.o
+	ar rcs fll.a data_util/*.o 
+	ar rcs libfll.a data_util/*.o 
 
 	@echo '************************************************'
 	@echo '*'
@@ -79,8 +81,8 @@ clean: $(SUBCLEAN:%=%.clean)
 depend: $(SUBDIRS:%=%.depend)
 
 install: $(SUBDIRS:%=%.all) $(SUBDIRS:%=%.install)
-	ar rcs fll.a data_util/*.o mpi_util/*.o
-	ar rcs libfll.a data_util/*.o mpi_util/*.o
+	ar rcs fll.a data_util/*.o 
+	ar rcs libfll.a data_util/*.o 
 	mv fll.a $(lib_dir)/fll.a
 	mv libfll.a $(lib_dir)/libfll.a
 

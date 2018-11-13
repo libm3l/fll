@@ -39,9 +39,8 @@ DEP_FILE=depend.mk
 SUBDIRS= \
 	fll_cat\
 	fll_convert\
-	fll_ugrid2fll
-
-
+	fll_ugrid2fll\
+	fll2ensight
 
 
 ###########################################################################

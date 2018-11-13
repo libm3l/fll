@@ -242,10 +242,6 @@ CONTAINS
 !
 !   find unique elements
 !
-       do i=1,size(tmparray)
-         write(8,*)tmparray(i)
-    end do
-
         call unique(tmparray,tmparray1,nunique)
         deallocate(tmparray, stat = istat)
            if(istat /= 0)then
