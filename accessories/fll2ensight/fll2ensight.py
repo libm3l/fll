@@ -11,7 +11,7 @@ import ast
 
 #Definitions
 
-def run(file,filebc,fmt,ofile,endian,fm):
+def run(file,filebc,fmt,ofile,endian,fm, bconly):
 #
 #  execute 
 #
@@ -48,14 +48,17 @@ def run(file,filebc,fmt,ofile,endian,fm):
        print("\033[039m Grid format file is: \033[032mFLL \033[039m")  
 
     print(" ")  
-    print("\033[039m Specified output file is:  \033[032m"+ofile+"\033[039m") 
+    print("\033[039m Specified ensight file name is:  \033[032m"+ofile+"\033[039m") 
+
+    if bconly == 'y':
+      print("\033[039m Exporting only boundaries \033[039m") 
 
     if sys.version_info < (3,0):
       p = Popen([executable], stdin=PIPE) #NOTE: no shell=True here
-      p.communicate(os.linesep.join([file,fm,filebc,fmt,endian,ofile]))
+      p.communicate(os.linesep.join([file,fm,filebc,fmt,endian,ofile,bconly]))
     else:
       p = Popen([executable], stdin=PIPE,universal_newlines=True) #NOTE: no shell=True here
-      p.communicate(os.linesep.join( [file,fm,filebc,fmt,endian,ofile]))
+      p.communicate(os.linesep.join( [file,fm,filebc,fmt,endian,ofile,bconly]))
 
 def print_header():
      print("  ")
@@ -65,7 +68,7 @@ def print_header():
      print ("\033[031m                                                                                   \033[039m")
      print ("\033[031m             \033[039m           export to ensight format utility  \033[031m                    \033[039m")
      print ("\033[031m                                                                                  \033[039m")
-     print ("\033[031m*********************************************************ile=file,filebc=filebc, fmt=format_i, ofile=output, endian=endi, fm = fm*************************** \033[039m")
+     print ("\033[031m************************************************************************************ \033[039m")
 
 
 def check_path(path):
@@ -88,6 +91,7 @@ if __name__ == "__main__":
     parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-fm','--mesh_format',nargs=1,help='Format of the input file - ugrid or fll')
     parser.add_argument('-e','--endian',nargs=1,help='endian fo input file')
+    parser.add_argument('-B','--bconly',action='store_true',help='export boundaries only',required=False)
 
     # Parse the command line arguments
     args = parser.parse_args()
@@ -98,6 +102,7 @@ if __name__ == "__main__":
     output = args.output_file[0] if args.output_file else None
     endi    = args.endian[0] if args.endian else None
     fm    = args.mesh_format[0] if args.mesh_format else None
+    be = args.bconly
 
 
     if not len(sys.argv) > 1:
@@ -124,6 +129,10 @@ if __name__ == "__main__":
         print ("\033[031m       \033[039m                        \033[032m b - binary format\033[039m")
         sys.exit()
 
+    bconly = 'n'
+    if be:
+        bconly='y'
+
     if not endi:
         endi='b'
 
@@ -132,4 +141,4 @@ if __name__ == "__main__":
         sys.exit()
 
 
-    run(file=file,filebc=filebc, fmt=format_i, ofile=output, endian=endi, fm = fm)
+    run(file=file,filebc=filebc, fmt=format_i, ofile=output, endian=endi, fm = fm, bconly = bconly)

@@ -70,12 +70,12 @@ CONTAINS
        i,nnodes,nunique,j,totsize
     integer(lint), pointer :: nindex(:,:),unique_ind(:)
     integer(lint), allocatable :: nindex_scaled(:,:),tmparray(:), tmparray1(:)
-    integer :: npart,iunit, istat
+    integer :: npart,iunit, istat, dims
     real(rdouble), pointer :: coo(:,:)
     real(rsingle), allocatable :: coord(:)
     character(len=lstring_length) :: fmsh
     character(80) :: buffer
-    character(len=lstring_length) :: etype, bcname
+    character(len=lstring_length) :: etype, bcname, volname
     integer tmpi
     logical :: ok
 !
@@ -127,9 +127,24 @@ CONTAINS
 
       pgrid => fll_locate(pglob,'grid','*',-1_lint,igrid,.false.,fpar,errmsg='ALL')
 !
+!   get volume name, if does not exist, set it to Volume
+!
+      volname = fll_getndata_s0(pgrid, 'grid_name', 1_lint, fpar, errmsg='NONE')
+      if(.not.fpar%success)then
+        write(*,*)' Did not find volume name, setting it to: Volume'
+        volname = 'Volume'
+      end if
+!
 !  get coordinates
 !
       coo => fll_getndata_d2(pgrid, 'coordinates', 1_lint, fpar)
+      if(size(coo, dim = 2) == 3)then
+        dims = 3
+      else if(size(coo, dim = 2) == 2)then
+        dims = 2
+      else
+        dims = 1
+      end if
 !
 !  if volume 
 !
@@ -137,49 +152,61 @@ CONTAINS
 !
 !  write coordinates 
 !
-        npart = npart + 1
-        buffer = 'part'
-        write(iunit) buffer
-        write(iunit)  npart
-        buffer= 'Volume'
-        write(iunit) buffer
-        buffer = 'coordinates'
-        write(iunit) buffer
-        
-        nnodes = size(coo, dim = 1) 
+        nelem = fll_nnodes(pgrid,'element_group','*',-1_lint,.false.,fpar)
+        if(nelem < 1)then
+           write(*,*)'NOTE: Did not find any volume element information'
+           write(*,*)'check your mesh of specify -B (--bconly) option'
+           write(*,*)' skipping writing volume elements ...'
+        else
 
-        allocate(coord(nnodes), stat = istat)
-          if(istat /= 0)then
-             write(*,*)'ERROR ALLOCATING MEMORY'
-             stop
-          end if
+          npart = npart + 1
+          buffer = 'part'
+          write(iunit) buffer
+          write(iunit)  npart
+          buffer = volname
+          write(iunit) buffer
+          buffer = 'coordinates'
+          write(iunit) buffer
+        
+          nnodes = size(coo, dim = 1) 
+
+          allocate(coord(nnodes), stat = istat)
+            if(istat /= 0)then
+               write(*,*)'ERROR ALLOCATING MEMORY'
+               stop
+            end if
                 
-        tmpi = nnodes
-        write(iunit) tmpi
-        coord = coo(:,1)
-        write(iunit) (coord(i),i=1,nnodes)
-        coord = coo(:,2)
-        write(iunit) (coord(i),i=1,nnodes)
-        coord = 0
-        write(iunit) (coord(i),i=1,nnodes)
-        
-
-        deallocate(coord, stat = istat)
-          if(istat /= 0)then
-            write(*,*)'ERROR DEALLOCATING MEMORY'
-            stop
+          tmpi = nnodes
+          write(iunit) tmpi
+          coord = coo(:,1)
+          write(iunit) (coord(i),i=1,nnodes)
+          if(dims > 1)then
+            coord = coo(:,2)
+            write(iunit) (coord(i),i=1,nnodes)
+    
+            if(dims > 2)then
+              coord = coo(:,3)
+              write(iunit) (coord(i),i=1,nnodes)
+            end if
           end if
+
+          deallocate(coord, stat = istat)
+            if(istat /= 0)then
+              write(*,*)'ERROR DEALLOCATING MEMORY'
+              stop
+            end if
 !
 !  write element info
-!
-        nelem = fll_nnodes(pgrid,'element_group','*',-1_lint,.false.,fpar)
-        
-        do ielem = 1,nelem
-          pelem => fll_locate(pgrid,'element_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
-          etype = fll_getndata_s0(pelem,'element_type', 1_lint, fpar)
-          nindex => fll_getndata_l2(pelem, 'element_nodes', 1_lint, fpar)
-          call mesh_element_info(iunit,nindex,etype)
-        end do        
+!       
+          do ielem = 1,nelem
+            pelem => fll_locate(pgrid,'element_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
+            etype = fll_getndata_s0(pelem,'element_type', 1_lint, fpar)
+            nindex => fll_getndata_l2(pelem, 'element_nodes', 1_lint, fpar)
+            call mesh_element_info(iunit,nindex,etype)
+          end do        
+
+        end if
+
       end if volume
 !
 !  write boundaries
@@ -257,10 +284,10 @@ CONTAINS
        unique_ind = tmparray1(1:nunique)
        
        deallocate(tmparray1, stat = istat)
-           if(istat /= 0)then
-               write(*,*)'ERROR DEALLOCATING MEMORY'
-               stop
-           end if
+         if(istat /= 0)then
+           write(*,*)'ERROR DEALLOCATING MEMORY'
+           stop
+         end if
 !
 !  write coordinates
 !
@@ -287,15 +314,22 @@ CONTAINS
        do i=1,nunique
           coord(i) = coo(unique_ind(i),1)
        end do
-       write(iunit) (coord(i),i=1,nunique)
-       do i=1,nunique
-          coord(i) = coo(unique_ind(i),2)
-       end do            
-       write(iunit) (coord(i),i=1,nunique)
-       do i=1,nunique
-          coord(i) = coo(unique_ind(i),3)
-       end do            
-       write(iunit) (coord(i),i=1,nunique)
+
+       if(dims > 1)then
+         write(iunit) (coord(i),i=1,nunique)
+         do i=1,nunique
+            coord(i) = coo(unique_ind(i),2)
+         end do            
+         write(iunit) (coord(i),i=1,nunique)
+
+         if(dims > 2)then
+           do i=1,nunique
+              coord(i) = coo(unique_ind(i),3)
+           end do            
+           write(iunit) (coord(i),i=1,nunique)
+         end if
+       end if
+
        deallocate(coord, stat = istat)
          if(istat /= 0)then
            write(*,*)'ERROR DEALLOCATING MEMORY'

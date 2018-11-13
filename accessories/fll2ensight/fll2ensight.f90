@@ -63,7 +63,7 @@
    character(len=file_name_length) :: file,outfile,filebc
    type(dnode), pointer  :: pglob
    type(func_data_set) :: fpar
-   character :: fmt, endian
+   character :: fmt, endian,bconly
    character(len=20) :: fformat
    logical :: vol
 !
@@ -75,9 +75,13 @@
     read(*,*)fmt                    ! mesh file format - a (ascii) or b (binary)
     read(*,*)endian              ! if ugrid, specify endian
     read(*,'(a1024)')outfile   ! root name of output files
+    read(*,*)bconly              ! if ugrid, specify endian
     
-    
-    vol = .false.
+    if(bconly == 'y')then
+      vol = .false.
+    else
+      vol = .true.
+    end if
 
     if(trim(fformat) == 'ugrid' .or. trim(fformat) == 'ugrid')then
 !
