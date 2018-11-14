@@ -48,6 +48,7 @@
     use fll_mods_m
     use fll_read_vgrid_m
     use vgrid2fll_m
+    use merge_boundaries_m
 
     implicit none
 !
@@ -88,7 +89,10 @@
    call fll_read_vgrid_mapbc(pnode,filemapbc)
    call fll_read_vgrid_bc(pnode,filbc)
    call fll_read_vgrid_cogsg(pnode, filecogsg)
-   call fll_cat(pnode, 6, .true., fpar)
+!
+!  merge boundaries
+!
+   call merge_boundaries(pnode)
 !
 !  convert some things between fll and ffa
 !

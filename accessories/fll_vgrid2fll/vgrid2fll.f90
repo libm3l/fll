@@ -149,64 +149,14 @@ contains
        end do
 
     end do
-   
+!
+!  remove odl cogsg data
+!
+    call fll_rm(pvgrid,fpar)
+!
+! merge boundaries with the same name
+!
+
   end subroutine vgrid2fll
-
-
-
-
-
-  subroutine realloc(a, c)
-    use fll_mods_m
-    implicit none
-!
-!***********************************************************************
-!
-!     function : reallocates 2 dimensional double array a
-!                so that new a = a + c
-!
-    real(rdouble), pointer, dimension(:,:) :: a
-    real(rdouble), intent(in) :: c(:,:)
-
-    real(rdouble), allocatable :: b(:,:)
-
-    integer :: istat
-    integer(lint) :: sizea,sizeb
-    
-    sizea = size(a,dim=1,kind=lint) + size(c,dim=1,kind=lint)
-    sizeb = size(a,dim=2,kind=lint)
-
-
-    allocate(b(size(a,dim=1,kind=lint), sizeb), stat = istat)
-    if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY'
-      stop
-    end if
-
-    b = a
-
-    deallocate(a, stat = istat)
-    if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY  '
-      stop
-    end if
-
-    allocate(a(sizea,sizeb), stat = istat)
-    if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY  '
-      stop
-    end if
-
-    a(1:size(b,dim=1,kind=lint),:) = b
-        a(size(b,dim=1,kind=lint)+1:,:) = c
-
-    deallocate(b, stat = istat)
-    if(istat /= 0)then
-      write(*,*)'ERROR DEALLOCATING MEMORY '
-      stop
-    end if
-
-  end subroutine realloc
-   
 
 end module vgrid2fll_m
