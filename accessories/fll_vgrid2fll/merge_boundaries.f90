@@ -61,7 +61,7 @@ contains
 !
 ! local paramaters
 !
-    type(dnode), pointer :: pgrid,pelem,pcogsg,pvgrid,&
+    type(dnode), pointer :: pcogsg,pvgrid,&
        pbc, pmapbc, ptmp
     type(func_data_set) :: fpar
     logical :: ok
@@ -72,12 +72,7 @@ contains
     integer(lint), allocatable :: newpatchn(:)
     character(len=lstring_length), allocatable :: newbc(:)
 !
-!   loop over grids
-!
-    pgrid => fll_mkdir('grid', fpar)
-    ok = fll_mv(pgrid, pglob, fpar)
-!
-!  find coordinates and move the to grid
+!  find pointers to cogsg data
 !
     pvgrid => fll_locate(pglob,'Vgrid','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
     pcogsg => fll_locate(pvgrid,'Cogsg','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
