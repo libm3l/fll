@@ -47,6 +47,8 @@
 
     use fll_mods_m
     use fll_read_vgrid_m
+    use vgrid2fll_m
+
     implicit none
 !
 ! description: conversion utility
@@ -90,7 +92,7 @@
 !
 !  convert some things between fll and ffa
 !
-
+   call vgrid2fll(pnode)
 !
 !  save mesh
 !

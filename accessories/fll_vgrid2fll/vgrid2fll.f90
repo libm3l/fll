@@ -43,11 +43,11 @@
 !     Description
 !
 !
-module ffa2fll_m
+module vgrid2fll_m
 
 contains
 
-  subroutine ffa2fll(pglob)
+  subroutine vgrid2fll(pglob)
 !
 !  reads ugrid file
 !
@@ -61,49 +61,152 @@ contains
 !
 ! local paramaters
 !
-    type(dnode), pointer :: pgrid,pbound,pelem
+    type(dnode), pointer :: pgrid,pbound,pelem,ptmp,pcogsg,pvgrid,&
+       pbc, pmapbc,pbgroupd
     type(func_data_set) :: fpar
-
-    integer(lint) :: igrid, ngrid,ibound, nbound, ielem,nelem
+    logical :: ok
+    character(len=lstring_length), pointer :: family(:)
+    integer(lint), pointer :: patch(:), bcpatch(:),bcnode(:,:)
+    integer(lint) :: ibound, nbound,ipatch,nelems,i
 !
 !   loop over grids
 !
-    pglob%ltype='DIR'
-    ngrid = fll_nnodes(pglob,'region','*',-1_lint,.false.,fpar)
+    pgrid => fll_mkdir('grid', fpar)
+    ok = fll_mv(pgrid, pglob, fpar)
 !
-!  loop over grids
+!  find coordinates and move the to grid
 !
-    loop_grid: do igrid = 1,ngrid 
+    pvgrid => fll_locate(pglob,'Vgrid','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+    pcogsg => fll_locate(pvgrid,'Cogsg','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+    
+    ptmp => fll_locate(pcogsg,'coordinates','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+    ok = fll_mv(ptmp, pgrid, fpar)
+!
+!  save volume elements in grid
+!
+    pelem => fll_mkdir('element_group',fpar)
+    ok = fll_mv(pelem, pgrid, fpar)
+    
+    ptmp => fll_mk('element_type','S',1_lint,1_lint,fpar)
+    ok = fll_mv(ptmp, pelem, fpar)
+    ptmp%s0 = 'tetra4'
+    
+    ptmp => fll_locate(pcogsg,'nodes','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+    ok = fll_mv(ptmp, pelem, fpar)
+    ptmp%lname = 'element_nodes'
+!
+!  do boundary conditions
+!
+    pmapbc => fll_locate(pvgrid,'Mapbc','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+    pbc        => fll_locate(pvgrid,'Bc','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+!
+!  find name of boundary conditions and their associate path number
+!
+    family => fll_getndata_s1(pmapbc, 'Family', 1_lint, fpar)
+    patch  => fll_getndata_l1(pmapbc, 'patch', 1_lint, fpar)
+!
+!  gat patch array and BC element from Bc
+!
+    bcpatch  => fll_getndata_l1(pbc, 'patch', 1_lint, fpar)
+    bcnode   => fll_getndata_l2(pbc, 'node', 1_lint, fpar)
+!
+!  loop over family and create boundary 
+!
+    nbound = size(family, kind = lint)
+    do ibound = 1,nbound
+    
+       pbound => fll_mkdir('boundary', fpar)
+       ok = fll_mv(pbound, pgrid, fpar)
+       
+       ptmp => fll_mk('boundary_name','S',1_lint,1_lint,fpar)
+       ptmp%s0 = family(ibound)
+       ok = fll_mv(ptmp,pbound, fpar)
+       
+       pbgroupd => fll_mkdir('bound_elem_group', fpar)
+       ok = fll_mv(pbgroupd,pbound, fpar)
+       
+       ptmp => fll_mk('bound_elem_type','S',1_lint,1_lint,fpar)
+       ptmp%s0 = 'tria3'
+       ok = fll_mv(ptmp,pbgroupd, fpar)
+!
+!  identify elements belonging to this patch
+!
+       ipatch = patch(ibound)
+       nelems = 0
+       do i=1,size(bcpatch,dim=1,kind = lint)
+           if(bcpatch(i) == ipatch) nelems = nelems + 1
+       end do 
+       
+       ptmp => fll_mk('bound_elem_nodes','L',nelems,3_lint,fpar)
+       ok = fll_mv(ptmp,pbgroupd, fpar)
 
-      pgrid => fll_locate(pglob,'region','*',-1_lint,igrid,.false.,fpar,errmsg='ALL')
-      pgrid%lname='grid'
-      pgrid%ltype='DIR'
+       nelems = 0
+       do i=1,size(bcpatch,dim=1,kind = lint)
+           if(bcpatch(i) == ipatch) then
+              nelems = nelems + 1
+              ptmp%l2(nelems,:) = bcnode(i,:)
+           end if
+       end do
 
-      nbound = fll_nnodes(pgrid,'boundary','*',-1_lint,.false.,fpar)
-
-      do ibound = 1,nbound
-
-        pbound => fll_locate(pgrid,'boundary','*',-1_lint,ibound,.false.,fpar,errmsg='ALL')
-        pbound%ltype='DIR'
-        nelem = fll_nnodes(pbound,'belem_group','*',-1_lint,.false.,fpar)
-        do ielem = 1,nelem
-          pelem => fll_locate(pbound,'belem_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
-          pelem%ltype='DIR'
-          pelem%lname = 'bound_elem_group'
-        end do
-
-      end do
-
-      nbound = fll_nnodes(pgrid,'element_group','*',-1_lint,.false.,fpar)
-      do ibound = 1,nbound
-        pelem => fll_locate(pgrid,'element_group','*',-1_lint,ibound,.false.,fpar,errmsg='ALL')
-        pelem%ltype='DIR'
-      end do
-
-    end do loop_grid
-
+    end do
    
-end subroutine ffa2fll
+  end subroutine vgrid2fll
+
+
+
+
+
+  subroutine realloc(a, c)
+    use fll_mods_m
+    implicit none
+!
+!***********************************************************************
+!
+!     function : reallocates 2 dimensional double array a
+!                so that new a = a + c
+!
+    real(rdouble), pointer, dimension(:,:) :: a
+    real(rdouble), intent(in) :: c(:,:)
+
+    real(rdouble), allocatable :: b(:,:)
+
+    integer :: istat
+    integer(lint) :: sizea,sizeb
+    
+    sizea = size(a,dim=1,kind=lint) + size(c,dim=1,kind=lint)
+    sizeb = size(a,dim=2,kind=lint)
+
+
+    allocate(b(size(a,dim=1,kind=lint), sizeb), stat = istat)
+    if(istat /= 0)then
+      write(*,*)'ERROR ALLOCATING MEMORY'
+      stop
+    end if
+
+    b = a
+
+    deallocate(a, stat = istat)
+    if(istat /= 0)then
+      write(*,*)'ERROR ALLOCATING MEMORY  '
+      stop
+    end if
+
+    allocate(a(sizea,sizeb), stat = istat)
+    if(istat /= 0)then
+      write(*,*)'ERROR ALLOCATING MEMORY  '
+      stop
+    end if
+
+    a(1:size(b,dim=1,kind=lint),:) = b
+        a(size(b,dim=1,kind=lint)+1:,:) = c
+
+    deallocate(b, stat = istat)
+    if(istat /= 0)then
+      write(*,*)'ERROR DEALLOCATING MEMORY '
+      stop
+    end if
+
+  end subroutine realloc
    
 
-end module ffa2fll_m
+end module vgrid2fll_m
