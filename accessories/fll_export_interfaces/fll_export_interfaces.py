@@ -23,7 +23,7 @@ def run(file,filebc,fmt,ofile,fmto,endian,fm,infile):
     path = check_path(path=path)
     cwd = check_path(path=cwd)
 
-    executable = path+"fun3d_export_interfaces.x"
+    executable = path+"fll_export_interfaces.x"
 
     if not os.path.isfile(file):
       print("  ")
@@ -72,7 +72,7 @@ def print_header():
      print("  ")
      print ("\033[031m************************************************************************************ \033[039m")
      print ("\033[031m                                                                                   \033[039m")
-     print ("\033[031m               \033[039m              fun3d_export_interfaces   - v1.1       \033[031m                          \033[039m")
+     print ("\033[031m               \033[039m              fll_export_interfaces   - v1.1       \033[031m                          \033[039m")
      print ("\033[031m                                                                                   \033[039m")
      print ("\033[031m             \033[039m              Fun3D interfaces export utility  \033[031m                    \033[039m")
      print ("\033[031m                                                                                  \033[039m")
@@ -116,8 +116,8 @@ if __name__ == "__main__":
 
 
     if not len(sys.argv) > 1:
-        print("\nfun3d_export_interfaces - export interfaces for Fun3D\n")
-        print("usage: nfun3d_export_interfaces.py [-h] [-i GRID_FILE]  [-fm INPUT_MESH_TYPE] [-f INPUT_MESH_FORMAT(a-ASCII, b-binary)]  [-b BC_FILE (for UGRID option)] \n  [-e ENDIAN_OF_UGRID_MESH_FILE (for UGRID option)] [-I INTERFACE_FILE_SPEC] [-o OUTPUT_FILE] [-fo FORMAT_O]\n")
+        print("\nfll_export_interfaces - export interfaces for Fun3D\n")
+        print("usage: nfll_export_interfaces.py [-h] [-i GRID_FILE]  [-fm INPUT_MESH_TYPE] [-f INPUT_MESH_FORMAT(a-ASCII, b-binary)]  [-b BC_FILE (for UGRID option)] \n  [-e ENDIAN_OF_UGRID_MESH_FILE (for UGRID option)] [-I INTERFACE_FILE_SPEC] [-o OUTPUT_FILE] [-fo FORMAT_O]\n")
         sys.exit()
 
     if not file:

@@ -29,7 +29,7 @@
 #
 #
 
-EXE    = fun3d_export_interfaces
+EXE    = fll_export_interfaces
 
 include src_dir_path.mk
 include ../../config.mk

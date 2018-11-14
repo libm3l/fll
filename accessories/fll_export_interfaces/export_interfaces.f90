@@ -50,7 +50,7 @@ CONTAINS
       pglobab,ptmp,pglbc,pbelem,pintfgrid,puniq,pnbc,pcopy
     type(func_data_set) :: fpar
     integer(lint) :: intf, nintf, igrid, ngrid, ibc,nbc, igbc,ngbc,&
-       ibelem, nbcelem,tmpind,k3,k4,i,j,l
+       ibelem, nbcelem,tmpind,k3,k4,i,j,l,k
     integer :: istat
     integer(lint), pointer :: bcind(:,:), bctria3(:,:), bcquad4(:,:),&
         bcuniqueu4(:),bcuniqueu3(:),bcuniqueutmp(:),bcunique(:)
@@ -240,7 +240,7 @@ CONTAINS
 !
         call unique(bcuniqueutmp, bcunique, tmpind)
 !
-!       save unique array of globa indexes
+!       save unique array of global indexes
 !
          puniq => fll_mk('unique-global', 'L', tmpind, 1_lint, fpar)
          puniq%l1 = bcuniqueutmp
@@ -286,13 +286,19 @@ CONTAINS
 !
 !  sort punique array
 !
-            call sort(puniq%l1)  
+!            call sort(puniq%l1) 
 !
 !  renumber
 ! 
             do l=1,k3
                do j = 1,k4
-                  tmparray(l,j) = arrindex(puniq%l1,ptmp%l2(l,j))
+                 do k=1, size(puniq%l1)
+!                  tmparray(l,j) = arrindex(puniq%l1,ptmp%l2(l,j))
+                   if(ptmp%l2(l,j) == puniq%l1(k))then
+                     tmparray(l,j) = k
+                     cycle
+                   end if
+                  end do
                end do
             end do
             
