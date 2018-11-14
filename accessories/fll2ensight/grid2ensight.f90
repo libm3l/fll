@@ -53,6 +53,7 @@ CONTAINS
 !
     use fll_mods_m
     use mesh_element_info_m
+    use fast_arr_ops_m
 
     implicit none
 ! 
@@ -282,12 +283,16 @@ CONTAINS
        ok = fll_mv(ptmp, pbound, fpar)
        unique_ind => ptmp%l1
        unique_ind = tmparray1(1:nunique)
-       
+
        deallocate(tmparray1, stat = istat)
          if(istat /= 0)then
            write(*,*)'ERROR DEALLOCATING MEMORY'
            stop
          end if
+!
+!  sort unique array
+!
+       call sort(unique_ind)
 !
 !  write coordinates
 !
@@ -353,7 +358,7 @@ CONTAINS
                stop
             end if
 !
-!  sync and renumber
+!  sync nindex with unique_ind and renumber
 !            
             call renumber(unique_ind,nindex,nindex_scaled)
 !
@@ -416,28 +421,24 @@ CONTAINS
  subroutine renumber(iuniquenodes,nindex,nindex_renum)
  
      use fll_mods_m
+     use fast_arr_ops_m
      implicit none
  
-     integer(lint)  ::  iuniquenodes(:)
+     integer(lint)  :: iuniquenodes(:)
      integer(lint)  :: nindex(:,:),nindex_renum(:,:)
      integer(lint)  :: j,k,l,k3,k4
      
      k3 = size(nindex, dim = 1, kind = lint)
      k4 = size(nindex, dim = 2, kind = lint)
-     
+
      nindex_renum = 1
      do l=1,k3
-        do j = 1,k4
-            do k=1,size(iuniquenodes, dim=1, kind = lint)
-                if(nindex(l,j) == iuniquenodes(k))then
-                   nindex_renum(l,j)=k
-                   cycle
-                 end if
-             end do
-          end do
+       do j = 1,k4
+         nindex_renum(l,j)=arrindex(iuniquenodes,nindex(l,j))
        end do
+     end do
        
-       return
+     return
             
  end subroutine renumber
             
