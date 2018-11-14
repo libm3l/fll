@@ -63,27 +63,22 @@
 !
 ! external modules used
 !
-   character(len=file_name_length) file,outfile,filemapbc,filbc,filecogsg
+   character(len=file_name_length) outfile,filemapbc,filbc,filecogsg
    type(dnode), pointer  :: pnode
    type(func_data_set) :: fpar
-   character :: fmt, fmto
+   character :: fmto
    logical :: ok
 !
 !  read a file and save it
 !
-!   read(*,'(a1024)')file
-!   read(*,*)fmt 
-!   read(*,'(a1024)')outfile
-!   read(*,*)fmto  
+   read(*,'(a1024)')filecogsg
+   read(*,'(a1024)')filemapbc
+   read(*,'(a1024)')filbc
+   read(*,'(a1024)')outfile
+   read(*,*)fmto  
 !
-!  read ffa mesh
+!  read vgrid mesh
 !
-   filemapbc = 'wing-445.6.mapbc'
-   filbc = 'wing-445.6.bc'
-   filecogsg = 'wing-445.6.cogsg'
-   fmto = 'b'
-   outfile = 'wing-445.6.fll'
-
    pnode => fll_mkdir('pglob', fpar)
 
    call fll_read_vgrid_mapbc(pnode,filemapbc)
