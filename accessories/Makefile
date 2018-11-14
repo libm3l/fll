@@ -42,7 +42,8 @@ SUBDIRS= \
 	fll_ugrid2fll\
 	fll2ensight \
 	fll_ffa2fll \
-	fll_vgrid2fll
+	fll_vgrid2fll\
+	fll_export_interfaces
 
 
 ###########################################################################
