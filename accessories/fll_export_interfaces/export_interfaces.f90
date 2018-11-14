@@ -240,6 +240,10 @@ CONTAINS
 !
         call unique(bcuniqueutmp, bcunique, tmpind)
 !
+!  sort punique array
+!
+        call sort(bcuniqueutmp) 
+!
 !       save unique array of global indexes
 !
          puniq => fll_mk('unique-global', 'L', tmpind, 1_lint, fpar)
@@ -284,21 +288,17 @@ CONTAINS
             allocate(tmparray(k3,k4))
             tmparray = 0
 !
-!  sort punique array
-!
-!            call sort(puniq%l1) 
-!
 !  renumber
 ! 
             do l=1,k3
                do j = 1,k4
-                 do k=1, size(puniq%l1)
-!                  tmparray(l,j) = arrindex(puniq%l1,ptmp%l2(l,j))
-                   if(ptmp%l2(l,j) == puniq%l1(k))then
-                     tmparray(l,j) = k
-                     cycle
-                   end if
-                  end do
+!                 do k=1, size(puniq%l1)
+                  tmparray(l,j) = arrindex(puniq%l1,ptmp%l2(l,j))
+!                   if(ptmp%l2(l,j) == puniq%l1(k))then
+!                     tmparray(l,j) = k
+!                     cycle
+!                   end if
+!                  end do
                end do
             end do
             
