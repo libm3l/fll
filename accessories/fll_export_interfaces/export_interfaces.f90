@@ -1,30 +1,48 @@
 !
-!------------------------------------------------------------------------------
-! NASA/LaRC, Computational Aerosciences Branch, D302
-!------------------------------------------------------------------------------
+!     Copyright (C) 2016  Adam Jirasek
+! 
+!     This program is free software: you can redistribute it and/or modify
+!     it under the terms of the GNU Lesser General Public License as published by
+!     the Free Software Foundation, either version 3 of the License, or
+!     (at your option) any later version.
+! 
+!     This program is distributed in the hope that it will be useful,
+!     but WITHOUT ANY WARRANTY; without even the implied warranty of
+!     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+!     GNU Lesser General Public License for more details.
+! 
+!     You should have received a copy of the GNU Lesser General Public License
+!     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+!     
+!     contact: libm3l@gmail.com
+! 
 !
-! MODULE: fun3d_export_interface
+
 !
-!> @author
-!> Adam Jirasek / Jirasek Technology LLC / USAFA
-!> Date: 10/11/2018
+!     Sample program
 !
-!> Copyright (C) 2018  Jirasek Technology LLC
-!> 
+!     Date: 2016-10-10
+! 
+! 
 !
-! DESCRIPTION:
-!> Export interface mesh
-!>
-!> External dependencies
-!>
-!> this module uses fll library which is available at github.com/libm3l/fll
-!> and is LGPL library. The basic type is type(dnode), pointer
-!> Modules using this library need to add line
-!>
-!> use fll_mods_m
 !
-! REVISION HISTORY:
-!------------------------------------------------------------------------------
+!     Description: prints file on screen
+!
+!
+!     Input parameters:
+! 
+!
+!     Return value:
+! 
+! 
+!
+!     Modifications:
+!     Date		Version		Patch number		CLA 
+!
+!
+!     Description
+!
+!
 MODULE EXPORT_INTERFACES_M
 
 CONTAINS
