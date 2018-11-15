@@ -296,9 +296,6 @@ CONTAINS
 !
 !  write coordinates
 !
-!
-!   write coordinates
-!
        npart = npart + 1
        buffer = 'part'
        write(iunit) buffer
@@ -381,41 +378,6 @@ CONTAINS
     close(iunit)
    
    end subroutine grid2ensight
- 
- 
-   subroutine unique(iinodes,iuniquenodes,k)
-  
-    use fll_mods_m
-    implicit none
-!
-! input/output parameters
-!
-    integer(lint), intent(in) :: iinodes(:)
-    integer(lint), intent(out) :: iuniquenodes(:)
-    integer(lint) :: k
-!
-!  lcoal parameters
-!
-   integer(lint) :: i,nunique
-   
-    k = 1
-    iuniquenodes(1) = iinodes(1)
-
-    nunique = size(iinodes, dim=1, kind = lint)
-    do i=2,nunique
-!
-!     if the number already exist check next
-!
-        if (any( iuniquenodes(1:k) == iinodes(i) )) cycle
-!
-!     No match found so add it to the iuniquenodes
-!
-        k = k + 1
-        iuniquenodes(k) = iinodes(i)
-    end do
-    
- end subroutine unique
- 
  
  
  subroutine renumber(iuniquenodes,nindex,nindex_renum)

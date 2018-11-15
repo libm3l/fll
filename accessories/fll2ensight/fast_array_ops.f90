@@ -160,6 +160,40 @@ module fast_arr_ops_m
     return
 
   end function arrindex
+  
+  
+   subroutine unique(iinodes,iuniquenodes,k)
+!
+!  requires sorted array, then just simply compares following values
+!  https://stackoverflow.com/questions/3350641/array-remove-duplicate-elements
+!
+    use fll_mods_m
+    implicit none
+!
+! input/output parameters
+!
+    integer(lint), intent(in) :: iinodes(:)
+    integer(lint), intent(out) :: iuniquenodes(:)
+    integer(lint) :: k
+!
+!  lcoal parameters
+!
+   integer(lint) :: i,nunique,n,ind,lastind
+   iuniquenodes = iinodes
+
+   k  = 1
+   lastind = iuniquenodes(1)
+
+   do n=2,size(iuniquenodes, dim=1, kind = lint)
+      ind = iuniquenodes(n)
+      if(ind == lastind) cycle
+      k = k+1
+      iuniquenodes(k)= ind
+      lastind  = ind
+   end do
+    
+ end subroutine unique
+ 
 
 end module fast_arr_ops_m
 
