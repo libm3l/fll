@@ -128,14 +128,6 @@ CONTAINS
 
       pgrid => fll_locate(pglob,'grid','*',-1_lint,igrid,.false.,fpar,errmsg='ALL')
 !
-!   get volume name, if does not exist, set it to Volume
-!
-      volname = fll_getndata_s0(pgrid, 'grid_name', 1_lint, fpar, errmsg='NONE')
-      if(.not.fpar%success)then
-        write(*,*)' Did not find volume name, setting it to: Volume'
-        volname = 'Volume'
-      end if
-!
 !  get coordinates
 !
       coo => fll_getndata_d2(pgrid, 'coordinates', 1_lint, fpar)
@@ -159,6 +151,14 @@ CONTAINS
            write(*,*)'check your mesh or specify -B (--bconly) option'
            write(*,*)' skipping writing volume elements ...'
         else
+!
+!   get volume name, if does not exist, set it to Volume
+!
+          volname = fll_getndata_s0(pgrid, 'grid_name', 1_lint, fpar, errmsg='NONE')
+          if(.not.fpar%success)then
+            write(*,*)'Did not find volume name, setting it to: Volume'
+            volname = 'Volume'
+          end if
 
           npart = npart + 1
           buffer = 'part'
