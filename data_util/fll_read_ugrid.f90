@@ -48,7 +48,7 @@ MODULE FLL_READ_UGRID_M
 
 CONTAINS
 
-  FUNCTION  FLL_READ_UGRID(NAME, FILEBC, FMT,ENDIAN) RESULT(PFLL)
+  FUNCTION  FLL_READ_UGRID(NAME, FMT,ENDIAN, FILEBC) RESULT(PFLL)
 !
 !  READS UGRID FILE
 !
@@ -62,8 +62,9 @@ CONTAINS
 ! INPUT/OUTPUT DATA
 !
     TYPE(DNODE), POINTER :: PFLL
-    CHARACTER(LEN=*) :: NAME, FILEBC
-    CHARACTER :: FMT,ENDIAN
+    CHARACTER(LEN=*) :: NAME
+    CHARACTER :: FMT, ENDIAN
+    CHARACTER(LEN=*),OPTIONAL :: FILEBC
 !
 ! LOCAL PARAMATERS
 !
@@ -81,6 +82,7 @@ CONTAINS
         INDTMP8(8)
     LOGICAL :: OK
     CHARACTER(LEN=LSTRING_LENGTH), ALLOCATABLE :: CONDNAME(:)
+    CHARACTER(LEN = LSTRING_LENGTH) :: BCNAME, STR
     INTEGER, ALLOCATABLE :: BCTYPE(:)
     LOGICAL :: BIN
     
@@ -88,21 +90,20 @@ CONTAINS
 !
 !  READ BC NAMES
 !
-   OPEN(15, FILE=FILEBC)
-   READ(15,*)NBC
-   ALLOCATE(BCTYPE(NBC),CONDNAME(NBC), STAT = ISTAT)
-    IF(ISTAT /= 0)THEN
-      WRITE(*,*)'ERROR ALLOCATING'
-      STOP
-    END IF
+   IF(PRESENT(FILEBC))THEN
+     OPEN(15, FILE=FILEBC)
+     READ(15,*)NBC
+     ALLOCATE(BCTYPE(NBC),CONDNAME(NBC), STAT = ISTAT)
+      IF(ISTAT /= 0)THEN
+        WRITE(*,*)'ERROR ALLOCATING'
+        STOP
+      END IF
 
-   DO I=1,NBC
-
-     READ(15,*)IBC,BCTYPE(I),CONDNAME(I)
-
-   END DO
-
-   CLOSE(15)
+     DO I=1,NBC
+       READ(15,*)IBC,BCTYPE(I),CONDNAME(I)
+     END DO
+     CLOSE(15)
+   END IF
 
    BIN = .FALSE.
 
@@ -228,6 +229,11 @@ CONTAINS
 !  find maximum value
 !
   NBC =MAXVAL(SURFID)
+  IF(NBC > 10000)THEN
+   WRITE(*,*)' Number of BCs too high, check your file', nbc
+   STOP
+  END IF
+
   WRITE(*,*)' Number of boundary conditions is ', NBC
  
   DO IBC=1,NBC
@@ -235,8 +241,17 @@ CONTAINS
     PBC => FLL_MKDIR('boundary',FPAR)
     OK = FLL_MV(PBC,PREG,FPAR)
     PTMP => FLL_MK('boundary_name','S',1_LINT,1_LINT,FPAR)
-    PTMP%S0 = CONDNAME(IBC)
-    write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
+    IF(PRESENT(FILEBC))THEN
+      PTMP%S0 = CONDNAME(IBC)
+      write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
+    ELSE
+      WRITE(str,*)IBC
+      BCNAME = 'boudnary_'//trim(adjustl(str))
+      PTMP%S0 = BCNAME
+      write(*,*)' Setting boundary condition name to: ', trim(BCNAME)
+    END IF
+
+
     OK = FLL_MV(PTMP,PBC,FPAR)
     NTRIA = 0
     DO I=1,Number_of_Surf_Trias

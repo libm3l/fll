@@ -11,7 +11,7 @@ import ast
 
 #Definitions
 
-def run(file,filebc,fmt,ofile,fmto,endian):
+def run(file,filebc,fmt,ofile,fmto,endian,bcyes):
 #
 #  execute 
 #
@@ -43,8 +43,11 @@ def run(file,filebc,fmt,ofile,fmto,endian):
         print("\033[039m Specified endian of input file is: \033[032mbig\033[039m")  
       else:
         print("\033[039m Specified endian of input file is: \033[032msmall\033[039m")  
-  
-    print("\033[039m Specified bc input file is:  \033[032m"+filebc+"\033[039m")
+
+    if bcyes == 1 :
+      print("\033[039m Specified bc input file is:  \033[032m"+filebc+"\033[039m")
+    else:
+      print("\033[039m Missinf bc input file name, setting default values \033[039m")
 
     print(" ")  
     print("\033[039m Specified output file is:  \033[032m"+ofile+"\033[039m")
@@ -56,10 +59,10 @@ def run(file,filebc,fmt,ofile,fmto,endian):
 
     if sys.version_info < (3,0):
       p = Popen([executable], stdin=PIPE) #NOTE: no shell=True here
-      p.communicate(os.linesep.join([file,filebc,fmt,ofile,fmto,endian]))
+      p.communicate(os.linesep.join([file,filebc,fmt,ofile,fmto,endian,bcyes]))
     else:
       p = Popen([executable], stdin=PIPE,universal_newlines=True) #NOTE: no shell=True here
-      p.communicate(os.linesep.join( [file,filebc,fmt,ofile,fmto,endian]))
+      p.communicate(os.linesep.join( [file,filebc,fmt,ofile,fmto,endian,bcyes]))
 
 def print_header():
      print("  ")
@@ -87,7 +90,7 @@ if __name__ == "__main__":
     # Add command line arguments
     parser = argparse.ArgumentParser(description='FLL configure script')
     parser.add_argument('-i','--gridfile',nargs=1,help='Input file')
-    parser.add_argument('-b','--bcfile',nargs=1,help='Input file')
+    parser.add_argument('-b','--bcfile',nargs=1,help='Input file',required=False)
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
     parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-e','--endian',nargs=1,help='endian fo input file')
@@ -115,8 +118,11 @@ if __name__ == "__main__":
         sys.exit()
 
     if not filebc:
-        print ("\033[031mError: \033[039m missing name of input boundary condition file, option \033[031m -b \033[039m")
-        sys.exit()
+        print ("\033[031mError: \033[039m boundary condition file not specified, option \033[031m -b \033[039m")
+        bcyes = 'n'
+        filebc = 'none'
+    else:
+        bcyes = 'y'
 
     if not format_i:
         print ("\033[031mError: \033[039m missing input file format, option\033[031m -f \033[039m")
@@ -134,5 +140,4 @@ if __name__ == "__main__":
         print ("\033[031mError: \033[039m missing output file, option \033[031m -o \033[039m")
         sys.exit()
 
-
-    run(file=file,filebc=filebc, fmt=format_i, ofile=output, fmto=formato, endian=endi)
+    run(file=file,filebc=filebc, fmt=format_i, ofile=output, fmto=formato, endian=endi, bcyes = bcyes)
