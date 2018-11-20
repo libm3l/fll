@@ -249,7 +249,7 @@ CONTAINS
                end do
            end do
            
-           call sort(tmparray1d) 
+           call quicksort(tmparray1d) 
            call unique(tmparray1d,bcuniqueu4,k3)
            
            puniq => fll_mk('unique-global', 'L', k3, 1_lint, fpar)
@@ -273,7 +273,7 @@ CONTAINS
 ! 
 ! get unique elements in bctria3 array
 !
-                call sort(tmparray1d) 
+                call quicksort(tmparray1d) 
                 call unique(tmparray1d,bcuniqueu3,k3)
                 deallocate(bctria3,tmparray1d)           
             
@@ -296,7 +296,7 @@ CONTAINS
 ! 
 ! get unique elements in bcquad4 array
 !
-                call sort(tmparray1d) 
+                call quicksort(tmparray1d) 
                 call unique(tmparray1d,bcuniqueu4,k4)
                 deallocate(bcquad4,tmparray1d)
             

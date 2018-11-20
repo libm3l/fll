@@ -26,7 +26,7 @@
 ! 
 !
 !
-!     Description: prints file on screen
+!     Description: fast array operations
 !
 !
 !     Input parameters:
@@ -55,7 +55,7 @@ module fast_arr_ops_m
 
   contains
 
-  recursive subroutine sort(A)
+  recursive subroutine quicksort(A)
 
     implicit none
     integer(lint), intent(inout) :: A(:)
@@ -63,10 +63,10 @@ module fast_arr_ops_m
 
     if(size(A) > 1) then
        call partition(A, ind)
-       call sort(A(:ind-1))
-       call sort(A(ind:))
+       call quicksort(A(:ind-1))
+       call quicksort(A(ind:))
     endif
-  end subroutine sort
+  end subroutine quicksort
 
   subroutine partition(A, ind)
 
@@ -106,7 +106,55 @@ module fast_arr_ops_m
     end do
 
   end subroutine partition
+  
+!
+!  heap sort algorithm with bug fixe, according to Messiner, L. P: Fortran 90 & 95
+!  Array and Pointer Techniques, Computer Science Department, University of 
+!  San Francisc
+!
+  subroutine heapsort(array)
+  implicit none
+  
+  integer(lint), intent(inout) :: array(:)
+  integer(lint) :: i,j,n
+  integer(lint) :: next
+  
+  n = size(array, dim = 1, kind = lint)
+  
+  do j=n/2,1,-1
+    next = array(j)
+    i = 2*j
+    do while(i<=n)
+      if(i<n)then
+        if(array(i) < array(i+1)) i = i+1
+      end if
+      if(array(i) <= next)exit
+      array(i/2) = array(i)
+      i = 2*i
+    end do
+    array(i/2) = next
+  end do
+  
+  do j = n,2,-1
+    next     = array(j)
+    array(j) = array(1)
+    array(1) = next
 
+    i = 2
+    do while( i <= j-1)
+      if(i<j-1)then
+        if(array(i) < array(i+1)) i = i+1
+      end if
+      if(array(i) <= next)exit
+      array(i/2) = array(i)
+      i = 2*i
+    end do
+    array(i/2) = next
+  end do
+  
+  return 
+  
+  end subroutine heapsort
 
 
 

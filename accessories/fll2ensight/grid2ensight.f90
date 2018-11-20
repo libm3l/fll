@@ -290,9 +290,10 @@ CONTAINS
            stop
          end if
 !
-!  sort unique array
+!  sort unique array - use quick sort, sometimes
+!  useing heapsort may be faster
 !
-       call sort(unique_ind)
+       call quicksort(unique_ind)
 !
 !  write coordinates
 !
