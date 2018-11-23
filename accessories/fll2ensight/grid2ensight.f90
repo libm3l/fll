@@ -268,9 +268,15 @@ CONTAINS
              end do
         end do
 !
+!  sort unique array - use quick sort, sometimes
+!  useing heapsort may be faster
+!
+        call quicksort(tmparray)
+!
 !   find unique elements
 !
         call unique(tmparray,tmparray1,nunique)
+        
         deallocate(tmparray, stat = istat)
            if(istat /= 0)then
                write(*,*)'ERROR DEALLOCATING MEMORY'
@@ -283,17 +289,12 @@ CONTAINS
        ok = fll_mv(ptmp, pbound, fpar)
        unique_ind => ptmp%l1
        unique_ind = tmparray1(1:nunique)
-
+       
        deallocate(tmparray1, stat = istat)
          if(istat /= 0)then
            write(*,*)'ERROR DEALLOCATING MEMORY'
            stop
          end if
-!
-!  sort unique array - use quick sort, sometimes
-!  useing heapsort may be faster
-!
-       call quicksort(unique_ind)
 !
 !  write coordinates
 !
