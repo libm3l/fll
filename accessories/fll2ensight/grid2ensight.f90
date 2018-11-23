@@ -283,7 +283,8 @@ CONTAINS
                stop
            end if
 !
-!   add temprarily this array to boundary
+!   add temprarily this array to boundary, this array will be used 
+!   when saving solution on boundaries
 !
        ptmp => fll_mk('unique_ind_arr', 'L', nunique, 1_lint, fpar)
        ok = fll_mv(ptmp, pbound, fpar)
@@ -333,6 +334,11 @@ CONTAINS
            write(iunit) (coord(i),i=1,nunique)
          end if
        end if
+!
+!  remove coordinates from pglob, just redices memory
+!            
+       ptmp => fll_locate(pgrid,'coordinates','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+       call fll_rm(ptmp, fpar)
 
        deallocate(coord, stat = istat)
          if(istat /= 0)then
@@ -364,7 +370,12 @@ CONTAINS
 !  write mesh element
 !
             call mesh_element_info(iunit,nindex_scaled,etype)
-            
+!
+!  remove element indexes from pglob, not needed any more
+!
+            ptmp=> fll_locate(pelem,'bound_elem_nodes','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+            call fll_rm(ptmp, fpar)
+
             deallocate(nindex_scaled,  stat = istat)
                if(istat /= 0)then
                 write(*,*)'ERROR DEALLOCATING MEMORY'
