@@ -11,7 +11,7 @@ import ast
 
 #Definitions
 
-def run(file,fmt,ofile, bconly):
+def run(file,fmt,ofile, bconly,solyes, solfile):
 #
 #  execute 
 #
@@ -31,11 +31,19 @@ def run(file,fmt,ofile, bconly):
       sys.exit()
 
     print(" ")  
-    print("\033[039m Specified input file is:  \033[032m"+file+"\033[039m")
+    print("\033[039m Specified grid file is:  \033[032m"+file+"\033[039m")
     if fmt == 'b'  or fmt == 'B':
-      print("\033[039m Specified input file format is: \033[032mbinary\033[039m") 
+      print("\033[039m Specified file format is: \033[032mbinary\033[039m") 
     else:
-      print("\033[039m Specified input file format is: \033[032mASCII \033[039m")
+      print("\033[039m Specified file format is: \033[032mASCII \033[039m")
+      
+    if solyes == 'y':
+       print("\033[039m Specified solution file is:  \033[032m"+solfile+"\033[039m")
+       if not os.path.isfile(solfile):
+         print("  ")
+         print("\033[031mERROR:\033[039m specified solution file \033[032m"+solfile+"\033[039m does not exist, terminating .... ") 
+         sys.exit()
+
 
     print(" ")  
     print("\033[039m Specified ensight file name is:  \033[032m"+ofile+"\033[039m") 
@@ -45,10 +53,10 @@ def run(file,fmt,ofile, bconly):
 
     if sys.version_info < (3,0):
       p = Popen([executable], stdin=PIPE) #NOTE: no shell=True here
-      p.communicate(os.linesep.join([file,fmt,ofile,bconly]))
+      p.communicate(os.linesep.join([file,fmt,ofile,bconly,solyes,solfile]))
     else:
       p = Popen([executable], stdin=PIPE,universal_newlines=True) #NOTE: no shell=True here
-      p.communicate(os.linesep.join( [file,fmt,ofile,bconly]))
+      p.communicate(os.linesep.join( [file,fmt,ofile,bconly,solyes,solfile]))
 
 def print_header():
      print("  ")
@@ -75,7 +83,8 @@ if __name__ == "__main__":
 
     # Add command line arguments
     parser = argparse.ArgumentParser(description='FLL configure script')
-    parser.add_argument('-i','--gridfile',nargs=1,help='Input file')
+    parser.add_argument('-g','--grid',nargs=1,help='Input grid file')
+    parser.add_argument('-s','--solution',nargs=1,help='Input solution file')
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
     parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-B','--bconly',action='store_true',help='export boundaries only',required=False)
@@ -83,7 +92,8 @@ if __name__ == "__main__":
     # Parse the command line arguments
     args = parser.parse_args()
 
-    file = args.gridfile[0]   if args.gridfile else None
+    file = args.grid[0]   if args.grid else None
+    solfile = args.solution[0]   if args.solution else None
     format_i = args.format_i[0] if args.format_i else None
     output = args.output_file[0] if args.output_file else None
     be = args.bconly
@@ -97,6 +107,12 @@ if __name__ == "__main__":
     if not file:
         print ("\033[031mError: \033[039m missing name of input mesh file, option \033[031m -i \033[039m")
         sys.exit()
+        
+    if not solfile:
+        solyes  = 'n'
+        solfile = 'None'
+    else:
+        solyes = 'y'
 
     if not format_i:
         print ("\033[031mError: \033[039m missing input file format, option\033[031m -f \033[039m")
@@ -114,4 +130,4 @@ if __name__ == "__main__":
         sys.exit()
 
 
-    run(file=file, fmt=format_i, ofile=output, bconly = bconly)
+    run(file=file, fmt=format_i, ofile=output, bconly = bconly, solyes = solyes, solfile = solfile)

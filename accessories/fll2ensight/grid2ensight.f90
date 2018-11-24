@@ -139,6 +139,14 @@ CONTAINS
         dims = 1
       end if
 !
+!  save number of nodes, coordinates will be later removed and 
+!  we need to know for solution file how many points the mesh had
+!
+      nnodes = size(coo, dim = 1) 
+      ptmp => fll_mk('nodes', 'L', 1_lint, 1_lint, fpar)
+      ptmp%l0 = nnodes
+      ok = fll_mv(ptmp, pgrid, fpar)
+!
 !  if volume 
 !
       volume: if(vol)then
