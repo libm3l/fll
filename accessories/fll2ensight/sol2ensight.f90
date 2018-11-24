@@ -98,10 +98,6 @@ CONTAINS
      write(iunit_case,105)
 105   format('VARIABLE')
 !
-!  set part counter to 1
-!
-     npart = 0
-!
 !  loop over grids
 !
     loop_grid: do igrid = 1,ngrid 
@@ -144,7 +140,6 @@ CONTAINS
 !  get name of variable
 !
          varname = trim(adjustl(ptmp%lname))
-         
          write(*,*)' processing variable: ',trim(varname)
 !
 !   add record to .case file
@@ -166,7 +161,10 @@ CONTAINS
          end if
 !
          open(iunit, file=filename, form='unformatted', access='stream', status='replace')   !, convert="little_endian")
-
+!
+!  set part counter to 1
+!
+         npart = 0
          buffer = trim(varname)
          write(iunit) buffer
 !
