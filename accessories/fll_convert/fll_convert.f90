@@ -60,7 +60,7 @@
 ! External Modules used
 !
    CHARACTER(LEN=FILE_NAME_LENGTH) FILE,OUTFILE
-   TYPE(DNODE), POINTER  :: PNODE
+   TYPE(DNODE), POINTER  :: PNODE,PTMP, PFIND
    TYPE(FUNC_DATA_SET) :: FPAR
    CHARACTER :: FMT, SCAN, FMTO
    CHARACTER(LEN=3) :: EFMT,OFMT
@@ -77,16 +77,34 @@
 
     SELECT CASE(EFMT)
      CASE('ffa')
-      PNODE => FLL_READ_FFA(FILE,8,FMT,FPAR)
+       PNODE => FLL_READ_FFA(FILE,8,FMT,FPAR)
+       
+          call fll_cat(PNODE, 6, .true., fpar)
+       
+          PFIND => null()
+
+          DO WHILE(FLL_SWEEP(PNODE, PFIND,'*', '*', -1_LINT,  FPAR))
+            WRITE(*,*)'Name of node is ',PFIND%LNAME
+        !    write(*,*)'------------------------------------------------'
+            
+         !        call fll_cat(PFIND, 6, .true., fpar)
+
+          !            write(*,*)'------------------------------------------------'
+  
+          END DO
+!
+!    convert all integer arrays to long integers
+!
+!       CALL I2LCONVERT(PGLOB)
      CASE DEFAULT
-      PNODE => FLL_READ(FILE,8,FMT,FPAR)       
+       PNODE => FLL_READ(FILE,8,FMT,FPAR)       
     END SELECT
 
     SELECT CASE(OFMT)
      CASE('ffa')
-      OK = FLL_WRITE_FFA(PNODE, OUTFILE,9,FMTO,FPAR)
+       OK = FLL_WRITE_FFA(PNODE, OUTFILE,9,FMTO,FPAR)
      CASE DEFAULT
-      OK = FLL_WRITE(PNODE,OUTFILE,9,FMTO,FPAR)
+       OK = FLL_WRITE(PNODE,OUTFILE,9,FMTO,FPAR)
     END SELECT    
     
     

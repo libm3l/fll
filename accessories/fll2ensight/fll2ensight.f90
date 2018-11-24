@@ -76,9 +76,7 @@
     read(*,*)bconly                   ! if ugrid, specify endian
     read(*,*)solution                 ! if y, there is solution too
     read(*,'(a1024)')solname   ! name of solution
-  
-    solution = 'n'
-  
+    
     if(bconly == 'y')then
       vol = .false.
     else
@@ -105,7 +103,6 @@
 !
 !   free memory
 !
-    call fll_cat(pglob, 6, .true., fpar)
     call fll_rm(pglob,fpar)
   
 end program fll2ensight

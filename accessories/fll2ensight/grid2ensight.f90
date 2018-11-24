@@ -158,6 +158,7 @@ CONTAINS
            write(*,*)'NOTE: Did not find any volume element information'
            write(*,*)'check your mesh or specify -B (--bconly) option'
            write(*,*)' skipping writing volume elements ...'
+           vol = .false.
         else
 !
 !   get volume name, if does not exist, set it to Volume
