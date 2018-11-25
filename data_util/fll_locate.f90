@@ -99,10 +99,14 @@ CONTAINS
    IF(.NOT.RECURSE)THEN
      IF(TRIM(PNODE%LTYPE) /= 'DIR')THEN
        WRITE(*,*)' NODE ', TRIM(PNODE%LNAME) ,' IS NOT DIR NODE'
+       FPAR%SUCCESS = .FALSE.
        RETURN 
      END IF
      PCURR => PNODE%PCHILD
-     IF(.NOT.ASSOCIATED(PNODE%PCHILD))RETURN
+     IF(.NOT.ASSOCIATED(PNODE%PCHILD))THEN
+         FPAR%SUCCESS = .FALSE.
+         RETURN
+     END IF
    ELSE
      PCURR => PNODE
    END IF
@@ -156,8 +160,9 @@ CONTAINS
              LOCNUM = LOCNUM -1
             END IF
           CASE DEFAULT 
-          PFIND => PCURR
-          RETURN
+            PFIND => PCURR
+            FPAR%SUCCESS = .TRUE.
+            RETURN
           END SELECT
         ELSE
           LOCNUM = LOCNUM + 1
