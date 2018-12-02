@@ -47,6 +47,7 @@
 
     use fll_mods_m
     use ffa2fll_m
+    use mesh_ffa2fll_m
     implicit none
 !
 ! description: conversion utility
@@ -79,7 +80,8 @@
 !
 !  convert some things between fll and ffa
 !
-   call ffa2fll(pnode)
+!   call ffa2fll(pnode)
+    call mesh_ffa2fll(pnode)
 !
 !  save mesh
 !
