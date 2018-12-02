@@ -253,16 +253,16 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%L1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:240 '
-        WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
-        STOP
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:240 '
+             WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
+            STOP
 !        PNEW%L1=0
       END IF
          ELSE
             ALLOCATE(PNEW%L2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
-        WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
+            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
 !        PNEW%L2=0
       END IF
@@ -275,8 +275,8 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%S1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:260 '
-        WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:260 '
+           WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
 !        PNEW%S1=''
       END IF
