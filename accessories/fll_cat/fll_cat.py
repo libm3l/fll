@@ -11,7 +11,7 @@ import ast
 
 #Definitions
 
-def run(file,fmt,efmt,scan,dir,colour):
+def run(file,fmt,efmt,scan,dir,color):
 #
 #  execute 
 #
@@ -27,24 +27,24 @@ def run(file,fmt,efmt,scan,dir,colour):
 
     if not os.path.isfile(file):
       print("  ")
-      if colour == 'y':
+      if color == 'y':
         print("\033[031mERROR:\033[039m specified file \033[032m"+file+"\033[039m does not exist, terminating .... ") 
       else:
         print("ERROR: specified file "+file+" does not exist, terminating .... ")    
       sys.exit()
 
     print(" ")  
-    if colour == 'y':
+    if color == 'y':
       print("\033[039m Specified file  is:       \033[032m"+file+"\033[039m")
     else:
       print(" Specified file  is:       "+file)
     if fmt == 'b'  or fmt == 'B':
-      if colour == 'y':
+      if color == 'y':
         print("\033[039m Specified file format is: \033[032mbinary\033[039m") 
       else:
         print(" Specified file format is: binary") 
     else:
-      if colour == 'y':
+      if color == 'y':
         print("\033[039m Specified file format is: \033[032mASCII \033[039m")  
       else:
         print(" Specified file format is: ASCII ")  
@@ -55,7 +55,7 @@ def run(file,fmt,efmt,scan,dir,colour):
 
     if scan == 'Y':  
         print(" ")
-        if colour == 'y':
+        if color == 'y':
           print("\033[035m ... running in scan only mode ... \033[039m")  
         else:
           print(" ... running in scan only mode ... ")  
@@ -63,13 +63,13 @@ def run(file,fmt,efmt,scan,dir,colour):
     
     if sys.version_info < (3,0):
       p = Popen([executable], stdin=PIPE) #NOTE: no shell=True here
-      p.communicate(os.linesep.join([file, fmt, efmt, scan, dir, colour]))
+      p.communicate(os.linesep.join([file, fmt, efmt, scan, dir, color]))
     else:
       p = Popen([executable], stdin=PIPE,universal_newlines=True) #NOTE: no shell=True here
-      p.communicate(os.linesep.join( [file, fmt, efmt, scan, dir, colour]))
+      p.communicate(os.linesep.join( [file, fmt, efmt, scan, dir, color]))
 
 def print_header():
-     if colour == 'y':
+     if color == 'y':
       print("  ")
       print ("\033[031m************************************************************************************ \033[039m")
       print ("\033[031m                                                                                   \033[039m")
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     parser.add_argument('-s','--scan',action='store_true',help='Scan file only',required=False)
     parser.add_argument('-D','--dir',action='store_true',help='Print DIR only',required=False)
     parser.add_argument('-e','--external_format',nargs=1,help='External format of the file')
-    parser.add_argument('-c','--colour',action='store_true',help='Coloured output',required=False)
+    parser.add_argument('-c','--color',action='store_true',help='colored output',required=False)
 
     # Parse the command line arguments
     args = parser.parse_args()
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     eformat = args.external_format[0] if args.external_format else None
     scan = args.scan
     dir = args.dir
-    colour = args.colour
+    color = args.color
  
     if not scan:
        scan = 'n'
@@ -129,10 +129,10 @@ if __name__ == "__main__":
     else:
        dir = 'Y'
 
-    if not colour:
-       colour = 'n'
+    if not color:
+       color = 'n'
     else:
-       colour = 'y'
+       color = 'y'
 
     if not len(sys.argv) > 1:
         print("\nfll_cat - prints content of file on standard output\n")
@@ -158,4 +158,4 @@ if __name__ == "__main__":
         print ("\033[031m       \033[039m                        \033[032m ffa - ffa format\033[039m")
         sys.exit()
 
-    run(file=file,fmt=format, efmt = eformat, scan=scan, dir=dir, colour=colour)
+    run(file=file,fmt=format, efmt = eformat, scan=scan, dir=dir, color=color)
