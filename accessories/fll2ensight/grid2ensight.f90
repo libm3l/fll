@@ -344,10 +344,10 @@ CONTAINS
          end if
        end if
 !
-!  remove coordinates from pglob, just redices memory
+!  remove coordinates from pglob, just reduces memory
 !            
-       ptmp => fll_locate(pgrid,'coordinates','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
-       call fll_rm(ptmp, fpar)
+!       ptmp => fll_locate(pgrid,'coordinates','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
+!       call fll_rm(ptmp, fpar)
 
        deallocate(coord, stat = istat)
          if(istat /= 0)then
