@@ -135,7 +135,7 @@ CONTAINS
    Number_of_Vol_Tets, Number_of_Vol_Pents_5, Number_of_Vol_Pents_6,&
    Number_of_Vol_Hexs
 !
-!  ADD SOME BASIC INFOR
+!  ADD SOME BASIC INFO
 !
   PTMP => FLL_MK('mesh_name','S',1_LINT,1_LINT,FPAR)
   PTMP%S0 = NAME
