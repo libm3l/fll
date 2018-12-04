@@ -337,7 +337,8 @@ CONTAINS
 !   END IF
 
    IF(CODE == 0) RETURN
-   IF(NDIM*NSIZE > 1) THEN
+!    IF(NDIM*NSIZE > 1) THEN
+   IF(CODE > 10)THEN
 !
 !   1D ARRAYS
 !
@@ -387,7 +388,8 @@ CONTAINS
 !
 !  SCALARS AND STATICALLY DEFINED ARRAYS
 !
-    ELSE IF(NDIM*NSIZE == 1) THEN
+!     ELSE IF(NDIM*NSIZE == 1) THEN
+     ELSE
      SELECT CASE(CODE)
       CASE(1)
        CALL MPI_BCAST(PNODE%R0, 1, MPI_REAL, SENDPART,COMMUNICATOR, IERR)
@@ -483,7 +485,8 @@ CONTAINS
 
    NDIM = IARR(2)
    NSIZE = IARR(3)
-   IF(NDIM*NSIZE > 1 )THEN
+!    IF(NDIM*NSIZE > 1 )THEN
+   IF(IARR(1) > 10)THEN
 !
 !   1D ARRAYS
 !
@@ -533,7 +536,8 @@ CONTAINS
 !
 !  SCALARS AND STATICALLY DEFINED ARRAYS
 !
-    ELSE IF(NDIM*NSIZE == 1) THEN
+!     ELSE IF(NDIM*NSIZE == 1) THEN
+     ELSE
      SELECT CASE(INT(IARR(1), KIND=SINT))
       CASE(1)
        CALL MPI_BCAST(PNODE%R0, 1, MPI_REAL, SENDPART,COMMUNICATOR, IERR)
@@ -599,16 +603,40 @@ CONTAINS
      CODE = 0
    CASE('R')
      CODE = 1
+   CASE('R1')
+     CODE = 11
+   CASE('R2')
+     CODE = 12
    CASE('D')
      CODE = 2
+   CASE('D1')
+     CODE = 21
+   CASE('D2')
+     CODE = 22
    CASE('I')
      CODE = 3
+   CASE('I1')
+     CODE = 31
+   CASE('I2')
+     CODE = 32
    CASE('L')
      CODE = 4
+   CASE('L1')
+     CODE = 41
+   CASE('L2')
+     CODE = 42
    CASE('S')
      CODE = 5
+   CASE('S1')
+     CODE = 51
+   CASE('S2')
+     CODE = 52
    CASE('C')
      CODE = 6
+   CASE('C1')
+     CODE = 61
+   CASE('C2')
+     CODE = 62
    CASE DEFAULT
      CODE = -1
    END SELECT
@@ -656,16 +684,40 @@ CONTAINS
       TYPE = 'DIR'
     CASE(1)
       TYPE = 'R'
+    CASE(11)
+      TYPE = 'R1'
+    CASE(2)
+      TYPE = 'R2'
     CASE(2)
       TYPE = 'D'
+    CASE(21)
+      TYPE = 'D1'
+    CASE(22)
+      TYPE = 'D2'
     CASE(3)
       TYPE = 'I'
+    CASE(31)
+      TYPE = 'I1'
+    CASE(32)
+      TYPE = 'I2'
     CASE(4)
       TYPE = 'L'
+    CASE(41)
+      TYPE = 'L1'
+    CASE(42)
+      TYPE = 'L2'
     CASE(5)
       TYPE = 'S'
+    CASE(51)
+      TYPE = 'S1'
+    CASE(52)
+      TYPE = 'S2'
     CASE(6)
       TYPE = 'C'
+    CASE(61)
+      TYPE = 'C1'
+    CASE(62)
+      TYPE = 'C2'
     CASE DEFAULT
       TYPE = '0'
   
