@@ -524,11 +524,16 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%R2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
+       
+     CASE('R1')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%R1(I),I=1,NSIZE)
+     CASE('R2')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%R2(I,J),J=1,NSIZE),I=1,NDIM)
 
      CASE('D')
        IF(NDIM == 1)THEN
          IF(NSIZE > 1)THEN
-           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%D1(I),I=1,NSIZE)
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%D1(I),I=1,NDIM*NSIZE)
          ELSE
            READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%D0
          END IF
@@ -540,6 +545,10 @@ CONTAINS
          END IF
        END IF
        
+     CASE('D1')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%D1(I),I=1,NDIM*NSIZE)
+     CASE('D2')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%D2(I,J),J=1,NSIZE),I=1,NDIM)
        
      CASE('I')
        IF(NDIM == 1)THEN
@@ -556,6 +565,11 @@ CONTAINS
          END IF
        END IF
        
+     CASE('I1')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%I1(I),I=1,NDIM*NSIZE)
+     CASE('I2')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%I2(I,J),J=1,NSIZE),I=1,NDIM)
+       
        
      CASE('L')
        IF(NDIM == 1)THEN
@@ -571,7 +585,11 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%L2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
-       
+
+     CASE('L1')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%L1(I),I=1,NDIM*NSIZE)
+     CASE('L2')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%L2(I,J),J=1,NSIZE),I=1,NDIM)
        
 
       CASE('S')
@@ -588,6 +606,11 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%S2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
+       
+       CASE('S1')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%S1(I),I=1,NDIM*NSIZE)
+       CASE('S2')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%S2(I,J),J=1,NSIZE),I=1,NDIM)
 
       CASE('C')
 
@@ -676,7 +699,14 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
-
+       
+     CASE('R1')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R1(:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+     CASE('R2')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R2(:,:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+           
      CASE('D')
        IF(NDIM == 1)THEN
          IF(NSIZE > 1)THEN
@@ -698,6 +728,13 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
+       
+     CASE('D1')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%D1(:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+     CASE('D2')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%D2(:,:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
        
        
      CASE('I')
@@ -722,6 +759,12 @@ CONTAINS
          END IF
        END IF
        
+     CASE('I1')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%I1(:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+     CASE('I2')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%I2(:,:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
        
      CASE('L')
        IF(NDIM == 1)THEN
@@ -745,6 +788,13 @@ CONTAINS
          END IF
        END IF
        
+     CASE('L1')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%L1(:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+     CASE('L2')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%L2(:,:)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+       
        
       CASE('S')
        IF(NDIM == 1)THEN
@@ -764,6 +814,13 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
+       
+     CASE('S1')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)(PNODE%S1(I),I=1,NDIM)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
+     CASE('S2')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)((PNODE%S2(I,J),J=1,NSIZE),I=1,NDIM)
+           INQUIRE(UNIT = IOUNIT, POS=POS)
 
       CASE('C')
 
@@ -832,14 +889,14 @@ CONTAINS
 !  BODY
 !
     SELECT CASE(LTYPE)
-     CASE('R', 'I')
+     CASE('R', 'I','R1','R2','I1','I2')
        LENGTH = 4
 
-     CASE('D', 'L')
+     CASE('D', 'L','D1','D2','L1','L2')
        LENGTH = 8
        
        
-      CASE('S')
+      CASE('S','S1','S2')
        LENGTH = LSTRING_LENGTH
 
       CASE('C')

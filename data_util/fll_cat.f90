@@ -363,15 +363,15 @@ CONTAINS
 
        ELSE
          SELECT CASE(PNODE%LTYPE)
-          CASE('R')
+          CASE('R', 'R1', 'R2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-          CASE('D')
+          CASE('D', 'D1', 'D2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('I')
+         CASE('I', 'I1', 'I2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('L')
+         CASE('L', 'L1', 'L2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('S')
+         CASE('S', 'S1', 'S2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
          CASE DEFAULT 
         

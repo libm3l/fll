@@ -225,15 +225,15 @@ CONTAINS
 !  SCALARS AND STATICALLY DEFINED ARRAYS
 !
     SELECT CASE(PNODE%LTYPE)
-    CASE('R')
+    CASE('R', 'R1', 'R2')
       BYTES = BYTES + 4
-    CASE('D')
+    CASE('D', 'D1', 'D2')
       BYTES = BYTES + 8
-    CASE('I')
+    CASE('I', 'I1', 'I2')
       BYTES = BYTES + 4
-    CASE('L')
+    CASE('L', 'L1', 'L2')
       BYTES = BYTES + 8
-    CASE('S')
+    CASE('S', 'S1', 'S2')
       BYTES = BYTES + LSTRING_LENGTH
     END SELECT
   
