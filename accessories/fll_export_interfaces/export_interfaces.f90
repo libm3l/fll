@@ -43,11 +43,11 @@
 !     Description
 !
 !
-MODULE EXPORT_INTERFACES_M
+module export_interfaces_m
 
-CONTAINS
+contains
 
-  SUBROUTINE EXPORT_INTERFACES(PFLL, PINTERF, FMT, OUTPUTFILE)
+  subroutine export_interfaces(pfll, pinterf, fmt, outputfile)
 !
 !  reads ugrid file
 !
@@ -100,12 +100,16 @@ CONTAINS
 !  get number of interfaces in 'grid'
 !
       nintf = fll_nnodes(pgrid,'Interface','*',-1_lint,.false.,fpar)
+      
+      write(*,*)' number of interfaces in file is ', nintf
 !
 !  loop over interfaces
 !
       intfloop: do intf = 1,nintf
+!
+        write(*,*)'Processing interface #',intf
 
-        pintf => fll_locate(pgrid,'Interface','*',-1_lint,igrid,.false.,fpar,errmsg='ALL')
+        pintf => fll_locate(pgrid,'Interface','*',-1_lint,intf,.false.,fpar,errmsg='ALL')
         intfname = fll_getndata_s0(pintf,'Iname', 1_lint, fpar, errmsg='NONE')
         bcnames => fll_getndata_s1(pintf,'Ibname', 1_lint, fpar, errmsg='NONE')
         if(.not.fpar%success)then
@@ -115,6 +119,7 @@ CONTAINS
         else
           nbc = size(bcnames, dim = 1 , kind = lint)
         end if
+
 
         pnewintf => fll_mkdir('interface_mesh', fpar)
         
@@ -129,6 +134,7 @@ CONTAINS
 
         loopibc: do ibc = 1,nbc
           loopigbc: do igbc = 1, ngbc
+
 !
 !  loop over boundary structure in mesh file and find if name is in Interface
 !
@@ -138,6 +144,8 @@ CONTAINS
             if(nbc > 1) bcname = bcnames(ibc)
 
             if(trim(bcname) == trim(gbcname))then
+
+            write(*,*)'BC name is ', trim(bcname)
 !
 !   loop over boundary element group
 !
@@ -163,6 +171,7 @@ CONTAINS
                   end if
 
                 else if(trim(gbcname) ==   'quad4')then
+
 !
 !  concentanate indexes in one array
 !
@@ -191,6 +200,7 @@ CONTAINS
 !
 !  save elements
 !
+
         if(associated(bctria3))then
 
           pglbc => fll_mkdir('bound_elem_group', fpar)
@@ -250,12 +260,14 @@ CONTAINS
            end do
            
            call quicksort(tmparray1d) 
-           call unique(tmparray1d,bcuniqueu4,k3)
+           call unique(tmparray1d,bcuniqueutmp,k3)
            
            puniq => fll_mk('unique-global', 'L', k3, 1_lint, fpar)
-           puniq%l1 = bcuniqueu4(1:k3)
+           puniq%l1 = bcuniqueutmp(1:k3)
            ok = fll_mv(puniq, pglobab, fpar) 
            tmpind = k3
+
+           deallocate(tmparray1d, bcuniqueutmp)
          
          else
 
@@ -313,6 +325,8 @@ CONTAINS
 !
          if(associated(bcuniqueu3))deallocate(bcuniqueu3)
          if(associated(bcuniqueu4))deallocate(bcuniqueu4)
+         if(associated(bctria3))deallocate(bctria3)
+         if(associated(bcquad4))deallocate(bcquad4)
 !
 !  save coordinates
 !
@@ -330,7 +344,7 @@ CONTAINS
         ptmp => fll_mk('boundary_name', 'S', 1_lint, 1_lint, fpar)
         ok = fll_mv(ptmp,pnbc,fpar)
         ptmp%s0 = intfname
-        
+
         k3  = fll_nnodes(pglobab,'bound_elem_group','*',-1_lint,.false.,fpar)
         do i=1,k3
             ptmp => fll_locate(pglobab,'bound_elem_group','*',-1_lint,i,.false.,fpar,errmsg='ALL')
@@ -364,8 +378,10 @@ CONTAINS
         ok = fll_mv(pglobab, pintfgrid, fpar)
 
 !        call fll_cat(pnewintf, 6, .true., fpar)
+
+        write(*,*)'Name of exported interface is ',trim(intfname)
         
-        outfile = "Interface_meshdata_"//trim(bcname)//".afll"
+        outfile = trim(outputfile)//"_meshdata_"//trim(intfname)//".fll"
         
         ok = fll_write(pnewintf,outfile,9,FMT,fpar)
         call fll_rm(pnewintf,fpar)
@@ -417,8 +433,10 @@ end subroutine export_interfaces
       stop
     end if
 
-    a(1:size(b),:) = b
-    a(size(b)+1:,:) = c
+    sizeb = size(b,dim=1,kind=lint)
+
+    a(1:sizeb,:)  = b
+    a(sizeb+1:,:) = c
 
     deallocate(b, stat = istat)
     if(istat /= 0)then
