@@ -272,7 +272,9 @@ contains
          else
 
              if(associated(bctria3))then
-            
+!
+!  only triangles
+!           
                 tmpind = size(bctria3, dim = 1, kind = lint)
                 allocate(bcuniqueu3(tmpind*3),tmparray1d(tmpind*3),stat = istat)
                 ind = 1
@@ -295,7 +297,9 @@ contains
                 tmpind = k3
                
             else if(associated(bcquad4))then
-            
+!
+!  only quad elements
+!           
                 tmpind = size(bcquad4, dim = 1, kind = lint)
                 allocate(bcuniqueu4(tmpind*4),tmparray1d(tmpind*4),stat = istat)
                 ind = 1
@@ -378,10 +382,12 @@ contains
         ok = fll_mv(pglobab, pintfgrid, fpar)
 
 !        call fll_cat(pnewintf, 6, .true., fpar)
-
+        write(*,*)
         write(*,*)'Name of exported interface is ',trim(intfname)
         
         outfile = trim(outputfile)//"_meshdata_"//trim(intfname)//".fll"
+
+        write(*,*)'File name is                  ',trim(outfile)
         
         ok = fll_write(pnewintf,outfile,9,FMT,fpar)
         call fll_rm(pnewintf,fpar)
