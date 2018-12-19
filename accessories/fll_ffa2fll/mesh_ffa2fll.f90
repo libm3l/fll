@@ -85,7 +85,11 @@ CONTAINS
             nelem = fll_nnodes(pbound,'belem_group','*',-1_lint,.false.,fpar)
 
             do ielem =1, nelem
-               pelem =>  fll_locate(pbound,'belem_group','*',-1_lint,ielem,.false.,fpar,errmsg='ALL')
+!
+!  always look for the 1st belem_group, it will be renamed 
+!  and next search would not find it
+!
+               pelem =>  fll_locate(pbound,'belem_group','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')
                pelem%lname = 'bound_elem_group'
                
                ptmp => fll_locate(pelem,'bound_elem_nodes','*',-1_lint,1_lint,.false.,fpar,errmsg='ALL')

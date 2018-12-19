@@ -38,7 +38,7 @@ def run(file,fmt,fmto,ofile):
       print("\033[039m Specified input file format is: \033[032mASCII \033[039m") 
   
     print(" ")  
-    print("\033[039m Specified output file is:  \033[032m"+file+"\033[039m")
+    print("\033[039m Specified output file is:  \033[032m"+ofile+"\033[039m")
     if fmto == 'b'  or fmto == 'B':
       print("\033[039m Specified output file format is: \033[032mbinary\033[039m") 
     else:
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     if not len(sys.argv) > 1:
         print("\nfll_convert - converts files\n")
-        print("usage: fll_convert.py [-h] [-i FILE] [-fi FORMAT_INPUT] [-o OUTPUT_FILE] [-fO FORMAT_OUTPUT]\n")
+        print("usage: fll_convert.py [-h] [-i FILE] [-fi FORMAT_INPUT] [-o OUTPUT_FILE] [-fo FORMAT_OUTPUT]\n")
         sys.exit()
 
     if not file:
