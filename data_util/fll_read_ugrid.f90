@@ -149,7 +149,7 @@ CONTAINS
 !
 !  CREATE ARRAY FOR NODES
 !
-   WRITE(*,*)' Reading cordinates'
+   WRITE(*,*)' Reading coordinates'
    PTMP => FLL_MK('coordinates','D',INT(Number_of_Nodes, KIND=LINT),3_LINT,FPAR)
    OK = FLL_MV(PTMP, PREG,FPAR)
    COO => PTMP%D2
@@ -317,10 +317,18 @@ CONTAINS
     PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
     PTMP%S0 ='tetra4'
     OK = FLL_MV(PTMP, PELEM,FPAR)
-    DO I=1,Number_of_Vol_Tets
-      READ(15,*)VOLTET(I,:)
-    END DO
+    IF(BIN)THEN
+      DO I=1,Number_of_Vol_Tets
+        READ(15)INDTMP4
+        VOLTET(I,:) = INDTMP4
+      END DO
+    ELSE
+      DO I=1,Number_of_Vol_Tets
+        READ(15,*)VOLTET(I,:)
+      END DO
+    END IF
   END IF!
+!
 !  READ PENT ELEMENTS
 !
   IF( Number_of_Vol_Pents_5 > 0)THEN
@@ -335,8 +343,8 @@ CONTAINS
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Pents_5
-        READ(15,*)INDTMP5
-  	VOLPENT(I,:)=INDTMP5 
+        READ(15)INDTMP5
+  	    VOLPENT(I,:)=INDTMP5 
       END DO
     ELSE
       DO I=1,Number_of_Vol_Pents_5
@@ -360,7 +368,7 @@ CONTAINS
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Pents_6
         READ(15)INDTMP6
-	VOLPENT6(I,:) = INDTMP6
+	    VOLPENT6(I,:) = INDTMP6
       END DO
     ELSE
       DO I=1,Number_of_Vol_Pents_6
@@ -384,7 +392,7 @@ CONTAINS
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Hexs
         READ(15)INDTMP8
- 	VOLHEX(I,:) = INDTMP8
+    	VOLHEX(I,:) = INDTMP8
       END DO
     ELSE
       DO I=1,Number_of_Vol_Hexs
