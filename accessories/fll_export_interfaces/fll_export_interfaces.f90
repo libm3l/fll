@@ -81,7 +81,7 @@
 !
 !  read ugrid files
 !
-      pfll  => fll_read_ugrid(file, filebc,fmt,endian)
+      pfll  => fll_read_ugrid(file,fmt,endian,filebc)
     else
 !
 !  read fll file

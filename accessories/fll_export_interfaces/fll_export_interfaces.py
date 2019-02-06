@@ -39,11 +39,13 @@ def run(file,filebc,fmt,ofile,fmto,endian,fm,infile):
 
     if fm == 'ugrid':
        print("\033[039m Grid format file is: \033[032mUGRID \033[039m")  
+       print("\033[039m Specified bc input file is:  \033[032m"+filebc+"\033[039m")
        if fmt == 'b'  or fmt == 'B':
          if(endian == 'b' or endian == 'B'):
            print("\033[039m Specified endian of input file is: \033[032mbig\033[039m")  
          else:
            print("\033[039m Specified endian of input file is: \033[032msmall\033[039m")  
+
     else:
        print("\033[039m Grid format file is: \033[032mFLL \033[039m")  
 
