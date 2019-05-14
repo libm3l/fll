@@ -73,6 +73,7 @@ CONTAINS
 !   
     USE FLL_TYPE_M
     USE FLL_OUT_M
+    USE FLL_RM_M
 
     IMPLICIT NONE
 !
@@ -169,6 +170,11 @@ CONTAINS
 !
     POS = 1
     PNODE => READ_NODE(IOUNIT,FMT_LOC,POS,SCAN_LOC,FPAR)
+
+    IF(.NOT.FPAR%SUCCESS)THEN
+      CALL FLL_RM(PNODE,FPAR)
+      PNODE => NULL()
+    END IF
     
     CLOSE(IOUNIT)
     IF(.NOT.ASSOCIATED(PNODE))THEN
@@ -235,6 +241,7 @@ CONTAINS
 !
 !  READ HEADER
 !
+    FPAR%SUCCESS=.TRUE.
     POSOLD = POS
     CALL READ_HEADER(IOUNIT,FMT,POS,NAME,LTYPE,NDIM,NSIZE,FPAR_H,LOC_ERRMSG)
     
@@ -303,6 +310,8 @@ CONTAINS
       END SELECT
     
     END IF
+
+    IF(.NOT.FPAR_H%SUCCESS)FPAR%SUCCESS=.FALSE.
     
     RETURN
     
@@ -618,7 +627,8 @@ CONTAINS
          RETURN
          
       CASE DEFAULT
-            WRITE(*,*)' WRONG TYPE'
+         WRITE(*,*)' WRONG TYPE'
+         FPAR%SUCCESS = .FALSE.
      
      END SELECT
      
@@ -828,7 +838,8 @@ CONTAINS
          RETURN
          
       CASE DEFAULT
-            WRITE(*,*)' WRONG TYPE'
+         WRITE(*,*)' WRONG TYPE'
+         FPAR%SUCCESS = .FALSE.
      
      END SELECT
      
@@ -905,7 +916,7 @@ CONTAINS
          RETURN
          
       CASE DEFAULT
-            WRITE(*,*)' WRONG TYPE'
+        WRITE(*,*)' WRONG TYPE'
         WRITE(FPAR%MESG,'(A,A)')' GET_NEW_POS  - wrong type '
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
         FPAR%SUCCESS = .FALSE.
