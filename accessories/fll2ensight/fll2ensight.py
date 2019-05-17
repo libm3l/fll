@@ -92,8 +92,9 @@ if __name__ == "__main__":
     parser.add_argument('-g','--grid',nargs=1,help='Input grid file')
     parser.add_argument('-s','--solution',nargs=1,help='Input solution file')
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
-    parser.add_argument('-fg','--format_grid',nargs=1,help='Format of the input file - ASCII, binary')
-    parser.add_argument('-fs','--format_sol',nargs=1,help='Format of the input file - ASCII, binary')
+    parser.add_argument('-fg','--format_grid',nargs=1,help='Format of mesh input file - ASCII, binary')
+    parser.add_argument('-fs','--format_sol',nargs=1,help='Format of solution input file - ASCII, binary')
+    parser.add_argument('-f','--format',nargs=1,help='Format of the input files - ASCII, binary')
     parser.add_argument('-B','--bconly',action='store_true',help='export boundaries only',required=False)
 
     # Parse the command line arguments
@@ -103,6 +104,7 @@ if __name__ == "__main__":
     solfile = args.solution[0]   if args.solution else None
     format_grid = args.format_grid[0] if args.format_grid else None
     format_sol = args.format_sol[0] if args.format_sol else None
+    format = args.format[0] if args.format else None
     output = args.output_file[0] if args.output_file else None
     be = args.bconly
 
@@ -122,15 +124,22 @@ if __name__ == "__main__":
     else:
         solyes = 'y'
 
-    if not format_grid:
-        print ("\033[031mError: \033[039m missing grid file format, option\033[031m -fg \033[039m")
-        print ("\033[031m       \033[039m available options are: \033[032m a - ASCII\033[039m")
-        print ("\033[031m       \033[039m                        \033[032m b - binary format\033[039m")
-        sys.exit()
+    if format:
+        print ("\033[031mError: \033[039m specified file format is , option\033[031m format \033[039m")
+        format_grid = format
+        format_sol = format
+    else:
 
-    if not format_sol:
-        print ("\033[031mError: \033[039m missing solution file format, option\033[031m -fs \033[039m")
-        print ("\033[031m       \033[039m setting it to the same format as grid format \033[032m option -fg\033[039m")
+      if not format_grid:
+          print ("\033[031mError: \033[039m missing grid file format, option\033[031m -fg \033[039m")
+          print ("\033[031m       \033[039m available options are: \033[032m a - ASCII\033[039m")
+          print ("\033[031m       \033[039m                        \033[032m b - binary format\033[039m")
+          sys.exit()
+
+      if not format_sol:
+          print ("\033[031mError: \033[039m missing solution file format, option\033[031m -fs \033[039m")
+          print ("\033[031m       \033[039m setting it to the same format as grid format \033[032m option -fg\033[039m")
+
 
     bconly = 'n'
     if be:
