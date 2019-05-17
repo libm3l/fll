@@ -139,6 +139,7 @@ if __name__ == "__main__":
       if not format_sol:
           print ("\033[031mError: \033[039m missing solution file format, option\033[031m -fs \033[039m")
           print ("\033[031m       \033[039m setting it to the same format as grid format \033[032m option -fg\033[039m")
+          format_sol = format_grid
 
 
     bconly = 'n'
