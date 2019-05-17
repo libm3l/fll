@@ -86,7 +86,7 @@ if __name__ == "__main__":
     parser.add_argument('-g','--grid',nargs=1,help='Input grid file')
     parser.add_argument('-s','--solution',nargs=1,help='Input solution file')
     parser.add_argument('-o','--output_file',nargs=1,help='Output file')
-    parser.add_argument('-fi','--format_i',nargs=1,help='Format of the input file - ASCII, binary')
+    parser.add_argument('-f','--format',nargs=1,help='Format of the input file - ASCII, binary')
     parser.add_argument('-B','--bconly',action='store_true',help='export boundaries only',required=False)
 
     # Parse the command line arguments
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     file = args.grid[0]   if args.grid else None
     solfile = args.solution[0]   if args.solution else None
-    format_i = args.format_i[0] if args.format_i else None
+    format = args.format[0] if args.format else None
     output = args.output_file[0] if args.output_file else None
     be = args.bconly
 
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     else:
         solyes = 'y'
 
-    if not format_i:
+    if not format:
         print ("\033[031mError: \033[039m missing input file format, option\033[031m -f \033[039m")
         print ("\033[031m       \033[039m available options are: \033[032m a - ASCII\033[039m")
         print ("\033[031m       \033[039m                        \033[032m b - binary format\033[039m")
@@ -130,4 +130,4 @@ if __name__ == "__main__":
         sys.exit()
 
 
-    run(file=file, fmt=format_i, ofile=output, bconly = bconly, solyes = solyes, solfile = solfile)
+    run(file=file, fmt=format, ofile=output, bconly = bconly, solyes = solyes, solfile = solfile)
