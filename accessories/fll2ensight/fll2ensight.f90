@@ -65,13 +65,14 @@
    type(dnode), pointer  :: pglob,psol
    type(func_data_set) :: fpar
    character :: endian,bconly,solution
-   character(len=20) :: fformat
+   character(len=20) :: fformat,sformat
    logical :: vol,ok
 !
 !  read a ugrid file and save it in fll format
 !
     read(*,'(a1024)')file            ! mesh file
     read(*,*)fformat                  ! mesh file format - fll or ugrid
+    read(*,*)sformat                  ! solution file format - fll or ugrid
     read(*,'(a1024)')outfile       ! root name of output files
     read(*,*)bconly                   ! if ugrid, specify endian
     read(*,*)solution                 ! if y, there is solution too
@@ -95,7 +96,7 @@
 !
     if(solution == 'y')then
       write(*,*)'Converting solution'
-      psol => fll_read(trim(solname),8,fformat,fpar)
+      psol => fll_read(trim(solname),8,sformat,fpar)
       psol%lname='solution'
       ok = fll_mv(psol, pglob, fpar)
       call sol2ensight(pglob, outfile,vol)

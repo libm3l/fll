@@ -125,7 +125,9 @@ contains
         
         pintfgrid  => fll_mkdir('grid', fpar)
         ok = fll_mv(pintfgrid, pnewintf, fpar)
-
+!
+!  global indexing will continue element information indexe as in volume mesh
+!
         pglobab  => fll_mkdir('global_indexing', fpar)
 !
 !  just for clarity of output for user, add this after adding boundary
@@ -200,7 +202,6 @@ contains
 !
 !  save elements
 !
-
         if(associated(bctria3))then
 
           pglbc => fll_mkdir('bound_elem_group', fpar)
@@ -232,7 +233,9 @@ contains
 
         end if
 !
-!   find unique indexes
+!   find unique indexes. This can be used to sync points on the interface with 
+!   what other process exports
+!   loop over all elements and get unique indexes of points in volume mesh indexing
 !
         if(associated(bctria3) .and. associated(bcquad4))then
 !
@@ -240,7 +243,7 @@ contains
 !   concentenate arrays with unique indexes from tria3 and quad4 elements
 !   and find unique indexes
 !
-           k3 = size(bctria3,    dim = 1, kind = lint)
+           k3 = size(bctria3, dim = 1, kind = lint)
            k4 = size(bcquad4, dim = 1, kind = lint)
            
            allocate(bcuniqueutmp(k3*3 + k4*4), tmparray1d(k3*3 + k4*4), stat = istat)
@@ -332,7 +335,7 @@ contains
          if(associated(bctria3))deallocate(bctria3)
          if(associated(bcquad4))deallocate(bcquad4)
 !
-!  save coordinates
+!  save coordinates, use array of unique global coordinates 
 !
          ptmp => fll_mk('coordinates', 'D', tmpind, 3_lint, fpar)
          do i=1,tmpind
@@ -364,7 +367,10 @@ contains
             allocate(tmparray(k3,k4))
             tmparray = 0
 !
-!  renumber
+!  renumber - loop over indexes of elements in global_indexing and find their position 
+!  in unique-global array. This will give local indexing of points on interface
+!  ie. indexing of elements when only array of surface coordinates is exported (ommiting volume
+!  mesh coordiantes)
 ! 
             do l=1,k3
                do j = 1,k4

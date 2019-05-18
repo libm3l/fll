@@ -108,7 +108,7 @@ module fast_arr_ops_m
   end subroutine partition
   
 !
-!  heap sort algorithm with bug fixe, according to Messiner, L. P: Fortran 90 & 95
+!  heap sort algorithm with bug fixes, according to Messiner, L. P: Fortran 90 & 95
 !  Array and Pointer Techniques, Computer Science Department, University of 
 !  San Francisc
 !
