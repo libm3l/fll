@@ -73,7 +73,6 @@ CONTAINS
 !
    CHARACTER :: FMT_LOC
    INTEGER :: ISTAT
-   INTEGER(LINT) :: POS
    CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
 !  local action

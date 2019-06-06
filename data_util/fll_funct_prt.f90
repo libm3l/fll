@@ -105,7 +105,7 @@ CONTAINS
 !     
     OK = .FALSE.
     IF (IOSTAT > 0)  THEN
-      WRITE(FPAR%MESG,'(A)')' Read  - error readig node data'
+      WRITE(FPAR%MESG,'(A)')' Read  - error reading node data'
       CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
    ELSE IF (IOSTAT < 0) THEN
