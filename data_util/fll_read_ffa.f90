@@ -385,7 +385,7 @@ CONTAINS
       TEXT_LINE(1:1) = '*'
       DO WHILE(TEXT_LINE(1:1)=='*') ! IGNORE COMMENT TEXT_LINE
         READ(IOUNIT,'(A256)',IOSTAT=IOSTAT) TEXT_LINE
-        OK = TEST_IOSTAT(IOSTAT,FPAR)
+        OK = TEST_IOSTAT(IOSTAT,FPAR,LOC_ERRMSG)
         IF(.NOT.OK) RETURN
       END DO
             
@@ -521,11 +521,11 @@ CONTAINS
             READ(IOUNIT,IOSTAT=IOSTAT)VER
             READ(IOUNIT,IOSTAT=IOSTAT)NAME,LTYPE,NSIZE,NDIM,NLINK
          ELSE
-     	    WRITE(FPAR%MESG,'(A)')' Read-ffa - error reading ffa header '
-    	    CALL FLL_OUT(LOC_ERRMSG,FPAR)
-    	    FPAR%SUCCESS = .FALSE.
+            WRITE(FPAR%MESG,'(A)')' Read-ffa - error reading ffa header '
+            CALL FLL_OUT(LOC_ERRMSG,FPAR)
+            FPAR%SUCCESS = .FALSE.
             FMTS = 1
-    	    RETURN
+            RETURN
 
          END IF
        
@@ -732,7 +732,7 @@ CONTAINS
      
      END SELECT
      
-      OK = TEST_IOSTAT(IOSTAT,FPAR)
+      OK = TEST_IOSTAT(IOSTAT,FPAR,LOC_ERRMSG)
      
    RETURN
 
@@ -974,7 +974,7 @@ CONTAINS
      
      END SELECT
      
-      OK = TEST_IOSTAT(IOSTAT,FPAR)
+      OK = TEST_IOSTAT(IOSTAT,FPAR,LOC_ERRMSG)
      
    RETURN
 
@@ -1181,7 +1181,7 @@ CONTAINS
      
      END SELECT
      
-      OK = TEST_IOSTAT(IOSTAT,FPAR)
+      OK = TEST_IOSTAT(IOSTAT,FPAR,LOC_ERRMSG)
      
    RETURN
 

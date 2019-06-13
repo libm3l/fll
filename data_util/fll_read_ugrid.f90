@@ -68,7 +68,7 @@ CONTAINS
 !
 ! LOCAL PARAMATERS
 !
-    TYPE(DNODE), POINTER :: PTMP,PREG,PBC,PCOPY,PELEM
+    TYPE(DNODE), POINTER :: PTMP,PREG,PBC,PELEM
     TYPE(FUNC_DATA_SET) :: FPAR
     REAL(RDOUBLE), POINTER :: COO(:,:)
     INTEGER(SINT) :: Number_of_Nodes, Number_of_Surf_Trias, Number_of_Surf_Quads,&
@@ -344,7 +344,7 @@ CONTAINS
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Pents_5
         READ(15)INDTMP5
-  	    VOLPENT(I,:)=INDTMP5 
+          VOLPENT(I,:)=INDTMP5 
       END DO
     ELSE
       DO I=1,Number_of_Vol_Pents_5
@@ -368,7 +368,7 @@ CONTAINS
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Pents_6
         READ(15)INDTMP6
-	    VOLPENT6(I,:) = INDTMP6
+           VOLPENT6(I,:) = INDTMP6
       END DO
     ELSE
       DO I=1,Number_of_Vol_Pents_6
@@ -392,7 +392,7 @@ CONTAINS
     IF(BIN)THEN
       DO I=1,Number_of_Vol_Hexs
         READ(15)INDTMP8
-    	VOLHEX(I,:) = INDTMP8
+         VOLHEX(I,:) = INDTMP8
       END DO
     ELSE
       DO I=1,Number_of_Vol_Hexs
