@@ -208,8 +208,9 @@ CONTAINS
 !  read surface IDs
 !
   IF( Number_of_Surf_Trias+Number_of_Surf_Quads > 0)THEN
-    WRITE(*,*)' Surface Bc IDs'
+    WRITE(*,*)' Surface Bc IDs ', Number_of_Surf_Trias, Number_of_Surf_Quads
     ALLOCATE(SURFID(Number_of_Surf_Trias+Number_of_Surf_Quads), STAT = ISTAT)
+    SURFID  = 0
     IF(ISTAT /= 0)THEN
       WRITE(*,*)' ERROR ALLOCATING SURFID'
       STOP
@@ -228,31 +229,16 @@ CONTAINS
 !
 !  find maximum value
 !
-  NBC =MAXVAL(SURFID)
+  NBC = MAXVAL(SURFID) - MINVAL(SURFID)
   IF(NBC > 10000)THEN
    WRITE(*,*)' Number of BCs too high, check your file', nbc
    STOP
   END IF
 
-  WRITE(*,*)' Number of boundary conditions is ', NBC
+  WRITE(*,*)' Estimated number of boundary conditions is ', NBC
  
   DO IBC=1,NBC
 
-    PBC => FLL_MKDIR('boundary',FPAR)
-    OK = FLL_MV(PBC,PREG,FPAR)
-    PTMP => FLL_MK('boundary_name','S',1_LINT,1_LINT,FPAR)
-    IF(PRESENT(FILEBC))THEN
-      PTMP%S0 = CONDNAME(IBC)
-      write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
-    ELSE
-      WRITE(str,*)IBC
-      BCNAME = 'boudnary_'//trim(adjustl(str))
-      PTMP%S0 = BCNAME
-      write(*,*)' Setting boundary condition name to: ', trim(BCNAME)
-    END IF
-
-
-    OK = FLL_MV(PTMP,PBC,FPAR)
     NTRIA = 0
     DO I=1,Number_of_Surf_Trias
       IF(SURFID(I) == IBC) NTRIA = NTRIA + 1
@@ -264,6 +250,27 @@ CONTAINS
     
     write(*,*)'                                trias               quads'
     write(*,*)'BC statistics :', NTRIA,NQUAD
+    if(NTRIA + NQUAD < 1)THEN
+      WRITE(*,*)' Boundary condition ID ', IBC, ' does not contain any element, skipping whatever follows'
+      cycle
+    end if
+
+
+    PBC => FLL_MKDIR('boundary',FPAR)
+    OK = FLL_MV(PBC,PREG,FPAR)
+    PTMP => FLL_MK('boundary_name','S',1_LINT,1_LINT,FPAR)
+    IF(PRESENT(FILEBC))THEN
+      PTMP%S0 = CONDNAME(IBC)
+      write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
+    ELSE
+      WRITE(str,*)IBC
+      BCNAME = 'boundary_'//trim(adjustl(str))
+      PTMP%S0 = BCNAME
+      write(*,*)' Setting boundary condition name to: ', trim(BCNAME)
+    END IF
+
+
+    OK = FLL_MV(PTMP,PBC,FPAR)
     
     IF(NTRIA > 0)THEN
       PELEM => FLL_MKDIR('bound_elem_group',FPAR)
