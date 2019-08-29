@@ -109,8 +109,8 @@ if __name__ == "__main__":
 
 
     if not len(sys.argv) > 1:
-        print("\nfll_convert - converts files\n")
-        print("usage: fll_convert.py [-h] [-i GRID_FILE] [-b BC_FILE]  [-o OUTPUT_FILE] [-fi FORMAT_I] \n [-fo FORMAT_O]\n")
+        print("\nfll_ugrid2fll - converts file from ugrid to fll\n")
+        print("type 'fll_ugrid2fll -h' for list of parameters  \n")
         sys.exit()
 
     if not file:
