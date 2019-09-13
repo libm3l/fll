@@ -71,7 +71,7 @@ CONTAINS
 !
    CHARACTER(LEN=TYPE_LENGTH) :: TLTYPE
    TYPE(DNODE), POINTER  :: PCURR, PCHLD, PFIND
-   INTEGER(LINT) :: I,NDIM,NSIZE
+   INTEGER(LINT) :: I,NDIM,NSIZE,NSIZE1,NSIZE2
    CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
 !  local action
@@ -127,6 +127,8 @@ CONTAINS
 
            NDIM  = PCURR%NDIM
            NSIZE = PCURR%NSIZE
+           NSIZE1 = PCURR%NSIZE1
+           NSIZE2 = PCURR%NSIZE2
 
           SELECT CASE(DATADIM)
           CASE(0)
@@ -135,6 +137,10 @@ CONTAINS
             IF(NDIM > 1 .OR. NSIZE > 1)NUMBER = NUMBER + 1
           CASE(2)
             IF(NDIM > 1 .AND. NSIZE > 1)NUMBER = NUMBER + 1
+          CASE(3)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1)NUMBER = NUMBER + 1
+          CASE(4)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1.AND. NSIZE2 > 1)NUMBER = NUMBER + 1
           CASE DEFAULT 
             NUMBER = NUMBER + 1
           END SELECT

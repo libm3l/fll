@@ -347,6 +347,99 @@ CONTAINS
              FPAR%SUCCESS = .TRUE. 
              RETURN
            END IF
+
+!
+!  3D ARRAYS
+!
+           IF(ASSOCIATED(PNODE%R3))THEN
+             DEALLOCATE(PNODE%R3, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:299 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%D3))THEN
+             DEALLOCATE(PNODE%D3, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:310 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%I3))THEN
+             DEALLOCATE(PNODE%I3, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:321 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%L3))THEN
+             DEALLOCATE(PNODE%L3, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:332 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+!
+!  4D ARRAYS
+!
+           IF(ASSOCIATED(PNODE%R4))THEN
+             DEALLOCATE(PNODE%R4, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:299 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%D4))THEN
+             DEALLOCATE(PNODE%D4, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:310 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%I4))THEN
+             DEALLOCATE(PNODE%I4, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:321 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
+
+           IF(ASSOCIATED(PNODE%L4))THEN
+             DEALLOCATE(PNODE%L4, STAT=ISTAT)
+             IF(ISTAT /= 0)THEN
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:332 '
+                STOP
+                FPAR%SUCCESS = .FALSE.
+             END IF
+             FPAR%SUCCESS = .TRUE. 
+             RETURN
+           END IF
   
   END SUBROUTINE FLL_DEALLOC_DATA
 

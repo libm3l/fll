@@ -54,7 +54,7 @@ CONTAINS
 ! NUMBER       In         position of node in list
 ! LTYPE        In         type of node  - can be *
 ! DATADIM      In         dimensions of data the node should contain
-!                         can be 0 - scalar, 1 -1D array, 2 -2D array 
+!                         can be 0 - scalar, 1 -1D array, 2 -2D array, 3 - 3D array, 4 - 4D array
 !                         if any other number specified (preferrable -1) - do not care about dimensions
 ! RECURSE      In         search recursively
 ! PFIND        Out        return pointer to located node
@@ -75,7 +75,7 @@ CONTAINS
 !
    CHARACTER(LEN=TYPE_LENGTH) :: TLTYPE
    TYPE(DNODE), POINTER  :: PCURR, PCHLD
-   INTEGER(LINT) :: LOCNUM,NDIM, NSIZE
+   INTEGER(LINT) :: LOCNUM,NDIM, NSIZE, NSIZE1, NSIZE2
    CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
 !  define LOC_ERRMSG
@@ -132,6 +132,8 @@ CONTAINS
 
         NDIM  = PCURR%NDIM
         NSIZE = PCURR%NSIZE
+        NSIZE1 = PCURR%NSIZE1
+        NSIZE1 = PCURR%NSIZE2
 
         IF(LOCNUM == NUMBER)THEN
           SELECT CASE(DATADIM)
@@ -153,6 +155,22 @@ CONTAINS
             END IF
           CASE(2)
             IF(NDIM > 1 .AND. NSIZE > 1)THEN
+              PFIND => PCURR
+              FPAR%SUCCESS = .TRUE.
+              RETURN
+            ELSE
+             LOCNUM = LOCNUM -1
+            END IF
+          CASE(3)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1)THEN
+              PFIND => PCURR
+              FPAR%SUCCESS = .TRUE.
+              RETURN
+            ELSE
+             LOCNUM = LOCNUM -1
+            END IF
+          CASE(4)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1 .AND. NSIZE2 > 1)THEN
               PFIND => PCURR
               FPAR%SUCCESS = .TRUE.
               RETURN
