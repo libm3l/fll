@@ -219,11 +219,11 @@ CONTAINS
 !
 !  Local variables
 !
-   INTEGER(LINT) :: I,J,NDIM,NSIZE
+   INTEGER(LINT) :: I,J,NDIM,NSIZE,NSIZE1,NSIZE2
    INTEGER :: DIR
    LOGICAL :: SAVED
    CHARACTER*2048 :: TEXT,TEXT1
-   CHARACTER*72 :: NDSTR,NSSTR
+   CHARACTER*72 :: NDSTR,NSSTR,NSSTR1,NSSTR2
    CHARACTER*16 :: NAME
    CHARACTER(3*POS) SPACE
    
@@ -231,37 +231,68 @@ CONTAINS
    
    NDIM  = PNODE%NDIM
    NSIZE = PNODE%NSIZE
+   NSIZE1 = PNODE%NSIZE1
+   NSIZE2 = PNODE%NSIZE2
    SPACE(:) = ' '
+
    WRITE(NAME, '(A16)')(PNODE%LNAME)
 !
 !   print headers
 !
      WRITE(NDSTR,'(I12)')PNODE%NDIM
      WRITE(NSSTR,'(I12)')PNODE%NSIZE
+     WRITE(NSSTR1,'(I12)')PNODE%NSIZE1
+     WRITE(NSSTR2,'(I12)')PNODE%NSIZE2
 
      IF(COL_LOC == 'Y' .OR. COL_LOC == 'y')THEN
+      
        IF(TRIM(PNODE%LTYPE) == 'DIR')THEN
          WRITE(TEXT1,'(A,A,A3,A,A,A,A,A,A,A,A,A16,A,A)')&
           achar(27),"[31m-",TRIM(PNODE%LTYPE),"-    ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
           achar(27),"[32m   ",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
+
        ELSE IF(TRIM(PNODE%LTYPE) == 'N')THEN
          WRITE(TEXT1,'(A,A,A3,A,A,A,A,A,A,A,A,A16,A,A)')&
           achar(27),"[31m-",TRIM(PNODE%LTYPE),"-    ",achar(27),'[30m' ,(TRIM(NDSTR)),'/        ',&
           achar(27),"[32m   ",SPACE,ADJUSTL(PNODE%LNAME),achar(27),'[30m'
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
+
        ELSE IF(DIR == 0) THEN
-         WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
-            "-",TRIM(PNODE%LTYPE),"-   ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
-         IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
-          WRITE(IOUNIT, *)TRIM(TEXT1)
-          RETURN
+
+         IF(PNODE%NSIZE1 > 1 .AND.  PNODE%NSIZE2 > 1)THEN  ! 4D NODES
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-   ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),'x',ADJUSTL(TRIM(NSSTR1)),&
+              'x',ADJUSTL(TRIM(NSSTR2)),SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE*NSIZE1*NSIZE2 /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF 
+
+         ELSE IF(PNODE%NSIZE1 > 1)THEN  ! 3D NODES
+
+          WRITE(*,*)LEN(TRIM(NSSTR))
+
+
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-   ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),'x',ADJUSTL(TRIM(NSSTR1)),SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE*NSIZE1*NSIZE2 /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF
+         ELSE ! 1D AND 2D NODES   
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-   ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF
          END IF
        END IF
 
-     ELSE
+ ELSE
 
        IF(TRIM(PNODE%LTYPE) == 'DIR')THEN
          WRITE(TEXT1,'(A,A3,A,A,A,A,A16)')&
@@ -275,15 +306,39 @@ CONTAINS
           SPACE,ADJUSTL(PNODE%LNAME)
          WRITE(IOUNIT, *)TRIM(TEXT1)
          RETURN
+
        ELSE IF(DIR == 0) THEN
-         WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
-            "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
-         IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
-          WRITE(IOUNIT, *)TRIM(TEXT1)
-          RETURN
+         
+         IF(PNODE%NSIZE1 > 1 .AND.  PNODE%NSIZE2 > 1)THEN  ! 4D NODES
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR))&
+                                            ,'x',ADJUSTL(TRIM(NSSTR1))&
+                                            ,'x',ADJUSTL(TRIM(NSSTR2))&
+                                            ,SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF
+
+         ELSE IF(PNODE%NSIZE1 > 1)THEN  ! 3D NODES
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR))&
+                                            ,'x',ADJUSTL(TRIM(NSSTR1))&
+                                            ,SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF
+         ELSE
+           WRITE(TEXT1,'(A,A3,A,A,A,A,A,A16)')&
+              "-",TRIM(PNODE%LTYPE),"-     ",TRIM(NDSTR),'x',ADJUSTL(TRIM(NSSTR)),SPACE,ADJUSTL(NAME)
+           IF(SCAN == 'Y' .AND. (NDIM*NSIZE /= 1) )THEN
+             WRITE(IOUNIT, *)TRIM(TEXT1)
+             RETURN
+           END IF
          END IF
        END IF
-
+    
 
      END IF
 
@@ -332,6 +387,44 @@ CONTAINS
        SAVED = .TRUE.
      ELSE IF(ASSOCIATED(PNODE%S2))THEN
        WRITE(TEXT,*)"=",((TRIM(PNODE%S2(I,J))," ", J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+!
+!  print 3D arrays
+!
+     ELSE IF(ASSOCIATED(PNODE%R3))THEN
+       WRITE(TEXT,*)"=",((PNODE%R3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%D3))THEN
+       WRITE(TEXT,*)"=",((PNODE%D3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%I3))THEN
+       WRITE(TEXT,*)"=",((PNODE%I3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%L3))THEN
+       WRITE(TEXT,*)"=",((PNODE%L3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+!
+!  print 4D arrays
+!
+     ELSE IF(ASSOCIATED(PNODE%R4))THEN
+       WRITE(TEXT,*)"=",((PNODE%R4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%D4))THEN
+       WRITE(TEXT,*)"=",((PNODE%D4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%I4))THEN
+       WRITE(TEXT,*)"=",((PNODE%I4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
+       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
+       SAVED = .TRUE.
+     ELSE IF(ASSOCIATED(PNODE%L4))THEN
+       WRITE(TEXT,*)"=",((PNODE%L4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
        WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
        SAVED = .TRUE.
      END IF
