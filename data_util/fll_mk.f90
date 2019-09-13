@@ -483,7 +483,7 @@ CONTAINS
 !
      SELECT CASE(LTYPE)
 
-     CASE('R3')
+     CASE('R', 'R3')
        ALLOCATE(PNEW%R3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -491,7 +491,8 @@ CONTAINS
            STOP
          END IF 
 
-     CASE('D3')
+     CASE('D', 'D3')
+       WRITE(*,*)'ALLOCATING ', NDIM,NSIZE1,NSIZE2
        ALLOCATE(PNEW%D3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -500,7 +501,7 @@ CONTAINS
          END IF
 
 
-     CASE('I3')
+     CASE('I', 'I3')
        ALLOCATE(PNEW%I3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -508,7 +509,7 @@ CONTAINS
            STOP
          END IF
 
-     CASE('L3')
+     CASE('L', 'L3')
        ALLOCATE(PNEW%L3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -629,7 +630,7 @@ CONTAINS
 !
      SELECT CASE(LTYPE)
 
-     CASE('R4')
+     CASE('R', 'R4')
        ALLOCATE(PNEW%R4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -637,7 +638,7 @@ CONTAINS
            STOP
          END IF 
 
-     CASE('D4')
+     CASE('D', 'D4')
        ALLOCATE(PNEW%D4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -646,7 +647,7 @@ CONTAINS
          END IF
 
 
-     CASE('I4')
+     CASE('I', 'I4')
        ALLOCATE(PNEW%I4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -654,7 +655,7 @@ CONTAINS
            STOP
          END IF
 
-     CASE('L4')
+     CASE('L', 'L4')
        ALLOCATE(PNEW%L4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
