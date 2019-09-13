@@ -354,7 +354,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%R3))THEN
              DEALLOCATE(PNODE%R3, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:299 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:357 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -365,7 +365,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%D3))THEN
              DEALLOCATE(PNODE%D3, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:310 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:368 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -376,7 +376,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%I3))THEN
              DEALLOCATE(PNODE%I3, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:321 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:379 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -387,7 +387,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%L3))THEN
              DEALLOCATE(PNODE%L3, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:332 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:390 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -400,7 +400,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%R4))THEN
              DEALLOCATE(PNODE%R4, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:299 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:403 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -411,7 +411,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%D4))THEN
              DEALLOCATE(PNODE%D4, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:310 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:414 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -422,7 +422,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%I4))THEN
              DEALLOCATE(PNODE%I4, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:321 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:425 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF
@@ -433,7 +433,7 @@ CONTAINS
            IF(ASSOCIATED(PNODE%L4))THEN
              DEALLOCATE(PNODE%L4, STAT=ISTAT)
              IF(ISTAT /= 0)THEN
-                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:332 '
+                WRITE(*,*)'ERROR DEALLOCATING MEMORY ==> fll_rm ERR:436 '
                 STOP
                 FPAR%SUCCESS = .FALSE.
              END IF

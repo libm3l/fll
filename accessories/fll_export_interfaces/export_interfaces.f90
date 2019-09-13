@@ -427,7 +427,7 @@ end subroutine export_interfaces
 
     allocate(b(size(a,dim=1,kind=lint), sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3323 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:430 '
       stop
     end if
 
@@ -435,13 +435,13 @@ end subroutine export_interfaces
 
     deallocate(a, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3331 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:438 '
       stop
     end if
 
     allocate(a(sizea,sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3337 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:444 '
       stop
     end if
 
@@ -452,7 +452,7 @@ end subroutine export_interfaces
 
     deallocate(b, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR DEALLOCATING MEMORY ==> interfaces.F90 ERR:3346 '
+      write(*,*)'ERROR DEALLOCATING MEMORY ==> export_interfaces ERR:455 '
       stop
     end if
 
