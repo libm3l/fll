@@ -467,6 +467,10 @@ CONTAINS
       PNEW%PPREV   =>NULL()
       PNEW%PLINK   =>NULL()      
 
+      PNEW%NDIM = NDIM
+      PNEW%NSIZE = NSIZE1
+      PNEW%NSIZE1 = NSIZE2
+
       PNEW%PPAR => NULL()
       PNEW%PCHILD => NULL()
       PNEW%PPREV => NULL()
@@ -492,7 +496,6 @@ CONTAINS
          END IF 
 
      CASE('D', 'D3')
-       WRITE(*,*)'ALLOCATING ', NDIM,NSIZE1,NSIZE2
        ALLOCATE(PNEW%D3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
@@ -612,7 +615,12 @@ CONTAINS
       PNEW%PCHILD  =>NULL()
       PNEW%PNEXT   =>NULL()
       PNEW%PPREV   =>NULL()
-      PNEW%PLINK   =>NULL()      
+      PNEW%PLINK   =>NULL()
+
+      PNEW%NDIM = NDIM
+      PNEW%NSIZE = NSIZE1
+      PNEW%NSIZE1 = NSIZE2      
+      PNEW%NSIZE2 = NSIZE3      
 
       PNEW%PPAR => NULL()
       PNEW%PCHILD => NULL()
