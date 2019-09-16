@@ -75,25 +75,25 @@ contains
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('bar2')
+    case('bar2','bar')
       buf = 'bar2'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('tria3')
+    case('tria3','tria')
       buf = 'tria3'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('quad4')
+    case('quad4','quad')
       buf = 'quad4'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('tetra4')
+    case('tetra4','tetra')
       buf = 'tetra4'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
@@ -105,13 +105,13 @@ contains
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('penta6')
+    case('penta6','penta')
       buf = 'penta6'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
       write(iunit) ((int(nodenum(j,i), kind = sint),i=1,ndim2),j=1,ndim1)
 
-    case('penta5')
+    case('penta5','pyra')
       buf = 'pyramid5'
       write(iunit) buf
       write(iunit) int(ndim1, kind = sint)
