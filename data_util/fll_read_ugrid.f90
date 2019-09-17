@@ -229,7 +229,7 @@ CONTAINS
 !
 !  find maximum value
 !
-  NBC = MAXVAL(SURFID) - MINVAL(SURFID)
+  NBC = MAXVAL(SURFID) - MINVAL(SURFID)+1
   IF(NBC > 10000)THEN
    WRITE(*,*)' Number of BCs too high, check your file', nbc
    STOP
