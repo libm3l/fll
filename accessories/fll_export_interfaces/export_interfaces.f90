@@ -110,6 +110,13 @@ contains
         write(*,*)'Processing interface #',intf
 
         pintf => fll_locate(pgrid,'Interface','*',-1_lint,intf,.false.,fpar,errmsg='ALL')
+
+!
+!  if global type of interface, do not export
+!
+        iclass = fll_getndata_s0(pintf,'Iclass', 1_lint, fpar, errmsg='NONE')
+        if(iclass == 'global')cycle
+
         intfname = fll_getndata_s0(pintf,'Iname', 1_lint, fpar, errmsg='NONE')
         bcnames => fll_getndata_s1(pintf,'Ibname', 1_lint, fpar, errmsg='NONE')
         if(.not.fpar%success)then

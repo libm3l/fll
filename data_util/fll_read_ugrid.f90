@@ -48,7 +48,7 @@ MODULE FLL_READ_UGRID_M
 
 CONTAINS
 
-  FUNCTION  FLL_READ_UGRID(NAME, FMT,ENDIAN, FILEBC) RESULT(PFLL)
+  FUNCTION  FLL_READ_UGRID(NAME, FMT,ENDIAN, FILEBC, ERRMSG) RESULT(PFLL)
 !
 !  READS UGRID FILE
 !
@@ -57,6 +57,7 @@ CONTAINS
     USE FLL_MV_M
     USE FLL_MK_M
     USE FLL_MKDIR_M
+    USE FLL_RM_M
     IMPLICIT NONE
 ! 
 ! INPUT/OUTPUT DATA
@@ -65,6 +66,7 @@ CONTAINS
     CHARACTER(LEN=*) :: NAME
     CHARACTER :: FMT, ENDIAN
     CHARACTER(LEN=*),OPTIONAL :: FILEBC
+    CHARACTER(*), OPTIONAL :: ERRMSG
 !
 ! LOCAL PARAMATERS
 !
@@ -85,6 +87,15 @@ CONTAINS
     CHARACTER(LEN = LSTRING_LENGTH) :: BCNAME, STR
     INTEGER, ALLOCATABLE :: BCTYPE(:)
     LOGICAL :: BIN
+    CHARACTER(LEN=10) :: LOC_ERRMSG
+!   
+!  local action
+!
+    IF(.NOT.PRESENT(ERRMSG))THEN
+      LOC_ERRMSG='ALL'
+    ELSE
+      LOC_ERRMSG = ERRMSG
+    END IF
     
     PFLL  => FLL_MKDIR('ugrid_data', FPAR,ERRMSG='ALL')
 !
@@ -134,6 +145,24 @@ CONTAINS
    write(*,*)Number_of_Nodes, Number_of_Surf_Trias, Number_of_Surf_Quads,&
    Number_of_Vol_Tets, Number_of_Vol_Pents_5, Number_of_Vol_Pents_6,&
    Number_of_Vol_Hexs
+
+   if(Number_of_Nodes < 1)then
+    WRITE(FPAR%MESG,'(A)')' Read_ugrid  - number of nodes == 0, terminating ... '
+    CALL FLL_OUT(LOC_ERRMSG,FPAR)
+    FPAR%SUCCESS = .FALSE.
+    call fll_rm(pfll, fpar)
+    nullify(pfll)
+    close(15)
+    RETURN
+   end if
+
+   write(*,*)'Number of nodes: ', Number_of_Nodes
+   if(Number_of_Surf_Trias > 0) write(*,*)'Number of surface triangles: ', Number_of_Surf_Trias
+   if(Number_of_Surf_Quads > 0) write(*,*)'Number of surface quads: ', Number_of_Surf_Quads
+   if(Number_of_Vol_Tets > 0)   write(*,*)'Number of surface : ', Number_of_Vol_Tets
+   if(Number_of_Vol_Pents_5 > 0)write(*,*)'Number of surface : ', Number_of_Vol_Pents_5
+   if(Number_of_Vol_Pents_6 > 0)write(*,*)'Number of surface : ', Number_of_Vol_Pents_6
+   if(Number_of_Vol_Hexs > 0)   write(*,*)'Number of surface : ', Number_of_Vol_Hexs
 !
 !  ADD SOME BASIC INFO
 !
@@ -229,7 +258,7 @@ CONTAINS
 !
 !  find maximum value
 !
-  NBC = MAXVAL(SURFID) - MINVAL(SURFID)
+  NBC = MAXVAL(SURFID) - MINVAL(SURFID)+1
   IF(NBC > 10000)THEN
    WRITE(*,*)' Number of BCs too high, check your file', nbc
    STOP
@@ -248,12 +277,12 @@ CONTAINS
       IF(SURFID(I) == IBC) NQUAD = NQUAD + 1
     END DO
     
-    write(*,*)'                                trias               quads'
-    write(*,*)'BC statistics :', NTRIA,NQUAD
     if(NTRIA + NQUAD < 1)THEN
-      WRITE(*,*)' Boundary condition ID ', IBC, ' does not contain any element, skipping whatever follows'
+!      WRITE(*,*)' Boundary condition ID ', IBC, ' does not contain any element, skipping whatever follows'
       cycle
     end if
+    write(*,*)'                                trias               quads'
+    write(*,*)'BC statistics :', NTRIA,NQUAD
 
 
     PBC => FLL_MKDIR('boundary',FPAR)
