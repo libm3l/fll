@@ -107,7 +107,7 @@ CONTAINS
      READ(15,*)NBC
      ALLOCATE(BCTYPE(NBC),CONDNAME(NBC), STAT = ISTAT)
       IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:110 '
         STOP
       END IF
 
@@ -203,7 +203,7 @@ CONTAINS
     WRITE(*,*)' Surface triangles'
     ALLOCATE(SIND3(Number_of_Surf_Trias, 3), STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)'ERROR ALLOCATING MEMORY '
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:206 '
       STOP
     END IF
     IF(BIN)THEN
@@ -224,7 +224,7 @@ CONTAINS
     WRITE(*,*)' Surface quads'
     ALLOCATE(SIND4(Number_of_Surf_Quads, 4), STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)'ERROR ALLOCATING MEMORY '
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:227 '
       STOP
     END IF
     IF(BIN)THEN
@@ -246,7 +246,7 @@ CONTAINS
     ALLOCATE(SURFID(Number_of_Surf_Trias+Number_of_Surf_Quads), STAT = ISTAT)
     SURFID  = 0
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)'ERROR ALLOCATING MEMORY '
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:249 '
       STOP
     END IF
     IF(BIN)THEN

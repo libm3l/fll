@@ -287,7 +287,7 @@ CONTAINS
 !
     ALLOCATE(I3(NELEM,3),I4(NELEM,4), STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:273 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:290 '
         STOP
       END IF
 
@@ -336,7 +336,7 @@ CONTAINS
 
     DEALLOCATE(I3,I4, STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:322 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:339 '
         STOP
       END IF
 
@@ -431,7 +431,7 @@ CONTAINS
 !
     ALLOCATE(I3(NELEM,3),I4(NELEM,4), STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:417 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:434 '
         STOP
       END IF
 
@@ -480,7 +480,7 @@ CONTAINS
 
     DEALLOCATE(I3,I4, STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:466 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:483 '
         STOP
       END IF
 

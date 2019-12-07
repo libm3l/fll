@@ -126,7 +126,7 @@ CONTAINS
 
       ALLOCATE(PNEW, STAT = ISTAT)
       IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:113 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:129 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -176,7 +176,7 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%R1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-             WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:158 '
+             WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:179 '
              WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -185,14 +185,14 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%R1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-               WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:167 '
+               WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:188 '
                WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
             STOP
       END IF
          ELSE
             ALLOCATE(PNEW%R2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:174 '
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:195 '
               WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
              STOP
       END IF
@@ -202,7 +202,7 @@ CONTAINS
      CASE('R1')
        ALLOCATE(PNEW%R1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:184 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:205 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF  
@@ -210,7 +210,7 @@ CONTAINS
      CASE('R2')
        ALLOCATE(PNEW%R2(NDIM,NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:192 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:213 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -220,7 +220,7 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%D1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:202 '
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:223 '
               WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
       END IF
@@ -229,14 +229,14 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%D1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:211 '
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:232 '
               WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
             STOP
       END IF
          ELSE
             ALLOCATE(PNEW%D2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-               WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:218 '
+               WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:239 '
                WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
              STOP
       END IF
@@ -246,7 +246,7 @@ CONTAINS
      CASE('D1')
        ALLOCATE(PNEW%D1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:228 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:249 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF  
@@ -254,7 +254,7 @@ CONTAINS
      CASE('D2')
        ALLOCATE(PNEW%D2(NDIM,NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:236 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:257 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -265,7 +265,7 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%I1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-             WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:247 '
+             WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:268 '
              WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -274,14 +274,14 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%I1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:256 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:277 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
          ELSE
             ALLOCATE(PNEW%I2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:263 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:284 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -291,7 +291,7 @@ CONTAINS
      CASE('I1')
        ALLOCATE(PNEW%I1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:273 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:294 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF  
@@ -299,7 +299,7 @@ CONTAINS
      CASE('I2')
        ALLOCATE(PNEW%I2(NDIM,NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:281 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:302 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -310,7 +310,7 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%L1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:292 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:313 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -319,14 +319,14 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%L1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:301 '
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:322 '
              WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
             STOP
       END IF
          ELSE
             ALLOCATE(PNEW%L2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:308 '
+              WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:329 '
               WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
               STOP
             END IF
@@ -336,7 +336,7 @@ CONTAINS
      CASE('L1')
        ALLOCATE(PNEW%L1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:318 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:339 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF  
@@ -344,7 +344,7 @@ CONTAINS
      CASE('L2')
        ALLOCATE(PNEW%L2(NDIM,NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:326 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:347 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -354,7 +354,7 @@ CONTAINS
          IF(NSIZE > 1)THEN
            ALLOCATE(PNEW%S1(NSIZE), STAT=ISTAT)
            IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:336 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:357 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -363,14 +363,14 @@ CONTAINS
          IF(NSIZE == 1)THEN
             ALLOCATE(PNEW%S1(NDIM), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:345 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:366 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
          ELSE
             ALLOCATE(PNEW%S2(NDIM,NSIZE), STAT=ISTAT)
             IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:352 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:373 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -380,7 +380,7 @@ CONTAINS
      CASE('S1')
        ALLOCATE(PNEW%S1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:362 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:383 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF  
@@ -388,7 +388,7 @@ CONTAINS
      CASE('S2')
        ALLOCATE(PNEW%S2(NDIM,NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:370 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:391 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -474,7 +474,7 @@ CONTAINS
 
       ALLOCATE(PNEW, STAT = ISTAT)
       IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:453 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:477 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -514,7 +514,7 @@ CONTAINS
      CASE('R', 'R3')
        ALLOCATE(PNEW%R3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:493 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:517 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF 
@@ -522,7 +522,7 @@ CONTAINS
      CASE('D', 'D3')
        ALLOCATE(PNEW%D3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:501 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:525 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -531,7 +531,7 @@ CONTAINS
      CASE('I', 'I3')
        ALLOCATE(PNEW%I3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:510 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:534 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -539,7 +539,7 @@ CONTAINS
      CASE('L', 'L3')
        ALLOCATE(PNEW%L3(NDIM,NSIZE1,NSIZE2), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:518 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:542 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -623,7 +623,7 @@ CONTAINS
 
       ALLOCATE(PNEW, STAT = ISTAT)
       IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:602 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:626 '
         WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
         STOP
       END IF
@@ -665,7 +665,7 @@ CONTAINS
      CASE('R', 'R4')
        ALLOCATE(PNEW%R4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:644 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:668 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF 
@@ -673,7 +673,7 @@ CONTAINS
      CASE('D', 'D4')
        ALLOCATE(PNEW%D4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:652 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:676 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -682,7 +682,7 @@ CONTAINS
      CASE('I', 'I4')
        ALLOCATE(PNEW%I4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:661 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:685 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF
@@ -690,7 +690,7 @@ CONTAINS
      CASE('L', 'L4')
        ALLOCATE(PNEW%L4(NDIM,NSIZE1,NSIZE2,NSIZE3), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
-           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:669 '
+           WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:693 '
            WRITE(*,*)' NODE NAME IS ',TRIM(NAME)
            STOP
          END IF

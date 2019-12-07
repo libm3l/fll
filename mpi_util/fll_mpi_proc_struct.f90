@@ -249,7 +249,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:248 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:252 '
         STOP
       END IF
 !
@@ -366,7 +366,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:365 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:369 '
         STOP
       END IF
 
@@ -495,7 +495,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:494 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:498 '
         STOP
       END IF
 !
@@ -611,7 +611,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:610 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:614 '
         STOP
       END IF
 
