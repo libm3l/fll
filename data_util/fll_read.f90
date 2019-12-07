@@ -294,7 +294,8 @@ CONTAINS
       DO NNODES = 1,NDIM
         PNEW => READ_NODE(IOUNIT,FMT,POS,SCAN,FPAR,LOC_ERRMSG)
         IF(.NOT.ASSOCIATED(PNEW))THEN
-          WRITE(*,*)'ERROR READING NODE'
+          WRITE(FPAR%MESG,'(A)')' Read  - error reading node '
+          CALL FLL_OUT(LOC_ERRMSG,FPAR)
           STOP
         END IF
 !
@@ -302,9 +303,9 @@ CONTAINS
 !
         OK = FLL_MV(PNEW,PNODE,FPAR,LOC_ERRMSG)
         IF(.NOT.OK) THEN
-         WRITE(*,*)'ERROR MV'
-         STOP
-         END IF
+          WRITE(FPAR%MESG,'(A)')' Read  - mv error '
+          CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF
 
       END DO
     ELSE

@@ -282,12 +282,12 @@ CONTAINS
       IF(SURFID(I) == IBC) NQUAD = NQUAD + 1
     END DO
     
-    write(*,*)'                                trias               quads'
-    write(*,*)'BC statistics :', NTRIA,NQUAD
     if(NTRIA + NQUAD < 1)THEN
-      WRITE(*,*)' Boundary condition ID ', IBC, ' does not contain any element, skipping whatever follows'
+!      WRITE(*,*)' Boundary condition ID ', IBC, ' does not contain any element, skipping whatever follows'
       cycle
     end if
+    write(*,*)'                                trias               quads'
+    write(*,*)'BC statistics :', NTRIA,NQUAD
 
 
     PBC => FLL_MKDIR('boundary',FPAR)
