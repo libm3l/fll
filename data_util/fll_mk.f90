@@ -43,7 +43,7 @@ END INTERFACE FLL_MK
 PUBLIC FLL_MK
 
 CONTAINS
-   FUNCTION FLL_MK_12D(NAME,LTYPE,NDIM,NSIZE,FPAR,ERRMSG) RESULT(PNEW)
+   FUNCTION FLL_MK_12D(NAME,LTYPE,NDIM,NSIZE,FPAR,ERRMSG,DIAGMESSG) RESULT(PNEW)
 !
 ! Description: function creates node specified by name, type and dimensions
 !
@@ -72,6 +72,7 @@ CONTAINS
        CHARACTER(*)  :: LTYPE
        INTEGER(LINT) :: NDIM, NSIZE
        CHARACTER(*), OPTIONAL :: ERRMSG
+       CHARACTER(*), OPTIONAL :: DIAGMESSG
 !
 ! Local declarations
 !       
@@ -93,18 +94,33 @@ CONTAINS
        IF(LEN_TRIM(LTYPE)<1.OR.LEN_TRIM(LTYPE)>TYPE_LENGTH) THEN
          WRITE(FPAR%MESG,'(A,A)')' Wrong type: ',TRIM(LTYPE)
          CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         END IF
+         FPAR%SUCCESS = .FALSE.
          RETURN
       END IF
 
       IF(LEN_TRIM(NAME)>NAME_LENGTH) THEN
         WRITE(FPAR%MESG,'(A,A)')' Wrong name: ',TRIM(NAME)
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF 
+        FPAR%SUCCESS = .FALSE.
         RETURN
       END IF
 
       IF(.NOT.ANY(LTYPE(1:1)==(/'C','S','I','L','R','D','N'/))) THEN
         WRITE(FPAR%MESG,'(A,A)')' Wrong type: ',TRIM(LTYPE)
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF 
+        FPAR%SUCCESS = .FALSE.
         RETURN
       END IF
 
@@ -144,6 +160,11 @@ CONTAINS
       IF(NDIM < 1 .OR. NSIZE < 1)THEN
         WRITE(FPAR%MESG,'(A,A,I5,I5)')' Wrong dimensions for node ',TRIM(NAME), NDIM, NSIZE
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF 
+        FPAR%SUCCESS = .FALSE.
         RETURN
       END IF
 !
@@ -374,11 +395,14 @@ CONTAINS
      
      CASE('C')
 
-     CASE('N','DIR')
+     CASE('N','DIR') 
+        FPAR%SUCCESS = .true.
         RETURN
      
      
      END SELECT
+     
+     FPAR%SUCCESS = .true.
 
     RETURN
    END FUNCTION FLL_MK_12D

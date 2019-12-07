@@ -34,7 +34,7 @@ MODULE FLL_RENAME_M
 !
 
 CONTAINS
-   FUNCTION FLL_RENAME(PWHAT,INAME,FPAR,ERRMSG) RESULT(OK)
+   FUNCTION FLL_RENAME(PWHAT,INAME,FPAR,ERRMSG,DIAGMESSG) RESULT(OK)
 !
 ! Description: Renames node
 !
@@ -60,6 +60,10 @@ CONTAINS
        CHARACTER(LEN=*) :: INAME
        LOGICAL :: OK
        CHARACTER(*), OPTIONAL :: ERRMSG
+       CHARACTER(*), OPTIONAL :: DIAGMESSG
+!
+!   local parameters
+!
        CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
 !  local action
@@ -76,6 +80,10 @@ CONTAINS
           WRITE(*,*)' Rename - SOURCE IS NULL NODE'
           WRITE(FPAR%MESG,'(A,A)')' Rename  - Pwhat null node '
           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+          IF(PRESENT(DIAGMESSG))THEN
+            FPAR%MESG = DIAGMESSG
+            CALL FLL_OUT(LOC_ERRMSG,FPAR)
+          END IF
           FPAR%SUCCESS = .FALSE.
           OK = .FALSE.
           RETURN

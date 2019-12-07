@@ -34,7 +34,7 @@ MODULE FLL_CP_M
 !
 
 CONTAINS
-   FUNCTION FLL_CP(PWHAT,PWHERE,FPAR,ERRMSG) RESULT(PNEW)
+   FUNCTION FLL_CP(PWHAT,PWHERE,FPAR,ERRMSG,DIAGMESSG) RESULT(PNEW)
 !
 ! Description: Module copies PWHAT pointer to PWHERE pointer
 !              If PWHERE pointer == NULL, PWHAT is a duplicate 
@@ -69,7 +69,7 @@ CONTAINS
        TYPE(DNODE), POINTER  :: PWHAT,PWHERE
        TYPE(FUNC_DATA_SET) :: FPAR
        TYPE(DNODE), POINTER  :: PNEW
-       CHARACTER(*), OPTIONAL :: ERRMSG
+       CHARACTER(*), OPTIONAL :: ERRMSG,DIAGMESSG
 
        CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
@@ -89,6 +89,10 @@ CONTAINS
           WRITE(*,*)' Cp - SOURCE IS NULL NODE'
           WRITE(FPAR%MESG,'(A,A)')' Cp  - Pwhat null node '
           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+          IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+          END IF
           FPAR%SUCCESS = .FALSE.
           RETURN
        END IF

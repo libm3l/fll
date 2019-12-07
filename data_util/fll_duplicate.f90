@@ -33,7 +33,7 @@ MODULE FLL_DUPLICATE_M
 ! External Modules used
 !
 CONTAINS
-   FUNCTION FLL_DUPLICATE(PNODE,FPAR,ERRMSG) RESULT(PNEW)
+   FUNCTION FLL_DUPLICATE(PNODE,FPAR,ERRMSG,DIAGMESSG) RESULT(PNEW)
 !
 ! Description: Contains duplicates node to PNEW mode
 !              the parent, previous and next pointers of PNEW node are NULL
@@ -66,7 +66,7 @@ CONTAINS
 !
    TYPE(DNODE), POINTER  :: PNODE,PNEW
    TYPE(FUNC_DATA_SET) :: FPAR
-   CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: ERRMSG,DIAGMESSG
 !
 ! Local declarations
 !
@@ -91,6 +91,10 @@ CONTAINS
    IF(.NOT.ASSOCIATED(PNODE))THEN
       WRITE(FPAR%MESG,'(A)')' DUPLICATE - null node '
       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      END IF
       FPAR%SUCCESS = .FALSE.
       RETURN
    END IF
@@ -112,6 +116,10 @@ CONTAINS
       IF(.NOT.FPAR%SUCCESS)THEN
         WRITE(FPAR%MESG,'(A)')' DUPLICATE - error duplicting children nodes '
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF
         FPAR%SUCCESS = .FALSE.
         PNEW => NULL()
         RETURN
@@ -125,6 +133,10 @@ CONTAINS
     IF(.NOT.ASSOCIATED(PNEW))THEN
       WRITE(FPAR%MESG,'(A)')' DUPLICATE - error allocating PNEW '
       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      END IF
       FPAR%SUCCESS = .FALSE.
       PNEW => NULL()
       RETURN

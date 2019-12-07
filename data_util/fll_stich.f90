@@ -30,7 +30,7 @@ MODULE FLL_STICH_M
 ! External Modules used
 !
 CONTAINS
-   SUBROUTINE FLL_STICH(PNODE,FPAR, ERRMSG)
+   SUBROUTINE FLL_STICH(PNODE,FPAR, ERRMSG,DIAGMESSG)
 !
 ! Description: subroutine stiches list after PNODE
 !              is taken away
@@ -57,6 +57,7 @@ CONTAINS
     TYPE(DNODE), POINTER  :: PNODE
     TYPE(FUNC_DATA_SET) :: FPAR
     CHARACTER(*), OPTIONAL :: ERRMSG
+    CHARACTER(*), OPTIONAL :: diagMESSG
 !
 ! Local declarations
 !
@@ -76,6 +77,10 @@ CONTAINS
    IF(.NOT.ASSOCIATED(PNODE))THEN
      WRITE(FPAR%MESG,'(A)')' Stich  - null node '
      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      END IF
      FPAR%SUCCESS = .FALSE.
      RETURN
    END IF
@@ -89,6 +94,10 @@ CONTAINS
    IF(.NOT.ASSOCIATED(PNODE%PPAR))THEN
      WRITE(FPAR%MESG,'(A,A)')' Stich - null node '
      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      END IF
      FPAR%SUCCESS = .FALSE.
      RETURN
    END IF
