@@ -74,7 +74,7 @@ contains
         bcuniqueu4(:),bcuniqueu3(:),bcuniqueutmp(:),bcunique(:)
     integer(lint), allocatable :: tmparray(:,:),tmparray1d(:)
     character(len=lstring_length), pointer :: bcnames(:)
-    character(len=lstring_length) :: gbcname,bcname,intfname
+    character(len=lstring_length) :: gbcname,bcname,intfname,iclass
     character(len=file_name_length) :: outfile
     real(rdouble), pointer :: coo(:,:)
     logical :: ok
