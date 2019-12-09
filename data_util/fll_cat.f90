@@ -389,44 +389,6 @@ CONTAINS
        WRITE(TEXT,*)"=",((TRIM(PNODE%S2(I,J))," ", J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
        WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
        SAVED = .TRUE.
-!
-!  print 3D arrays
-!
-     ELSE IF(ASSOCIATED(PNODE%R3))THEN
-       WRITE(TEXT,*)"=",((PNODE%R3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%D3))THEN
-       WRITE(TEXT,*)"=",((PNODE%D3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%I3))THEN
-       WRITE(TEXT,*)"=",((PNODE%I3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%L3))THEN
-       WRITE(TEXT,*)"=",((PNODE%L3(I,J,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-!
-!  print 4D arrays
-!
-     ELSE IF(ASSOCIATED(PNODE%R4))THEN
-       WRITE(TEXT,*)"=",((PNODE%R4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%D4))THEN
-       WRITE(TEXT,*)"=",((PNODE%D4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%I4))THEN
-       WRITE(TEXT,*)"=",((PNODE%I4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
-     ELSE IF(ASSOCIATED(PNODE%L4))THEN
-       WRITE(TEXT,*)"=",((PNODE%L4(I,J,1,1), J = 1,MIN(NSIZE,2_LINT)), I=1,MIN(NDIM,2_LINT))
-       WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-       SAVED = .TRUE.
      END IF
 !
 !  if not 1D or 2D arrays, print constants
@@ -456,13 +418,13 @@ CONTAINS
 
        ELSE
          SELECT CASE(PNODE%LTYPE)
-          CASE('R', 'R1', 'R2', 'R3', 'R4')
+          CASE('R', 'R1', 'R2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-          CASE('D', 'D1', 'D2','D3', 'D4')
+          CASE('D', 'D1', 'D2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('I', 'I1', 'I2', 'I3', 'I4')
+         CASE('I', 'I1', 'I2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('L', 'L1', 'L2', 'L3', 'L4')
+         CASE('L', 'L1', 'L2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
          CASE('S', 'S1', 'S2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
