@@ -149,11 +149,10 @@ CONTAINS
 
    if(Number_of_Nodes < 1)then
     WRITE(FPAR%MESG,'(A)')' Read_ugrid  - number of nodes == 0, terminating ... '
-    CALL FLL_OUT(LOC_ERRMSG,FPAR)
-    IF(PRESENT(DIAGMESSG))THEN
-           FPAR%MESG = DIAGMESSG
-           CALL FLL_OUT(LOC_ERRMSG,FPAR)
-    END IF
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
     FPAR%SUCCESS = .FALSE.
     call fll_rm(pfll, fpar)
     nullify(pfll)

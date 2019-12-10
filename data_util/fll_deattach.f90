@@ -83,11 +83,10 @@ CONTAINS
        OK = .FALSE.
        IF(.NOT.ASSOCIATED(PWHAT))THEN
          WRITE(FPAR%MESG,'(A,A)')' Deattach - null node '
-         CALL FLL_OUT(LOC_ERRMSG,FPAR)
          IF(PRESENT(DIAGMESSG))THEN
-           FPAR%MESG = DIAGMESSG
-           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
          END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
          FPAR%SUCCESS = .FALSE.
          RETURN
        END IF
