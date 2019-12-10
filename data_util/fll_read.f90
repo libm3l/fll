@@ -54,11 +54,17 @@ MODULE FLL_READ_M
 ! 1.1       10/10/16                         Initial implementation
 !
 !
+!  NOTE: I had problem with this function when compiled with gfortran in gcc version 9.2.0 and optimization option -O and higher
+!  when setting POS = 1, the function READ_NODE complained to have the POS value uninitialized
+!  the temporary hack is to have either write(*,*) statement right between POS = 1 statement and call to READ_NODE function
+!  or to have a INQUIRE POS statement in READ_NODE function.
+!  the INQUIRE colides with SCAN option though
+!
 ! External Modules used
 !
 CONTAINS
 
-  FUNCTION FLL_READ(FILE,IOUNIT,FMT,FPAR,SCAN, ERRMSG) RESULT(PNODE)
+  FUNCTION FLL_READ(FILE,IOUNIT,FMT,FPAR,SCAN, ERRMSG,DIAGMESSG) RESULT(PNODE)
 !
 ! Description: main function opening, reading and closing file
 !
@@ -97,6 +103,7 @@ CONTAINS
    CHARACTER :: FMT
    CHARACTER, OPTIONAL :: SCAN
    CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: DIAGMESSG
 !
 ! Local declarations
 !
@@ -118,7 +125,10 @@ CONTAINS
    INQUIRE (FILE=TRIM(FILE), EXIST=OK)
    IF(.NOT.OK) THEN
       WRITE(FPAR%MESG,'(A,A)')' Read  - file does not exist ',TRIM(FILE)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -135,7 +145,10 @@ CONTAINS
       FMT_LOC = 'U'
     CASE DEFAULT
       WRITE(FPAR%MESG,'(A,A)')' Read  - unknown format',TRIM(FMT)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -160,7 +173,10 @@ CONTAINS
 
     IF(ISTAT/=0) THEN
       WRITE(FPAR%MESG,'(A,A)')' Read  - error opening file ',TRIM(FILE)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -169,17 +185,22 @@ CONTAINS
 !   READ INITIAL NODE
 !
     POS = 1
+      write(*,*)
+!
     PNODE => READ_NODE(IOUNIT,FMT_LOC,POS,SCAN_LOC,FPAR,LOC_ERRMSG)
-
+    
     IF(.NOT.FPAR%SUCCESS)THEN
-      CALL FLL_RM(PNODE,FPAR)
+      CALL FLL_RM(PNODE,FPAR,ERRMSG='NONE')
       PNODE => NULL()
     END IF
     
     CLOSE(IOUNIT)
     IF(.NOT.ASSOCIATED(PNODE))THEN
        WRITE(FPAR%MESG,'(A,A)')' Read  - error reading file ',TRIM(FILE)
-       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
        FPAR%SUCCESS = .FALSE.
     END IF
     
@@ -237,12 +258,23 @@ CONTAINS
     INTEGER(LINT) :: NDIM, NSIZE,NNODES
     LOGICAL :: OK
     INTEGER(LINT):: POSOLD
-    CHARACTER(LEN=*), OPTIONAL :: LOC_ERRMSG
+    CHARACTER(LEN=*) :: LOC_ERRMSG
 !
 !  READ HEADER
 !
     FPAR%SUCCESS=.TRUE.
+!
+!  NOTE: I had problem with this function when compiled with gfortran in gcc version 9.2.0 and optimization option -O and higher
+!  when setting POS = 1, the function READ_NODE complained to have the POS value uninitialized
+!  the temporary hack is to have either write(*,*) statement right between POS = 1 statement and call to READ_NODE function
+!  or to have a INQUIRE POS statement in READ_NODE function.
+!  the INQUIRE colides with SCAN option though
+!
+!     write(*,*)pos
+!     INQUIRE(UNIT = IOUNIT, POS=POS)
+!     write(*,*)pos
     POSOLD = POS
+
     CALL READ_HEADER(IOUNIT,FMT,POS,NAME,LTYPE,NDIM,NSIZE,FPAR_H,LOC_ERRMSG)
     
     IF(.NOT.FPAR_H%SUCCESS)THEN
@@ -692,6 +724,9 @@ CONTAINS
 !
 !  BODY
 !
+    NSIZE2 = 0  ! temporary hack
+    NSIZE1 = 0  ! temporary hack
+
     SELECT CASE(LTYPE)
      CASE('R')
        IF(NDIM == 1)THEN
@@ -960,19 +995,22 @@ CONTAINS
      CASE('D', 'L','D1','D2','L1','L2')
        LENGTH = 8
        
-       
       CASE('S','S1','S2')
        LENGTH = LSTRING_LENGTH
 
       CASE('C')
+       LENGTH = 1
 
       CASE('N','DIR')
+         POS = 0
          RETURN
          
       CASE DEFAULT
         WRITE(FPAR%MESG,'(A,A)')' GET_NEW_POS  - wrong type '
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
         FPAR%SUCCESS = .FALSE.
+        POS = 0
+        RETURN
      
      END SELECT
 

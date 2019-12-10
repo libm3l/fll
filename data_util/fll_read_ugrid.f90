@@ -48,7 +48,7 @@ MODULE FLL_READ_UGRID_M
 
 CONTAINS
 
-  FUNCTION  FLL_READ_UGRID(NAME, FMT,ENDIAN, FILEBC, ERRMSG) RESULT(PFLL)
+  FUNCTION  FLL_READ_UGRID(NAME, FMT,ENDIAN, FILEBC, ERRMSG,DIAGMESSG) RESULT(PFLL)
 !
 !  READS UGRID FILE
 !
@@ -67,6 +67,7 @@ CONTAINS
     CHARACTER :: FMT, ENDIAN
     CHARACTER(LEN=*),OPTIONAL :: FILEBC
     CHARACTER(*), OPTIONAL :: ERRMSG
+    CHARACTER(*), OPTIONAL :: DIAGMESSG
 !
 ! LOCAL PARAMATERS
 !
@@ -106,7 +107,7 @@ CONTAINS
      READ(15,*)NBC
      ALLOCATE(BCTYPE(NBC),CONDNAME(NBC), STAT = ISTAT)
       IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING'
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:110 '
         STOP
       END IF
 
@@ -148,7 +149,10 @@ CONTAINS
 
    if(Number_of_Nodes < 1)then
     WRITE(FPAR%MESG,'(A)')' Read_ugrid  - number of nodes == 0, terminating ... '
-    CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
     FPAR%SUCCESS = .FALSE.
     call fll_rm(pfll, fpar)
     nullify(pfll)
@@ -198,7 +202,7 @@ CONTAINS
     WRITE(*,*)' Surface triangles'
     ALLOCATE(SIND3(Number_of_Surf_Trias, 3), STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)' ERROR ALLOCATING SIND3'
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:206 '
       STOP
     END IF
     IF(BIN)THEN
@@ -219,7 +223,7 @@ CONTAINS
     WRITE(*,*)' Surface quads'
     ALLOCATE(SIND4(Number_of_Surf_Quads, 4), STAT = ISTAT)
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)' ERROR ALLOCATING SIND4'
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:227 '
       STOP
     END IF
     IF(BIN)THEN
@@ -241,7 +245,7 @@ CONTAINS
     ALLOCATE(SURFID(Number_of_Surf_Trias+Number_of_Surf_Quads), STAT = ISTAT)
     SURFID  = 0
     IF(ISTAT /= 0)THEN
-      WRITE(*,*)' ERROR ALLOCATING SURFID'
+      WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ugrid ERR:249 '
       STOP
     END IF
     IF(BIN)THEN

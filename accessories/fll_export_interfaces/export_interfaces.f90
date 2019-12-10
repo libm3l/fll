@@ -110,7 +110,6 @@ contains
         write(*,*)'Processing interface #',intf
 
         pintf => fll_locate(pgrid,'Interface','*',-1_lint,intf,.false.,fpar,errmsg='ALL')
-
 !
 !  if global type of interface, do not export
 !
@@ -434,7 +433,7 @@ end subroutine export_interfaces
 
     allocate(b(size(a,dim=1,kind=lint), sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:430 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:436 '
       stop
     end if
 
@@ -442,13 +441,13 @@ end subroutine export_interfaces
 
     deallocate(a, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:438 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:444 '
       stop
     end if
 
     allocate(a(sizea,sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:444 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:450 '
       stop
     end if
 
@@ -459,7 +458,7 @@ end subroutine export_interfaces
 
     deallocate(b, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR DEALLOCATING MEMORY ==> export_interfaces ERR:455 '
+      write(*,*)'ERROR DEALLOCATING MEMORY ==> export_interfaces ERR:461 '
       stop
     end if
 

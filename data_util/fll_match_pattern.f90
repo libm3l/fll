@@ -45,7 +45,6 @@ CONTAINS
 ! External Modules used
 !  
     USE FLL_TYPE_M
-    USE FLL_OUT_M
 
     IMPLICIT NONE
 !

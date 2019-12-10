@@ -57,7 +57,7 @@ MODULE FLL_MPI_PROC_STRUCT_M
 !
 CONTAINS
 
-  FUNCTION  FLL_MPI_PROC_STRUCT(FPAR,ERRMSG) RESULT(PNODE)
+  FUNCTION  FLL_MPI_PROC_STRUCT(FPAR,ERRMSG,DIAGMESSG) RESULT(PNODE)
 !
 ! Description: Creates structure with header for MPI process definition
 ! 
@@ -82,7 +82,7 @@ CONTAINS
 ! Arguments declaration
 !
   TYPE(DNODE), POINTER  :: PNODE
-  CHARACTER(*), OPTIONAL :: ERRMSG
+  CHARACTER(*), OPTIONAL :: ERRMSG,DIAGMESSG
 !
 !   Local declarations
 !
@@ -127,7 +127,10 @@ CONTAINS
   PSUBPROC  => FLL_MKDIR('Subprocs',FPAR)
   IF(.NOT.FLL_MV(PSUBPROC, PNODE, FPAR))THEN
     WRITE(FPAR%MESG,'(A)')' FLL_MPI_PROC_STRUCT: Error moving Subprocs'
-    CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
     FPAR%SUCCESS = .FALSE.
     RETURN
    END IF
@@ -245,7 +248,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:248 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:252 '
         STOP
       END IF
 !
@@ -362,7 +365,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:365 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:369 '
         STOP
       END IF
 
@@ -491,7 +494,7 @@ CONTAINS
 
     ALLOCATE(EVEN_RANK(NSTEP), STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:494 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:498 '
         STOP
       END IF
 !
@@ -607,7 +610,7 @@ CONTAINS
 !
     DEALLOCATE(EVEN_RANK, STAT = IERR)
      IF(IERR /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:610 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mpi_proc_struct ERR:614 '
         STOP
       END IF
 
