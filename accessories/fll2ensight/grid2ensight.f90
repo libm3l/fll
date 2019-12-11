@@ -182,7 +182,7 @@ CONTAINS
 
           allocate(coord(nnodes), stat = istat)
             if(istat /= 0)then
-               write(*,*)'ERROR ALLOCATING MEMORY'
+               write(*,*)'ERROR ALLOCATING MEMORY ==> grid2ensight ERR:185 '
                stop
             end if
                 
@@ -202,7 +202,7 @@ CONTAINS
 
           deallocate(coord, stat = istat)
             if(istat /= 0)then
-              write(*,*)'ERROR DEALLOCATING MEMORY'
+              write(*,*)'ERROR DEALLOCATING MEMORY ==> grid2ensight ERR:205 '
               stop
             end if
 !
@@ -255,7 +255,7 @@ CONTAINS
         
         allocate(tmparray(totsize), tmparray1(totsize), stat = istat)
            if(istat /= 0)then
-               write(*,*)'ERROR ALLOCATING MEMORY'
+               write(*,*)'ERROR ALLOCATING MEMORY ==> grid2ensight ERR:258 '
                stop
            end if
 !
@@ -288,7 +288,7 @@ CONTAINS
         
         deallocate(tmparray, stat = istat)
            if(istat /= 0)then
-               write(*,*)'ERROR DEALLOCATING MEMORY'
+               write(*,*)'ERROR DEALLOCATING MEMORY ==> grid2ensight ERR:291 '
                stop
            end if
 !
@@ -302,7 +302,7 @@ CONTAINS
        
        deallocate(tmparray1, stat = istat)
          if(istat /= 0)then
-           write(*,*)'ERROR DEALLOCATING MEMORY'
+           write(*,*)'ERROR DEALLOCATING MEMORY ==> grid2ensight ERR:305 '
            stop
          end if
 !
@@ -319,7 +319,7 @@ CONTAINS
         
        allocate(coord(nunique), stat = istat)
        if(istat /= 0)then
-           write(*,*)'ERROR ALLOCATING MEMORY'
+           write(*,*)'ERROR ALLOCATING MEMORY ==> grid2ensight ERR:322 '
            stop
        end if
          
@@ -351,7 +351,7 @@ CONTAINS
 
        deallocate(coord, stat = istat)
          if(istat /= 0)then
-           write(*,*)'ERROR DEALLOCATING MEMORY'
+           write(*,*)'ERROR DEALLOCATING MEMORY ==> grid2ensight ERR:354 '
          stop
        end if
 !
@@ -368,7 +368,7 @@ CONTAINS
 !
             allocate(nindex_scaled(ndim1,ndim2), stat = istat)
             if(istat /= 0)then
-               write(*,*)'ERROR ALLOCATING MEMORY'
+               write(*,*)'ERROR ALLOCATING MEMORY ==> grid2ensight ERR:371 '
                stop
             end if
 !
@@ -387,7 +387,7 @@ CONTAINS
 
             deallocate(nindex_scaled,  stat = istat)
                if(istat /= 0)then
-                write(*,*)'ERROR DEALLOCATING MEMORY'
+                write(*,*)'ERROR DEALLOCATING MEMORY ==> grid2ensight ERR:390 '
                 stop
               end if                   
          end do belemloop

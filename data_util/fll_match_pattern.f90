@@ -45,7 +45,6 @@ CONTAINS
 ! External Modules used
 !  
     USE FLL_TYPE_M
-    USE FLL_OUT_M
 
     IMPLICIT NONE
 !
@@ -54,12 +53,12 @@ CONTAINS
 ! Arguments description
 ! Name         In/Out     Function
 ! PNODE        In         pointer where find node
-! NAME           In         name of node
-! LTYPE         In         type of node  - can be *
-!  DIM              In         dimensions of data the node should contain
-!                         can be 0 - scalar), 1 -1D array, 2 -2D array 
+! NAME         In         name of node
+! LTYPE        In         type of node  - can be *
+! DIM          In         dimensions of data the node should contain
+!                         can be 0 - scalar), 1 -1D array, 2 -2D array, , 3 -3D array , 4 -4D array 
 !                         any other number (prefer -1) - do not care about dimensions
-! OK               Out       return value
+! OK           Out       return value
 ! FPAR         In/Out     structure containing function specific data
 !
 ! Arguments declaration
@@ -91,12 +90,16 @@ CONTAINS
      RETURN
    END IF
    
-   IF(DIM < 0 .OR. DIM > 2)THEN 
+   IF(DIM < 0 .OR. DIM > 4)THEN 
      OK = .TRUE.
      RETURN
    END IF
-   
-   IF(PNODE%NDIM > 1 .AND. PNODE%NSIZE > 1) THEN
+  
+   IF(PNODE%NDIM > 1 .AND. PNODE%NSIZE > 1. .AND. PNODE%NSIZE1 > 1 .AND. PNODE%NSIZE2 > 1) THEN
+     NLOCD = 4
+   ELSE IF(PNODE%NDIM > 1 .AND. PNODE%NSIZE > 1 .AND. PNODE%NSIZE1 > 1 )THEN
+     NLOCD = 3 
+   ELSE IF(PNODE%NDIM > 1 .AND. PNODE%NSIZE > 1) THEN
      NLOCD = 2
    ELSE IF (PNODE%NDIM > 1 .OR. PNODE%NSIZE > 1) THEN
      NLOCD = 1

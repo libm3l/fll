@@ -33,7 +33,7 @@ MODULE FLL_DUPLICATE_M
 ! External Modules used
 !
 CONTAINS
-   FUNCTION FLL_DUPLICATE(PNODE,FPAR,ERRMSG) RESULT(PNEW)
+   FUNCTION FLL_DUPLICATE(PNODE,FPAR,ERRMSG,DIAGMESSG) RESULT(PNEW)
 !
 ! Description: Contains duplicates node to PNEW mode
 !              the parent, previous and next pointers of PNEW node are NULL
@@ -66,7 +66,7 @@ CONTAINS
 !
    TYPE(DNODE), POINTER  :: PNODE,PNEW
    TYPE(FUNC_DATA_SET) :: FPAR
-   CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: ERRMSG,DIAGMESSG
 !
 ! Local declarations
 !
@@ -90,7 +90,10 @@ CONTAINS
    FPAR%SUCCESS = .FALSE.
    IF(.NOT.ASSOCIATED(PNODE))THEN
       WRITE(FPAR%MESG,'(A)')' DUPLICATE - null node '
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       RETURN
    END IF
@@ -112,6 +115,10 @@ CONTAINS
       IF(.NOT.FPAR%SUCCESS)THEN
         WRITE(FPAR%MESG,'(A)')' DUPLICATE - error duplicting children nodes '
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        END IF
         FPAR%SUCCESS = .FALSE.
         PNEW => NULL()
         RETURN
@@ -125,6 +132,10 @@ CONTAINS
     IF(.NOT.ASSOCIATED(PNEW))THEN
       WRITE(FPAR%MESG,'(A)')' DUPLICATE - error allocating PNEW '
       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = DIAGMESSG
+           CALL FLL_OUT(LOC_ERRMSG,FPAR)
+      END IF
       FPAR%SUCCESS = .FALSE.
       PNEW => NULL()
       RETURN
@@ -253,7 +264,7 @@ CONTAINS
 !
 ! Local declarations
 !
-   INTEGER(LINT) :: NDIM, NSIZE, NNDIM, NNSIZE
+   INTEGER(LINT) :: NDIM, NSIZE, NNDIM, NNSIZE, NSIZE1, NSIZE2, NNSIZE1, NNSIZE2
 !
 !  check node types
 !
@@ -511,6 +522,230 @@ CONTAINS
        RETURN 
      END IF     
    END IF
+!
+!  3D ARRAYS
+!
+     IF(ASSOCIATED(PNODE%R3))THEN
+     NDIM    = SIZE(PNODE%R3, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%R3, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%R3, DIM = 3, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%R3))THEN
+        NNDIM    = SIZE(PNODE%R3, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%R3, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%R3, DIM = 3, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%R3 = PNODE%R3
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+   IF(ASSOCIATED(PNODE%D3))THEN
+     NDIM    = SIZE(PNODE%D3, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%D3, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%D3, DIM = 3, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%D3))THEN
+        NNDIM    = SIZE(PNODE%D3, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%D3, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%D3, DIM = 3, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%D3 = PNODE%D3
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+     IF(ASSOCIATED(PNODE%I3))THEN
+     NDIM    = SIZE(PNODE%I3, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%I3, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%I3, DIM = 3, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%I4))THEN
+        NNDIM    = SIZE(PNODE%I3, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%I3, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%I3, DIM = 3, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%I3 = PNODE%I3
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+
+   IF(ASSOCIATED(PNODE%L3))THEN
+     NDIM    = SIZE(PNODE%L3, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%L3, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%L3, DIM = 3, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%I3))THEN
+        NNDIM    = SIZE(PNODE%L3, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%L3, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%L3, DIM = 3, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2 )THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%L3 = PNODE%L3
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+!
+!  4D ARRAYS
+!
+     IF(ASSOCIATED(PNODE%R4))THEN
+     NDIM    = SIZE(PNODE%R4, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%R4, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%R4, DIM = 3, KIND = LINT)
+     NSIZE2   = SIZE(PNODE%R4, DIM = 4, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%R2))THEN
+        NNDIM    = SIZE(PNODE%R4, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%R4, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%R4, DIM = 3, KIND = LINT)
+        NNSIZE2   = SIZE(PNODE%R4, DIM = 4, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2 .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%R4 = PNODE%R4
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+   IF(ASSOCIATED(PNODE%D4))THEN
+     NDIM    = SIZE(PNODE%D4, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%D4, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%D4, DIM = 3, KIND = LINT)
+     NSIZE2   = SIZE(PNODE%D4, DIM = 4, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%D4))THEN
+        NNDIM    = SIZE(PNODE%D4, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%D4, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%D4, DIM = 3, KIND = LINT)
+        NNSIZE2   = SIZE(PNODE%D4, DIM = 4, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2 .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%D4 = PNODE%D4
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+     IF(ASSOCIATED(PNODE%I4))THEN
+     NDIM    = SIZE(PNODE%I4, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%I4, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%I4, DIM = 3, KIND = LINT)
+     NSIZE2   = SIZE(PNODE%I4, DIM = 4, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%I4))THEN
+        NNDIM    = SIZE(PNODE%I4, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%I4, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%I4, DIM = 3, KIND = LINT)
+        NNSIZE2   = SIZE(PNODE%I4, DIM = 4, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2 .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%I4 = PNODE%I4
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
+
+   IF(ASSOCIATED(PNODE%L4))THEN
+     NDIM    = SIZE(PNODE%L4, DIM = 1, KIND = LINT)
+     NSIZE   = SIZE(PNODE%L4, DIM = 2, KIND = LINT)
+     NSIZE1   = SIZE(PNODE%L4, DIM = 3, KIND = LINT)
+     NSIZE2   = SIZE(PNODE%L4, DIM = 4, KIND = LINT)
+
+     IF(ASSOCIATED(PNEW%I4))THEN
+        NNDIM    = SIZE(PNODE%L4, DIM = 1, KIND = LINT)
+        NNSIZE   = SIZE(PNODE%L4, DIM = 2, KIND = LINT)
+        NNSIZE1   = SIZE(PNODE%L4, DIM = 3, KIND = LINT)
+        NNSIZE2   = SIZE(PNODE%L4, DIM = 4, KIND = LINT)
+        
+       IF(NDIM /= NNDIM .OR. NSIZE /= NNSIZE .OR. NSIZE2 /= NNSIZE2 .OR. NSIZE2 /= NNSIZE2)THEN
+         WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - nodes do not have same dimensions', TRIM(PNODE%LNAME),' ', TRIM(PNEW%LNAME)
+         FPAR%SUCCESS = .FALSE.
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         RETURN
+       END IF
+
+       PNEW%L4 = PNODE%L4
+     ELSE
+       WRITE(FPAR%MESG,'(A,A,A,A)')' DUPLICATE - R3 array not allocated ',TRIM(PNEW%LNAME)
+       FPAR%SUCCESS = .FALSE.
+       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+       RETURN 
+     END IF     
+   END IF
+
 !
 !  SCALARS AND STATICALLY DEFINED ARRAYS
 !

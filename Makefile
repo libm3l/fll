@@ -41,7 +41,7 @@ MPI_FC = $(MPI_COMPILER)
 
 ifneq ($(MPI_FC),)
 ifneq ($(MPIF),)
-#  SUBDIRS+= mpi_util
+  SUBDIRS+= mpi_util
 endif
 endif
 

@@ -33,7 +33,7 @@ MODULE FLL_MPI_CP_M
 ! External Modules used
 !
 CONTAINS
-   FUNCTION FLL_MPI_CP(PNODE,COMMUNICATOR,SENDPART,RECPART,FPAR,ERRMSG) RESULT(PNEW)
+   FUNCTION FLL_MPI_CP(PNODE,COMMUNICATOR,SENDPART,RECPART,FPAR,ERRMSG,DIAGMESSG) RESULT(PNEW)
 !
 ! Description: Sends FLL subset to a specified process in comunicator
 !              if process ID == sending proceess ID, do not create
@@ -72,7 +72,7 @@ CONTAINS
    TYPE(DNODE), POINTER  :: PNODE,PNEW
    TYPE(FUNC_DATA_SET) :: FPAR
    INTEGER :: COMMUNICATOR,SENDPART,RECPART
-   CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: ERRMSG,DIAGMESSG
 !
 !  Local declarations
 !
@@ -131,7 +131,10 @@ CONTAINS
 !
      IF(.NOT.ASSOCIATED(PNODE))THEN
        WRITE(FPAR%MESG,'(A)')' DUPLICATE - null node '
-       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
        FPAR%SUCCESS = .FALSE.
        RETURN
      END IF
@@ -691,7 +694,7 @@ CONTAINS
       TYPE = 'R'
     CASE(11)
       TYPE = 'R1'
-    CASE(2)
+    CASE(12)
       TYPE = 'R2'
     CASE(2)
       TYPE = 'D'

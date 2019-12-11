@@ -74,7 +74,7 @@ contains
         bcuniqueu4(:),bcuniqueu3(:),bcuniqueutmp(:),bcunique(:)
     integer(lint), allocatable :: tmparray(:,:),tmparray1d(:)
     character(len=lstring_length), pointer :: bcnames(:)
-    character(len=lstring_length) :: gbcname,bcname,intfname
+    character(len=lstring_length) :: gbcname,bcname,intfname,iclass
     character(len=file_name_length) :: outfile
     real(rdouble), pointer :: coo(:,:)
     logical :: ok
@@ -110,7 +110,6 @@ contains
         write(*,*)'Processing interface #',intf
 
         pintf => fll_locate(pgrid,'Interface','*',-1_lint,intf,.false.,fpar,errmsg='ALL')
-
 !
 !  if global type of interface, do not export
 !
@@ -434,7 +433,7 @@ end subroutine export_interfaces
 
     allocate(b(size(a,dim=1,kind=lint), sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3323 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:436 '
       stop
     end if
 
@@ -442,13 +441,13 @@ end subroutine export_interfaces
 
     deallocate(a, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3331 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:444 '
       stop
     end if
 
     allocate(a(sizea,sizeb), stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR ALLOCATING MEMORY ==> interfaces.F90 ERR:3337 '
+      write(*,*)'ERROR ALLOCATING MEMORY ==> export_interfaces ERR:450 '
       stop
     end if
 
@@ -459,7 +458,7 @@ end subroutine export_interfaces
 
     deallocate(b, stat = istat)
     if(istat /= 0)then
-      write(*,*)'ERROR DEALLOCATING MEMORY ==> interfaces.F90 ERR:3346 '
+      write(*,*)'ERROR DEALLOCATING MEMORY ==> export_interfaces ERR:461 '
       stop
     end if
 

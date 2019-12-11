@@ -58,7 +58,7 @@ MODULE FLL_READ_UCD_M
 !
 CONTAINS
 
-  FUNCTION FLL_READ_UCD(FILE,IOUNIT,FMT,ITYPE,FPAR, ERRMSG) RESULT(PNODE)
+  FUNCTION FLL_READ_UCD(FILE,IOUNIT,FMT,ITYPE,FPAR, ERRMSG,DIAGMESSG) RESULT(PNODE)
 !
 ! Description: main function opening, reading and closing file
 !
@@ -95,6 +95,7 @@ CONTAINS
    INTEGER :: IOUNIT
    CHARACTER :: FMT,ITYPE
    CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: DIAGMESSG
 !
 ! Local declarations
 !
@@ -114,7 +115,10 @@ CONTAINS
    INQUIRE (FILE=TRIM(FILE), EXIST=OK)
    IF(.NOT.OK) THEN
       WRITE(FPAR%MESG,'(A,A)')' Read  - file does not exist ',TRIM(FILE)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -131,7 +135,10 @@ CONTAINS
       FMT_LOC = 'U'
     CASE DEFAULT
       WRITE(FPAR%MESG,'(A,A)')' Read  - unknown format',TRIM(FMT)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -150,7 +157,10 @@ CONTAINS
 
     IF(ISTAT/=0) THEN
       WRITE(FPAR%MESG,'(A,A)')' Read  - error opening file ',TRIM(FILE)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       PNODE => NULL()
       RETURN
@@ -171,7 +181,10 @@ CONTAINS
     CLOSE(IOUNIT)
     IF(.NOT.ASSOCIATED(PNODE))THEN
        WRITE(FPAR%MESG,'(A,A)')' Read  - error reading file ',TRIM(FILE)
-       CALL FLL_OUT(LOC_ERRMSG,FPAR)
+          IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
        FPAR%SUCCESS = .FALSE.
     END IF
     
@@ -270,7 +283,7 @@ CONTAINS
 !
     ALLOCATE(I3(NELEM,3),I4(NELEM,4), STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:273 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:290 '
         STOP
       END IF
 
@@ -319,7 +332,7 @@ CONTAINS
 
     DEALLOCATE(I3,I4, STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:322 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:339 '
         STOP
       END IF
 
@@ -414,7 +427,7 @@ CONTAINS
 !
     ALLOCATE(I3(NELEM,3),I4(NELEM,4), STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:417 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:434 '
         STOP
       END IF
 
@@ -463,7 +476,7 @@ CONTAINS
 
     DEALLOCATE(I3,I4, STAT=ISTAT)
      IF(ISTAT /= 0)THEN
-        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:466 '
+        WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_read_ucd ERR:483 '
         STOP
       END IF
 

@@ -32,7 +32,8 @@ MODULE FLL_LOCATE_M
 !
 CONTAINS
 
-   RECURSIVE FUNCTION FLL_LOCATE(PNODE,NAME,LTYPE,DATADIM,NUMBER,RECURSE,FPAR,ERRMSG) RESULT(PFIND)
+   RECURSIVE FUNCTION FLL_LOCATE(PNODE,NAME,LTYPE,DATADIM,NUMBER,RECURSE,&
+      FPAR,ERRMSG,DIAGMESSG) RESULT(PFIND)
 !
 ! Description: function finds node identified by name, type, position in list, dimensions of data it contains
 !                       search can be done recursively
@@ -54,7 +55,7 @@ CONTAINS
 ! NUMBER       In         position of node in list
 ! LTYPE        In         type of node  - can be *
 ! DATADIM      In         dimensions of data the node should contain
-!                         can be 0 - scalar, 1 -1D array, 2 -2D array 
+!                         can be 0 - scalar, 1 -1D array, 2 -2D array, 3 - 3D array, 4 - 4D array
 !                         if any other number specified (preferrable -1) - do not care about dimensions
 ! RECURSE      In         search recursively
 ! PFIND        Out        return pointer to located node
@@ -70,12 +71,13 @@ CONTAINS
    INTEGER(LINT) :: NUMBER,DATADIM
    LOGICAL :: RECURSE
    CHARACTER(*), OPTIONAL :: ERRMSG
+   CHARACTER(*), OPTIONAL :: DIAGMESSG
 !
 ! Local declarations
 !
    CHARACTER(LEN=TYPE_LENGTH) :: TLTYPE
    TYPE(DNODE), POINTER  :: PCURR, PCHLD
-   INTEGER(LINT) :: LOCNUM,NDIM, NSIZE
+   INTEGER(LINT) :: LOCNUM,NDIM, NSIZE, NSIZE1, NSIZE2
    CHARACTER(LEN=10) :: LOC_ERRMSG
 !   
 !  define LOC_ERRMSG
@@ -91,7 +93,10 @@ CONTAINS
    
    IF(.NOT.ASSOCIATED(PNODE))THEN
       WRITE(FPAR%MESG,'(A,A)')'Locate - Null node: ',TRIM(NAME)
-      CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         IF(PRESENT(DIAGMESSG))THEN
+           FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+         END IF
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
       FPAR%SUCCESS = .FALSE.
       RETURN
    END IF
@@ -132,6 +137,8 @@ CONTAINS
 
         NDIM  = PCURR%NDIM
         NSIZE = PCURR%NSIZE
+        NSIZE1 = PCURR%NSIZE1
+        NSIZE2 = PCURR%NSIZE2
 
         IF(LOCNUM == NUMBER)THEN
           SELECT CASE(DATADIM)
@@ -159,6 +166,22 @@ CONTAINS
             ELSE
              LOCNUM = LOCNUM -1
             END IF
+          CASE(3)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1)THEN
+              PFIND => PCURR
+              FPAR%SUCCESS = .TRUE.
+              RETURN
+            ELSE
+             LOCNUM = LOCNUM -1
+            END IF
+          CASE(4)
+            IF(NDIM > 1 .AND. NSIZE > 1 .AND. NSIZE1 > 1 .AND. NSIZE2 > 1)THEN
+              PFIND => PCURR
+              FPAR%SUCCESS = .TRUE.
+              RETURN
+            ELSE
+             LOCNUM = LOCNUM -1
+            END IF
           CASE DEFAULT 
             PFIND => PCURR
             FPAR%SUCCESS = .TRUE.
@@ -178,8 +201,11 @@ CONTAINS
 !
    PFIND => NULL()
    FPAR%SUCCESS = .FALSE.
-!   WRITE(FPAR%MESG,'(A,A)')' Locate -  node not found: ',TRIM(NAME)
-!   CALL FLL_OUT(LOC_ERRMSG,FPAR)
+   WRITE(FPAR%MESG,'(A,A)')' Locate -  node not found: ',TRIM(NAME)
+   IF(PRESENT(DIAGMESSG))THEN
+     FPAR%MESG = TRIM(FPAR%MESG)//' '//TRIM(DIAGMESSG)
+   END IF
+   CALL FLL_OUT(LOC_ERRMSG,FPAR)
 
    RETURN
    END FUNCTION FLL_LOCATE
