@@ -269,8 +269,9 @@ CONTAINS
   END IF
 
   WRITE(*,*)' Estimated number of boundary conditions is ', NBC
- 
-  DO IBC=1,NBC
+
+
+  DO IBC = MINVAL(SURFID), MAXVAL(SURFID)
 
     NTRIA = 0
     DO I=1,Number_of_Surf_Trias
