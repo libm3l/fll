@@ -179,7 +179,6 @@ contains
                   end if
 
                 else if(trim(gbcname) ==   'quad4')then
-
 !
 !  concentanate indexes in one array
 !
@@ -409,7 +408,7 @@ contains
     end do loop_grid
 
    
-end subroutine export_interfaces
+  end subroutine export_interfaces
   
   subroutine realloc_ld2arr(a, c)
     use fll_mods_m
