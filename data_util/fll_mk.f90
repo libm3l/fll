@@ -195,6 +195,8 @@ CONTAINS
          END IF
        END IF
 
+     CASE('R0')
+
      CASE('R1')
        ALLOCATE(PNEW%R1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
@@ -239,6 +241,7 @@ CONTAINS
          END IF
        END IF
 
+     CASE('D0')
      CASE('D1')
        ALLOCATE(PNEW%D1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
@@ -284,6 +287,7 @@ CONTAINS
          END IF
        END IF
 
+     CASE('I0')
      CASE('I1')
        ALLOCATE(PNEW%I1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
@@ -327,8 +331,9 @@ CONTAINS
               STOP
             END IF
          END IF
-      END IF   
-
+      END IF  
+ 
+     CASE('L0')
      CASE('L1')
        ALLOCATE(PNEW%L1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
@@ -373,6 +378,7 @@ CONTAINS
          END IF
        END IF
 
+     CASE('S0')
      CASE('S1')
        ALLOCATE(PNEW%S1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN

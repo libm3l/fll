@@ -568,7 +568,9 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%R2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
-       
+
+     CASE('R0')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%R0
      CASE('R1')
            READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%R1(I),I=1,NSIZE)
      CASE('R2')
@@ -588,7 +590,9 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%D2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
-       
+
+     CASE('D0')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%D0
      CASE('D1')
            READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%D1(I),I=1,NDIM*NSIZE)
      CASE('D2')
@@ -608,7 +612,9 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%I2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
-       
+
+     CASE('I0')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%I0
      CASE('I1')
            READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%I1(I),I=1,NDIM*NSIZE)
      CASE('I2')
@@ -630,6 +636,8 @@ CONTAINS
          END IF
        END IF
 
+     CASE('L0')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%L0
      CASE('L1')
            READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%L1(I),I=1,NDIM*NSIZE)
      CASE('L2')
@@ -650,7 +658,9 @@ CONTAINS
            READ(IOUNIT,*,IOSTAT=IOSTAT)((PNODE%S2(I,J),J=1,NSIZE),I=1,NDIM)
          END IF
        END IF
-       
+
+       CASE('S0')
+           READ(IOUNIT,*,IOSTAT=IOSTAT)PNODE%S0
        CASE('S1')
            READ(IOUNIT,*,IOSTAT=IOSTAT)(PNODE%S1(I),I=1,NDIM*NSIZE)
        CASE('S2')
@@ -741,7 +751,7 @@ CONTAINS
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R1(:)
            INQUIRE(UNIT = IOUNIT, POS=POS)
          ELSE
-!           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R0
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R0
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        ELSE
@@ -755,7 +765,10 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
-       
+
+     CASE('R0')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R0
+           INQUIRE(UNIT = IOUNIT, POS=POS)       
      CASE('R1')
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%R1(:)
            INQUIRE(UNIT = IOUNIT, POS=POS)
@@ -797,6 +810,9 @@ CONTAINS
          END IF
        END IF
        
+     CASE('D0')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%D0
+           INQUIRE(UNIT = IOUNIT, POS=POS)
      CASE('D1')
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%D1(:)
            INQUIRE(UNIT = IOUNIT, POS=POS)
@@ -838,7 +854,10 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
-       
+
+     CASE('I0')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%I0
+           INQUIRE(UNIT = IOUNIT, POS=POS)
      CASE('I1')
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%I1(:)
            INQUIRE(UNIT = IOUNIT, POS=POS)
@@ -879,7 +898,10 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
-       
+
+     CASE('L0')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%L0
+           INQUIRE(UNIT = IOUNIT, POS=POS)
      CASE('L1')
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%L1(:)
            INQUIRE(UNIT = IOUNIT, POS=POS)
@@ -912,7 +934,11 @@ CONTAINS
            INQUIRE(UNIT = IOUNIT, POS=POS)
          END IF
        END IF
-       
+
+
+     CASE('S0')
+           READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)PNODE%S0
+           INQUIRE(UNIT = IOUNIT, POS=POS)       
      CASE('S1')
            READ(IOUNIT,IOSTAT=IOSTAT, POS=POS)(PNODE%S1(I),I=1,NDIM)
            INQUIRE(UNIT = IOUNIT, POS=POS)
@@ -989,13 +1015,13 @@ CONTAINS
 !  BODY
 !
     SELECT CASE(LTYPE)
-     CASE('R', 'I','R1','R2','I1','I2')
+     CASE('R', 'I',' R0', 'R1','R2','I0', 'I1','I2')
        LENGTH = 4
 
-     CASE('D', 'L','D1','D2','L1','L2')
+     CASE('D', 'L','D0', 'D1','D2','L0', 'L1','L2')
        LENGTH = 8
        
-      CASE('S','S1','S2')
+      CASE('S','S0', 'S1','S2')
        LENGTH = LSTRING_LENGTH
 
       CASE('C')

@@ -438,19 +438,19 @@ CONTAINS
      IF(.NOT.SAVED)THEN
        IF(NDIM /= 0 .AND. NSIZE /= 0)THEN
          SELECT CASE(PNODE%LTYPE)
-          CASE('R')
+          CASE('R', 'R0')
             WRITE(TEXT,*)"=",PNODE%R0
             WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)
-          CASE('D')
+          CASE('D', 'D0')
             WRITE(TEXT,*)"=",PNODE%D0
             WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)         
-         CASE('I')
+         CASE('I', 'I0')
             WRITE(TEXT,*)"=",PNODE%I0
             WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)  
-          CASE('L')
+          CASE('L', 'L0')
             WRITE(TEXT,*)"=",PNODE%L0
             WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT)  
-         CASE('S')
+         CASE('S', 'S0')
             WRITE(TEXT,*)"=",TRIM(PNODE%S0)
             WRITE(IOUNIT, *)TRIM(TEXT1),TRIM(TEXT) 
            CASE DEFAULT 
@@ -459,15 +459,15 @@ CONTAINS
 
        ELSE
          SELECT CASE(PNODE%LTYPE)
-          CASE('R', 'R1', 'R2', 'R3', 'R4')
+          CASE('R', 'R0', 'R1' , 'R2', 'R3', 'R4')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-          CASE('D', 'D1', 'D2','D3', 'D4')
+          CASE('D', 'D0', 'D1', 'D2','D3', 'D4')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('I', 'I1', 'I2', 'I3', 'I4')
+         CASE('I', 'I0', 'I1', 'I2', 'I3', 'I4')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('L', 'L1', 'L2', 'L3', 'L4')
+         CASE('L', 'L0', 'L1', 'L2', 'L3', 'L4')
             WRITE(IOUNIT, *)TRIM(TEXT1)
-         CASE('S', 'S1', 'S2')
+         CASE('S', 'S0', 'S1', 'S2')
             WRITE(IOUNIT, *)TRIM(TEXT1)
          CASE DEFAULT 
         
