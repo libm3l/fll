@@ -303,15 +303,15 @@ CONTAINS
 !  SCALARS AND STATICALLY DEFINED ARRAYS
 !
     SELECT CASE(PNODE%LTYPE)
-    CASE('R', 'R1', 'R2', 'R3', 'R4')
+    CASE('R', 'R0','R1', 'R2', 'R3', 'R4')
       BYTES = BYTES + 4
-    CASE('D', 'D1', 'D2', 'D3', 'D4')
+    CASE('D', 'D0', 'D1', 'D2', 'D3', 'D4')
       BYTES = BYTES + 8
-    CASE('I', 'I1', 'I2', 'I3', 'I4')
+    CASE('I', 'I0', 'I1', 'I2', 'I3', 'I4')
       BYTES = BYTES + 4
-    CASE('L', 'L1', 'L2', 'L3', 'L4')
+    CASE('L', 'L0', 'L1', 'L2', 'L3', 'L4')
       BYTES = BYTES + 8
-    CASE('S', 'S1', 'S2')
+    CASE('S', 'S0', 'S1', 'S2')
       BYTES = BYTES + LSTRING_LENGTH
     END SELECT
   
