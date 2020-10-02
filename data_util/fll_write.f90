@@ -403,15 +403,15 @@ CONTAINS
 !
       IF(.NOT.SAVED)THEN
         SELECT CASE(PNODE%LTYPE)
-         CASE('R')
+         CASE('R', 'R0')
           WRITE(IOUNIT, *)PNODE%R0
-         CASE('D')
+         CASE('D', 'D0')
           WRITE(IOUNIT, *)PNODE%D0
-         CASE('I')
+         CASE('I','I0')
           WRITE(IOUNIT, *)PNODE%I0
-         CASE('L')
+         CASE('L','L0')
           WRITE(IOUNIT, *)PNODE%L0
-        CASE('S')
+        CASE('S','S0')
           WRITE(IOUNIT,*)"'",TRIM(PNODE%S0),"'"
 
          CASE DEFAULT 
@@ -528,15 +528,15 @@ CONTAINS
 !
       IF(.NOT.SAVED)THEN
         SELECT CASE(PNODE%LTYPE)
-         CASE('R')
+         CASE('R', 'R0')
             WRITE(IOUNIT)PNODE%R0
-         CASE('D')
+         CASE('D', 'D0')
             WRITE(IOUNIT)PNODE%D0
-         CASE('I')
+         CASE('I', 'I0')
             WRITE(IOUNIT)PNODE%I0
-         CASE('L')
+         CASE('L', 'L0')
             WRITE(IOUNIT)PNODE%L0
-         CASE('S')
+         CASE('S', 'S0')
             WRITE(IOUNIT)PNODE%S0
 
          CASE DEFAULT 

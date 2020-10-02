@@ -170,10 +170,10 @@ CONTAINS
 !
 !  ADD SOME BASIC INFO
 !
-  PTMP => FLL_MK('mesh_name','S',1_LINT,1_LINT,FPAR)
+  PTMP => FLL_MK('mesh_name','S0',1_LINT,1_LINT,FPAR)
   PTMP%S0 = NAME
   OK = FLL_MV(PTMP, PFLL,FPAR)
-  PTMP => FLL_MK('boundaries_name','S',1_LINT,1_LINT,FPAR)
+  PTMP => FLL_MK('boundaries_name','S0',1_LINT,1_LINT,FPAR)
   PTMP%S0 = FILEBC
   OK = FLL_MV(PTMP, PFLL,FPAR) 
   
@@ -183,7 +183,7 @@ CONTAINS
 !  CREATE ARRAY FOR NODES
 !
    WRITE(*,*)' Reading coordinates'
-   PTMP => FLL_MK('coordinates','D',INT(Number_of_Nodes, KIND=LINT),3_LINT,FPAR)
+   PTMP => FLL_MK('coordinates','D2',INT(Number_of_Nodes, KIND=LINT),3_LINT,FPAR)
    OK = FLL_MV(PTMP, PREG,FPAR)
    COO => PTMP%D2
    IF(BIN)THEN
@@ -291,7 +291,7 @@ CONTAINS
 
     PBC => FLL_MKDIR('boundary',FPAR)
     OK = FLL_MV(PBC,PREG,FPAR)
-    PTMP => FLL_MK('boundary_name','S',1_LINT,1_LINT,FPAR)
+    PTMP => FLL_MK('boundary_name','S0',1_LINT,1_LINT,FPAR)
     IF(PRESENT(FILEBC))THEN
       PTMP%S0 = CONDNAME(IBC)
       write(*,*)' Boundary condition name is: ', trim(CONDNAME(IBC))
@@ -308,10 +308,10 @@ CONTAINS
     IF(NTRIA > 0)THEN
       PELEM => FLL_MKDIR('bound_elem_group',FPAR)
       OK = FLL_MV(PELEM,PBC,FPAR)
-      PTMP => FLL_MK('bound_elem_type','S',1_LINT,1_LINT,FPAR)
+      PTMP => FLL_MK('bound_elem_type','S0',1_LINT,1_LINT,FPAR)
       PTMP%S0 = 'tria3'
       OK = FLL_MV(PTMP,PELEM,FPAR)
-      PTMP => FLL_MK('bound_elem_nodes','L',NTRIA,3_LINT,FPAR)
+      PTMP => FLL_MK('bound_elem_nodes','L2',NTRIA,3_LINT,FPAR)
       OK = FLL_MV(PTMP,PELEM,FPAR)
 
       ITMP = 0
@@ -327,10 +327,10 @@ CONTAINS
     IF(NQUAD > 0)THEN
       PELEM => FLL_MKDIR('bound_elem_group',FPAR)
       OK = FLL_MV(PELEM,PBC,FPAR)
-      PTMP => FLL_MK('bound_elem_type','S',1_LINT,1_LINT,FPAR)
+      PTMP => FLL_MK('bound_elem_type','S0',1_LINT,1_LINT,FPAR)
       PTMP%S0 = 'quad4'
       OK = FLL_MV(PTMP,PELEM,FPAR)
-      PTMP => FLL_MK('bound_elem_nodes','L',NQUAD,4_LINT,FPAR)
+      PTMP => FLL_MK('bound_elem_nodes','L2',NQUAD,4_LINT,FPAR)
       OK = FLL_MV(PTMP,PELEM,FPAR)
 
       ITMP = 0
@@ -349,12 +349,12 @@ CONTAINS
 !
   IF( Number_of_Vol_Tets > 0)THEN
     WRITE(*,*)' Volume tetras: ',Number_of_Vol_Tets
-    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Tets, KIND=LINT),4_LINT,FPAR)
+    PTMP => FLL_MK('element_nodes','L2',INT(Number_of_Vol_Tets, KIND=LINT),4_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
     OK = FLL_MV(PTMP, PELEM,FPAR)
     VOLTET => PTMP%L2
-    PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
+    PTMP => FLL_MK('element_type', 'S0', 1_LINT, 1_LINT, FPAR)
     PTMP%S0 ='tetra4'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
@@ -373,12 +373,12 @@ CONTAINS
 !
   IF( Number_of_Vol_Pents_5 > 0)THEN
     WRITE(*,*)' Volume pentas: ',Number_of_Vol_Pents_5
-    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Pents_5, KIND=LINT),5_LINT,FPAR)
+    PTMP => FLL_MK('element_nodes','L2',INT(Number_of_Vol_Pents_5, KIND=LINT),5_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
     OK = FLL_MV(PTMP, PELEM,FPAR)
     VOLPENT => PTMP%L2
-    PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
+    PTMP => FLL_MK('element_type', 'S0', 1_LINT, 1_LINT, FPAR)
     PTMP%S0 ='penta5'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
@@ -397,12 +397,12 @@ CONTAINS
 !
   IF( Number_of_Vol_Pents_6 > 0)THEN
     WRITE(*,*)' Volume penta6: ',Number_of_Vol_Pents_6
-    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Pents_6, KIND=LINT),6_LINT,FPAR)
+    PTMP => FLL_MK('element_nodes','L2',INT(Number_of_Vol_Pents_6, KIND=LINT),6_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
     OK = FLL_MV(PTMP, PELEM,FPAR)   
     VOLPENT6 => PTMP%L2
-    PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
+    PTMP => FLL_MK('element_type', 'S0', 1_LINT, 1_LINT, FPAR)
     PTMP%S0 ='penta6'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
@@ -421,12 +421,12 @@ CONTAINS
 !
   IF( Number_of_Vol_Hexs > 0)THEN
     WRITE(*,*)' Volume hexas: ',Number_of_Vol_Hexs
-    PTMP => FLL_MK('element_nodes','L',INT(Number_of_Vol_Hexs, KIND=LINT),8_LINT,FPAR)
+    PTMP => FLL_MK('element_nodes','L2',INT(Number_of_Vol_Hexs, KIND=LINT),8_LINT,FPAR)
     PELEM=> FLL_MKDIR('element_group', FPAR)
     OK = FLL_MV(PELEM, PREG,FPAR)
     OK = FLL_MV(PTMP, PELEM,FPAR)
     VOLHEX => PTMP%L2
-    PTMP => FLL_MK('element_type', 'S', 1_LINT, 1_LINT, FPAR)
+    PTMP => FLL_MK('element_type', 'S0', 1_LINT, 1_LINT, FPAR)
     PTMP%S0 ='hexa8'
     OK = FLL_MV(PTMP, PELEM,FPAR)
     IF(BIN)THEN
