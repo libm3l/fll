@@ -130,7 +130,7 @@ CONTAINS
 !
 !    type not double
 !
-         if(ptmp%ltype /= 'D') cycle
+         if(ptmp%ltype(1:1) /= 'D') cycle
 !
 !   first dimension of double array not equal to number of mesh points
 !
