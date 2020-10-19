@@ -143,7 +143,7 @@ CONTAINS
 !  we need to know for solution file how many points the mesh had
 !
       nnodes = size(coo, dim = 1) 
-      ptmp => fll_mk('nodes', 'L', 1_lint, 1_lint, fpar)
+      ptmp => fll_mk('nodes', 'L0', 1_lint, 1_lint, fpar)
       ptmp%l0 = nnodes
       ok = fll_mv(ptmp, pgrid, fpar)
 !
@@ -295,7 +295,7 @@ CONTAINS
 !   add temprarily this array to boundary, this array will be used 
 !   when saving solution on boundaries
 !
-       ptmp => fll_mk('unique_ind_arr', 'L', nunique, 1_lint, fpar)
+       ptmp => fll_mk('unique_ind_arr', 'L0', nunique, 1_lint, fpar)
        ok = fll_mv(ptmp, pbound, fpar)
        unique_ind => ptmp%l1
        unique_ind = tmparray1(1:nunique)
