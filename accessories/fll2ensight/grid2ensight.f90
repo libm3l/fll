@@ -295,7 +295,7 @@ CONTAINS
 !   add temprarily this array to boundary, this array will be used 
 !   when saving solution on boundaries
 !
-       ptmp => fll_mk('unique_ind_arr', 'L0', nunique, 1_lint, fpar)
+       ptmp => fll_mk('unique_ind_arr', 'L1', nunique, 1_lint, fpar)
        ok = fll_mv(ptmp, pbound, fpar)
        unique_ind => ptmp%l1
        unique_ind = tmparray1(1:nunique)
