@@ -301,7 +301,7 @@ CONTAINS
 !
 !  make subset displacement containing positions of each record in the file
 !
-   PTMP  => FLL_MK('displacements','L', NPROC+1_LINT, 1_LINT, FPAR)
+   PTMP  => FLL_MK('displacements','L1', NPROC+1_LINT, 1_LINT, FPAR)
 !
 ! THE DATA CAN BE ACCESSE DIRECTLY THROUGH PTMP%D(:)
 !
