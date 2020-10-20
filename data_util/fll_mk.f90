@@ -198,6 +198,12 @@ CONTAINS
      CASE('R0')
 
      CASE('R1')
+       IF(NDIM > 1 .AND. NSIZE >1)THEN
+         WRITE(FPAR%MESG,'(A,A)')' fll_mk: R1 array - One dimension must be 1',TRIM(NAME)
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         FPAR%SUCCESS = .false.
+         RETURN
+       END IF
        ALLOCATE(PNEW%R1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:205 '
@@ -243,6 +249,12 @@ CONTAINS
 
      CASE('D0')
      CASE('D1')
+       IF(NDIM > 1 .AND. NSIZE >1)THEN
+         WRITE(FPAR%MESG,'(A,A)')' fll_mk: D1 array - One dimension must be 1',TRIM(NAME)
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         FPAR%SUCCESS = .false.
+         RETURN
+       END IF
        ALLOCATE(PNEW%D1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:249 '
@@ -289,6 +301,12 @@ CONTAINS
 
      CASE('I0')
      CASE('I1')
+       IF(NDIM > 1 .AND. NSIZE >1)THEN
+         WRITE(FPAR%MESG,'(A,A)')' fll_mk: I1 array - One dimension must be 1',TRIM(NAME)
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         FPAR%SUCCESS = .false.
+         RETURN
+       END IF
        ALLOCATE(PNEW%I1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:294 '
@@ -335,6 +353,12 @@ CONTAINS
  
      CASE('L0')
      CASE('L1')
+       IF(NDIM > 1 .AND. NSIZE >1)THEN
+         WRITE(FPAR%MESG,'(A,A)')' fll_mk: L1 array - One dimension must be 1',TRIM(NAME)
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         FPAR%SUCCESS = .false.
+         RETURN
+       END IF
        ALLOCATE(PNEW%L1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:339 '
@@ -380,6 +404,12 @@ CONTAINS
 
      CASE('S0')
      CASE('S1')
+       IF(NDIM > 1 .AND. NSIZE >1)THEN
+         WRITE(FPAR%MESG,'(A,A)')' fll_mk: S1 array - One dimension must be 1',TRIM(NAME)
+         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+         FPAR%SUCCESS = .false.
+         RETURN
+       END IF
        ALLOCATE(PNEW%S1(NDIM*NSIZE), STAT=ISTAT)
          IF(ISTAT /= 0)THEN
            WRITE(*,*)'ERROR ALLOCATING MEMORY ==> fll_mk ERR:383 '
