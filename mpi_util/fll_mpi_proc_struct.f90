@@ -110,15 +110,15 @@ CONTAINS
   CALL MPI_Comm_group ( MPI_COMM_WORLD, WORLD_GROUP_ID, IERR )
   CALL  MPI_Comm_size ( MPI_COMM_WORLD, NPROC, IERR )
 
-  PTMP => FLL_MK('World_comm', 'I', 1_LINT, 1_LINT, FPAR)
+  PTMP => FLL_MK('World_comm', 'I0', 1_LINT, 1_LINT, FPAR)
   PTMP%I0 = MPI_COMM_WORLD
   OK = FLL_MV(PTMP, PNODE, FPAR)
 
-  PTMP => FLL_MK('World_group', 'I', 1_LINT, 1_LINT, FPAR)
+  PTMP => FLL_MK('World_group', 'I0', 1_LINT, 1_LINT, FPAR)
   PTMP%I0 = WORLD_GROUP_ID
   OK = FLL_MV(PTMP, PNODE, FPAR)
 
-  PTMP => FLL_MK('Nproc', 'I', 1_LINT, 1_LINT, FPAR)
+  PTMP => FLL_MK('Nproc', 'I0', 1_LINT, 1_LINT, FPAR)
   PTMP%I0 = NPROC
   OK = FLL_MV(PTMP, PNODE, FPAR)
 !
@@ -277,7 +277,7 @@ CONTAINS
 !
 !  save it to the IO structure
 !
-      PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
+      PTMP  => FLL_MK('name-of-file','S0', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'
@@ -286,7 +286,7 @@ CONTAINS
 !
 !  save number of IO desrciptor
 !
-      PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('io-descrpt','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE '
@@ -295,7 +295,7 @@ CONTAINS
 !
 !  create node with number processors the job will run at
 !
-      PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
+      PTMP    => FLL_MK('proc','L1', NSTEP, 1_LINT, FPAR)
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE '
         STOP
@@ -330,7 +330,7 @@ CONTAINS
 !
 !  save communicator
 !
-      PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('communicator','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE '
@@ -346,7 +346,7 @@ CONTAINS
         LOC_RANK = -1
       END IF
 
-      PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('loc_prc_rank','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE '
@@ -523,7 +523,7 @@ CONTAINS
 !
 !  save it to the IO structure
 !
-      PTMP  => FLL_MK('name-of-file','S', 1_LINT, 1_LINT, FPAR)
+      PTMP  => FLL_MK('name-of-file','S0', 1_LINT, 1_LINT, FPAR)
       PTMP%S0 = ADJUSTL(TRIM(FILENAME))
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'
@@ -532,7 +532,7 @@ CONTAINS
 !
 !  save number of IO desrciptor
 !
-      PTMP    => FLL_MK('io-descrpt','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('io-descrpt','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = IOUNIT
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'
@@ -540,7 +540,7 @@ CONTAINS
       END IF
 !  create node with number processors the job will run at
 !
-      PTMP    => FLL_MK('proc','L', NSTEP, 1_LINT, FPAR)
+      PTMP    => FLL_MK('proc','L1', NSTEP, 1_LINT, FPAR)
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'
         STOP
@@ -575,7 +575,7 @@ CONTAINS
 !
 !  save communicator
 !
-      PTMP    => FLL_MK('communicator','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('communicator','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = COMM_ID
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'
@@ -591,7 +591,7 @@ CONTAINS
         LOC_RANK = -1
       END IF
 
-      PTMP    => FLL_MK('loc_prc_rank','I', 1_LINT, 1_LINT, FPAR)
+      PTMP    => FLL_MK('loc_prc_rank','I0', 1_LINT, 1_LINT, FPAR)
       PTMP%I0 = LOC_RANK
       IF(.NOT.FLL_MV(PTMP, PDIR, FPAR))THEN
         WRITE(*,*)'ERROR MOVING NODE'

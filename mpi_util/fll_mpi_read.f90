@@ -170,7 +170,7 @@ CONTAINS
 !  use read node, so that you read just 
 !  what is in the subdir (subset)
 !
-   PNODE => READ_NODE(IOUNIT,'B',POS,'N',FPAR)
+   PNODE => READ_NODE(IOUNIT,'B',POS,'N',FPAR, LOC_ERRMSG)
 !
 !  close and use MPI barier to sync
 !
