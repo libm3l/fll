@@ -488,18 +488,21 @@ CONTAINS
 !
        IF(LEN_TRIM(LTYPE)<1.OR.LEN_TRIM(LTYPE)>TYPE_LENGTH) THEN
          WRITE(FPAR%MESG,'(A,A)')' Wrong type: ',TRIM(LTYPE)
+         FPAR%success = .FALSE.
          CALL FLL_OUT(LOC_ERRMSG,FPAR)
          RETURN
       END IF
 
       IF(LEN_TRIM(NAME)>NAME_LENGTH) THEN
         WRITE(FPAR%MESG,'(A,A)')' Wrong name: ',TRIM(NAME)
+        FPAR%success = .FALSE.
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
         RETURN
       END IF
 
       IF(.NOT.ANY(LTYPE(1:1)==(/'C','S','I','L','R','D','N'/))) THEN
         WRITE(FPAR%MESG,'(A,A)')' Wrong type: ',TRIM(LTYPE)
+        FPAR%success = .FALSE.
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
         RETURN
       END IF
@@ -536,6 +539,7 @@ CONTAINS
       IF(NDIM < 1 .AND. NSIZE2 < 1 .AND. NSIZE2 <1)THEN
         WRITE(FPAR%MESG,'(A,A,I5,I5,I5,I5)')' Wrong dimensions for node ',TRIM(NAME), NDIM, NSIZE1, NSIZE2
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        FPAR%success = .FALSE.
         RETURN
       END IF
 !
@@ -579,7 +583,10 @@ CONTAINS
      CASE DEFAULT
         WRITE(FPAR%MESG,'(A,A)')' Wrong type for multidimensional arrays: ',TRIM(LTYPE)
         CALL FLL_OUT(LOC_ERRMSG,FPAR)
+        FPAR%success = .FALSE.
         RETURN
+
+     FPAR%success = .TRUE.
      
      
      END SELECT
