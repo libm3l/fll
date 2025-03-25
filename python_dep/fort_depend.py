@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #The MIT License (MIT)
 
 #Copyright (c) 2014 David Dickinson, Peter Hill
